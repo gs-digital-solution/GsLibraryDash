@@ -24,6 +24,8 @@ class AuthorController extends GetxController
   RxList<TopAuthors> authorList = <TopAuthors>[].obs;
   final AuthorService homeService = Get.put(AuthorService());
 
+  QuillController controller = QuillController.basic();
+
   final document = "text";
 
   QuillController descController = QuillController.basic();
