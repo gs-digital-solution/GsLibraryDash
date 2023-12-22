@@ -143,10 +143,9 @@ class _LoginPage extends State<LoginPage> {
                     );
                   }
                 },
-                    isProgress: isProgress.value,
+                    isProgress:loginController.state is LoginLoading?true:false,
                     horizontalSpace: 0,
                     bgColor: primaryColor,
-                    loginController: loginController,
                     textColor: Colors.white,
                     verticalSpace: 0);
               }),

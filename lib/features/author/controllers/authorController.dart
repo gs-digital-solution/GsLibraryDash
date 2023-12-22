@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/exceptions/appException.dart';
 import 'package:gslibrarydashboard/features/author/models/author.dart';
@@ -12,17 +13,18 @@ import 'package:image_picker/image_picker.dart';
 
 class AuthorController extends GetxController
     with StateMixin<List<TopAuthors>> {
-  TextEditingController nameController = TextEditingController();
+  TextEditingController firstname = TextEditingController();
   TextEditingController imageController = TextEditingController();
-  TextEditingController designationController = TextEditingController();
+  TextEditingController lastname = TextEditingController();
 
-  TextEditingController facebookController = TextEditingController();
-  TextEditingController instagramController = TextEditingController();
-  TextEditingController twitterController = TextEditingController();
-  TextEditingController youTubeController = TextEditingController();
-  TextEditingController websiteController = TextEditingController();
+  TextEditingController phonenumber = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController description = TextEditingController();
+  TextEditingController designation = TextEditingController();
+  TextEditingController password = TextEditingController();
   RxList<TopAuthors> authorList = <TopAuthors>[].obs;
   final AuthorService homeService = Get.put(AuthorService());
+  TopAuthors? authorModel;
 
   QuillController controller = QuillController.basic();
 
@@ -57,15 +59,71 @@ class AuthorController extends GetxController
     }
   }
 
+    Future<void> addCategory() async {
+    isLoading.value = true;
+    try {
+      TopAuthors categoryModel = await homeService.addAuthor(
+        avatar: webImage,
+        filename: imageController.text,
+        firstname: firstname.text,
+        lastname: lastname.text,
+        email: email.text,
+        phonenumber: phonenumber.text,
+        designation: designation.text,
+        description: controller.document.toPlainText(),
+        password: password.text,
+        status: activeStatus.value,
+      );
+      authorList.add(categoryModel);
+      Fluttertoast.showToast(
+          msg: "Auteur ajoutee", backgroundColor: Colors.green);
+      isLoading.value = false;
+      clearAuthData();
+    } on AppException catch (e) {
+      Fluttertoast.showToast(msg: e.message!, backgroundColor: Colors.red);
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> updateCategory({TopAuthors? model}) async {
+    isLoading.value = true;
+    try {
+     
+      TopAuthors categoryModel = await homeService.updateAuthor(
+        avatar: webImage,
+        filename: imageController.text,
+        firstname: firstname.text,
+        lastname: lastname.text,
+        email: email.text,
+        phonenumber: phonenumber.text,
+        designation: designation.text,
+        description: controller.document.toPlainText(),
+        password: password.text,
+      );
+      int index =
+          authorList.indexWhere((element) => element.sId == model!.sId);
+      authorList.removeAt(index);
+      authorList.insert(index, categoryModel);
+      Fluttertoast.showToast(
+          msg: "categorie mise a jour", backgroundColor: Colors.green);
+      isLoading.value = false;
+      clearAuthData();
+    } on AppException catch (e) {
+      Fluttertoast.showToast(msg: e.message!, backgroundColor: Colors.red);
+      isLoading.value = false;
+    }
+  }
+
+
+
   clearAuthData() {
-    nameController = TextEditingController();
-    imageController = TextEditingController();
-    designationController = TextEditingController();
-    facebookController = TextEditingController();
-    instagramController = TextEditingController();
-    twitterController = TextEditingController();
-    youTubeController = TextEditingController();
-    websiteController = TextEditingController();
+    firstname.clear();
+    lastname.clear();
+    imageController.clear();
+    description.clear();
+    designation.clear();
+    phonenumber.clear();
+    email.clear();
     descController = QuillController.basic();
     isLoading.value = false;
     activeStatus.value = true;
@@ -79,10 +137,7 @@ class AuthorController extends GetxController
     }
   }
 
-
   removeAllField(BuildContext context) {
-    nameController.text = "";
-    designationController.text = "";
     imageController.text = "";
   }
 

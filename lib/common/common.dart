@@ -1,5 +1,3 @@
-
-
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +15,6 @@ import 'package:gslibrarydashboard/utils/responsive.dart';
 
 import 'package:html_unescape/html_unescape.dart';
 import 'package:vsc_quill_delta_to_html/vsc_quill_delta_to_html.dart';
-
-
 
 Widget getVerticalSpace(BuildContext context, double value) {
   if (Responsive.isTablet(context)) {
@@ -66,17 +62,18 @@ Widget getMaxLineFont(BuildContext context, String text, double fontSize,
         fontStyle: FontStyle.normal,
         color: fontColor,
         fontFamily: customFont == null ? Constants.fontsFamily : customFont,
-        fontWeight: fontWeight,height: txtHeight),
+        fontWeight: fontWeight,
+        height: txtHeight),
     maxLines: maxLine,
     softWrap: true,
     textAlign: textAlign,
   );
 }
 
-separatorBuilder(BuildContext context,{RxString? queryText, String? value}) {
+separatorBuilder(BuildContext context, {RxString? queryText, String? value}) {
   bool cell = true;
 
-  if (queryText != null &&value !=null) {
+  if (queryText != null && value != null) {
     if (queryText.value.isNotEmpty && !value.contains(queryText.value)) {
       cell = false;
     }
@@ -182,12 +179,11 @@ getCommonDialog(
   });
 }
 
-
 Widget getSvgImage(String image,
     {double? width,
-      double? height,
-      Color? color,
-      BoxFit boxFit = BoxFit.contain}) {
+    double? height,
+    Color? color,
+    BoxFit boxFit = BoxFit.contain}) {
   return SvgPicture.asset(
     Constants.assetPath + image,
     // ignore: deprecated_member_use
@@ -198,12 +194,11 @@ Widget getSvgImage(String image,
   );
 }
 
-
 Widget getSvgImage1(String image,
     {double? width,
-      double? height,
-      Color? color,
-      BoxFit boxFit = BoxFit.contain}) {
+    double? height,
+    Color? color,
+    BoxFit boxFit = BoxFit.contain}) {
   return SvgPicture.asset(
     Constants.assetSvgPath + image,
     // ignore: deprecated_member_use
@@ -215,12 +210,12 @@ Widget getSvgImage1(String image,
 }
 
 Widget getCustomFont(String text, double fontSize, Color fontColor, int maxLine,
-    {String? fontFamily ,
-      TextOverflow overflow = TextOverflow.ellipsis,
-      TextDecoration decoration = TextDecoration.none,
-      FontWeight fontWeight = FontWeight.normal,
-      TextAlign textAlign = TextAlign.start,
-      txtHeight}) {
+    {String? fontFamily,
+    TextOverflow overflow = TextOverflow.ellipsis,
+    TextDecoration decoration = TextDecoration.none,
+    FontWeight fontWeight = FontWeight.normal,
+    TextAlign textAlign = TextAlign.start,
+    txtHeight}) {
   return Text(
     text,
     overflow: overflow,
@@ -250,15 +245,13 @@ Widget getHorSpace(double horSpace) {
   );
 }
 
-
-
 Widget getMultilineCustomFont(String text, double fontSize, Color fontColor,
     {TextOverflow overflow = TextOverflow.ellipsis,
-      TextDecoration decoration = TextDecoration.none,
-      FontWeight fontWeight = FontWeight.normal,
-      TextAlign textAlign = TextAlign.start,
-      txtHeight = 1.0,
-      String? fontFamily}) {
+    TextDecoration decoration = TextDecoration.none,
+    FontWeight fontWeight = FontWeight.normal,
+    TextAlign textAlign = TextAlign.start,
+    txtHeight = 1.0,
+    String? fontFamily}) {
   return Text(
     text,
     style: TextStyle(
@@ -273,14 +266,13 @@ Widget getMultilineCustomFont(String text, double fontSize, Color fontColor,
   );
 }
 
-
 Widget getTextFiledWidget(
     BuildContext context, String s, TextEditingController textEditingController,
     {bool? isEnabled,
     var inputType,
     var inputFormatters,
     var onChanged,
-      Function? function,
+    Function? function,
     Widget? child}) {
   double height = 45.h;
 
@@ -290,7 +282,7 @@ Widget getTextFiledWidget(
 
   // double radius = (Responsive.isMobile(context))?30.r:12.r;
   double radius = getDefaultRadius(context);
-  double fontSize = getResizeFont(context, 40);
+  double fontSize = getResizeFont(context, 50);
 
   Widget textFiled = TextFormField(
     maxLines: 1,
@@ -308,27 +300,26 @@ Widget getTextFiledWidget(
         fontWeight: FontWeight.w400,
         fontSize: fontSize),
     decoration: InputDecoration(
-        contentPadding: EdgeInsets.only(left: 10.h,),
+        contentPadding: EdgeInsets.only(
+          left: 10.h,
+        ),
         border: InputBorder.none,
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(radius)),
-          borderSide: BorderSide(
-            color: getPrimaryColor(context),
-          )
-        ),
+            borderRadius: BorderRadius.all(Radius.circular(radius)),
+            borderSide: BorderSide(
+              color: getPrimaryColor(context),
+            )),
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(radius)),
             borderSide: BorderSide(
               color: borderColor,
-            )
-        ),
+            )),
         errorBorder: InputBorder.none,
         disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(radius)),
             borderSide: BorderSide(
               color: borderColor,
-            )
-        ),
+            )),
         // suffixIcon: (child != null)?InkWell(
         //   onTap: (){
         //     if(function != null){
@@ -371,23 +362,25 @@ Widget getTextFiledWidget(
   // );
 
   return child == null
-        ? textFiled
-        : Row(
-            children: [Expanded(child: textFiled), Container(height: height,child: child)],
-          );
-
+      ? textFiled
+      : Row(
+          children: [
+            Expanded(
+              child: textFiled,
+              flex: 2,
+            ),
+            Expanded(child: Container(height: height, child: child))
+          ],
+        );
 }
 
 Widget getMessageTextFiledWidget(
     BuildContext context, String s, TextEditingController textEditingController,
     {bool? isEnabled,
-      var inputType,
-      var inputFormatters,
-      var onChanged,
-      Widget? child}) {
-
-
-
+    var inputType,
+    var inputFormatters,
+    var onChanged,
+    Widget? child}) {
   double radius = 12.r;
   // double radius = getDefaultRadius(context);
   double fontSize = getResizeFont(context, 40);
@@ -406,29 +399,25 @@ Widget getMessageTextFiledWidget(
         color: getFontColor(context),
         fontWeight: FontWeight.w400,
         fontSize: fontSize),
-
     decoration: InputDecoration(
-        contentPadding: EdgeInsets.only(left: 10.h,top: 25.h),
+        contentPadding: EdgeInsets.only(left: 10.h, top: 25.h),
         border: InputBorder.none,
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(radius)),
             borderSide: BorderSide(
               color: getPrimaryColor(context),
-            )
-        ),
+            )),
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(radius)),
             borderSide: BorderSide(
               color: borderColor,
-            )
-        ),
+            )),
         errorBorder: InputBorder.none,
         disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(radius)),
             borderSide: BorderSide(
               color: borderColor,
-            )
-        ),
+            )),
         // suffixIcon: (child != null)?InkWell(
         //   onTap: (){
         //     if(function != null){
@@ -458,21 +447,15 @@ Widget getMessageTextFiledWidget(
   return child == null
       ? textFiled
       : Row(
-    children: [Expanded(child: textFiled), child],
-  );
+          children: [Expanded(child: textFiled), child],
+        );
 }
 
 String removeAllHtmlTags(String htmlText) {
-  RegExp exp = RegExp(
-      r"<[^>]*>",
-      multiLine: true,
-      caseSensitive: true
-  );
+  RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
 
   return htmlText.replaceAll(exp, '');
 }
-
-
 
 Widget getDisableDropDownWidget(BuildContext context, String s,
     {bool? isEnabled,
@@ -486,7 +469,7 @@ Widget getDisableDropDownWidget(BuildContext context, String s,
     height = 55.h;
   }
 
-  double radius = (Responsive.isMobile(context))?30.r:12.r;
+  double radius = (Responsive.isMobile(context)) ? 30.r : 12.r;
   // double radius = getDefaultRadius(context);
   double fontSize = getResizeFont(context, 40);
   Widget textFiled = TextFormField(
@@ -535,7 +518,8 @@ Widget getDisableDropDownWidget(BuildContext context, String s,
       children: [
         Expanded(child: textFiled),
         imageAsset('down.png',
-            height: 10.h, width: 10.h, color: getFontColor(context)).paddingSymmetric(horizontal: 10.h),
+                height: 10.h, width: 10.h, color: getFontColor(context))
+            .paddingSymmetric(horizontal: 10.h),
         // getHorizontalSpace(context, 5)
       ],
     ),
@@ -607,13 +591,9 @@ bool isNotEmpty(String s) {
   return (s.isNotEmpty);
 }
 
-
 bool isEmpty(String s) {
   return (s.isEmpty);
 }
-
-
-
 
 String decode(String codeUnits) {
   var unescape = HtmlUnescape();
@@ -632,11 +612,9 @@ String decode(String codeUnits) {
 
 bool isValidEmail(String email) {
   return RegExp(
-      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
       .hasMatch(email);
 }
-
-
 
 Widget getSearchTextFiledWidget(
   BuildContext context,
@@ -659,7 +637,6 @@ Widget getSearchTextFiledWidget(
       bgColor: getReportColor(context),
     ),
     child: Row(
-
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -758,9 +735,11 @@ getDefaultButtonSize(BuildContext context) {
 }
 
 getDefaultRadius(BuildContext context) {
-
-
-  if(Responsive.isMobile(context)){return 30.r;}else{return 12.r;}
+  if (Responsive.isMobile(context)) {
+    return 30.r;
+  } else {
+    return 12.r;
+  }
   // if (Responsive.isDesktop(context)) {
   //   return 5.r;
   // } else if (Responsive.isTablet(context)) {
@@ -830,7 +809,6 @@ Widget getButtonWidget(BuildContext context, String s, Function function,
     double? verticalSpace,
     Color? bgColor,
     bool? isProgress,
-    LoginController?loginController,
     Color? textColor,
     double? btnHeight,
     double? horPadding,
@@ -887,7 +865,7 @@ Widget getButtonWidget(BuildContext context, String s, Function function,
             },
             child: Container(
               alignment: Alignment.center,
-              child: loginController?.state is LoginLoading
+              child: isProgress!
                   ? getProgressDialog(context,
                       color: Colors.white,
                       backgroundColor: Colors.transparent,
@@ -901,7 +879,7 @@ Widget getButtonWidget(BuildContext context, String s, Function function,
                             ? Container()
                             : getTextWidget(context, s, fontSize,
                                 textColor == null ? Colors.white : textColor,
-                                fontWeight: FontWeight.w600,customFont: ""),
+                                fontWeight: FontWeight.w600, customFont: ""),
                         getHorizontalSpace(context, icon == null ? 0 : 15),
                         icon == null
                             ? Container()
@@ -939,7 +917,6 @@ Widget getPasswordTextFiledWidget(
   // double radius = getDefaultRadius(context);
   double fontSize = getResizeFont(context, 45);
 
-
   RxBool isSecure = true.obs;
 
   return Container(
@@ -951,68 +928,70 @@ Widget getPasswordTextFiledWidget(
         borderColor: getBorderColor(context),
         borderWidth: 1),
     child: Obx(() => TextFormField(
-      maxLines: 1,
-      onTap: () {
-        // if (onTapFunction != null) {
-        //   onTapFunction();
-        // }
-      },
-      enabled: (isEnabled != null) ? isEnabled : true,
-      onFieldSubmitted: (onSubmit != null) ? onSubmit : null,
-
-      controller: textEditingController,
-      obscureText: isSecure.value,
-      textAlign: TextAlign.start,
-      textAlignVertical: TextAlignVertical.center,
-      keyboardType: (inputType != null) ? inputType : null,
-      inputFormatters: (inputFormatters != null) ? inputFormatters : null,
-      onChanged: (onChanged != null) ? onChanged : null,
-      style: TextStyle(
-          color: getFontColor(context),
-          fontFamily: Constants.fontsFamily,
-          fontWeight: FontWeight.w400,
-          fontSize: fontSize),
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(left: 22.w),
-          border: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          enabledBorder: InputBorder.none,
-          errorBorder: InputBorder.none,
-          disabledBorder: InputBorder.none,
-          hintText: s,
-          isDense: true,
-          suffixIcon: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              GestureDetector(
-                  onTap: (){
-
-                    (isSecure.value)?isSecure.value = false:isSecure.value = true;
-
-                  },
-                  child: Center(child: Obx(() => imageAsset((isSecure.value)?"hide.png":"view.png", height: 18.h, width: 18.h,color: Colors.grey.shade500)))),
-            ],
-          ),
-          hintStyle: TextStyle(
+          maxLines: 1,
+          onTap: () {
+            // if (onTapFunction != null) {
+            //   onTapFunction();
+            // }
+          },
+          enabled: (isEnabled != null) ? isEnabled : true,
+          onFieldSubmitted: (onSubmit != null) ? onSubmit : null,
+          controller: textEditingController,
+          obscureText: isSecure.value,
+          textAlign: TextAlign.start,
+          textAlignVertical: TextAlignVertical.center,
+          keyboardType: (inputType != null) ? inputType : null,
+          inputFormatters: (inputFormatters != null) ? inputFormatters : null,
+          onChanged: (onChanged != null) ? onChanged : null,
+          style: TextStyle(
+              color: getFontColor(context),
               fontFamily: Constants.fontsFamily,
-              color: getSubFontColor(context),
               fontWeight: FontWeight.w400,
-              fontSize: fontSize)),
-    )),
+              fontSize: fontSize),
+          decoration: InputDecoration(
+              contentPadding: EdgeInsets.only(left: 22.w),
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              hintText: s,
+              isDense: true,
+              suffixIcon: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GestureDetector(
+                      onTap: () {
+                        (isSecure.value)
+                            ? isSecure.value = false
+                            : isSecure.value = true;
+                      },
+                      child: Center(
+                          child: Obx(() => imageAsset(
+                              (isSecure.value) ? "hide.png" : "view.png",
+                              height: 18.h,
+                              width: 18.h,
+                              color: Colors.grey.shade500)))),
+                ],
+              ),
+              hintStyle: TextStyle(
+                  fontFamily: Constants.fontsFamily,
+                  color: getSubFontColor(context),
+                  fontWeight: FontWeight.w400,
+                  fontSize: fontSize)),
+        )),
   );
 }
 
-
-
 Widget getDefaultTextFiledWidget(
-    BuildContext context,
-    String s,
-    TextEditingController textEditingController, {
-      bool? isEnabled,
-      var inputType,
-      var inputFormatters,
-      var onChanged,
-    }) {
+  BuildContext context,
+  String s,
+  TextEditingController textEditingController, {
+  bool? isEnabled,
+  var inputType,
+  var inputFormatters,
+  var onChanged,
+}) {
   double height = getDefaultButtonSize(context);
   double radius = 12.r;
   // double radius = getDefaultRadius(context);
@@ -1042,10 +1021,8 @@ Widget getDefaultTextFiledWidget(
           fontWeight: FontWeight.w400,
           fontSize: fontSize),
       decoration: InputDecoration(
-        prefixIconConstraints: BoxConstraints(
-          maxHeight: height,
-          minHeight: height
-        ),
+          prefixIconConstraints:
+              BoxConstraints(maxHeight: height, minHeight: height),
           prefixIcon: SizedBox(
             height: height,
             width: 22.w,
@@ -1080,14 +1057,13 @@ showCustomToast(
       fontSize: getResizeFont(context, 50));
 }
 
-
 bool hasValidUrl(String value) {
-  String pattern = r'(http|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?';
+  String pattern =
+      r'(http|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?';
   RegExp regExp = new RegExp(pattern);
   // if (value.length == 0) {
   //   return 'Please enter url';
   // }
-
 
   print("hasMatch============${regExp.hasMatch(value)}");
   if (!regExp.hasMatch(value)) {
@@ -1195,7 +1171,6 @@ getSideDecoration(
       side: BorderSide(
           color: (borderColor == null) ? Colors.transparent : borderColor,
           width: (borderWidth == null) ? 1 : borderWidth),
-
       borderRadius: SmoothBorderRadius.only(
         topLeft: SmoothRadius(
           cornerRadius: topLeft == null ? 0 : radius,
@@ -1214,65 +1189,47 @@ getSideDecoration(
           cornerSmoothing: 0.8,
         ),
       ),
-
-
     ),
   );
 }
 
-
-
-String deltaToHtml(List<dynamic> desc){
-
+String deltaToHtml(List<dynamic> desc) {
   try {
     final deltaJson = desc;
 
     final converter = QuillDeltaToHtmlConverter(
-        List.castFrom(deltaJson),
-        ConverterOptions.forEmail()
-    );
+        List.castFrom(deltaJson), ConverterOptions.forEmail());
 
     print("delta--------------${converter.convert()}");
 
-
     return converter.convert();
-
   } catch (e, s) {
-
-
     print("eroor-----------${e}-----------_${s}");
 
     return "";
   }
-
-
 }
-
-
-
 
 getNoData(BuildContext context) {
   return getTextWidget(context, 'No data', 50, getFontColor(context),
       fontWeight: FontWeight.w500);
 }
 
-
 getCommonBackIcon(BuildContext context, {Function? onTap}) {
   return Align(
     alignment: Alignment.centerLeft,
     child: InkWell(
-      onTap: (){
-        if(onTap != null){
-          onTap();
-        }
-      },
+        onTap: () {
+          if (onTap != null) {
+            onTap();
+          }
+        },
         child: getSvgImage("arrow_left.svg",
             height: 24.h, width: 24.h, color: getFontColor(context))),
   );
 }
 
-
-getCommonChooseFileBtn(BuildContext context,Function function){
+getCommonChooseFileBtn(BuildContext context, Function function) {
   return InkWell(
     onTap: () {
       function();
@@ -1282,8 +1239,7 @@ getCommonChooseFileBtn(BuildContext context,Function function){
       alignment: Alignment.center,
       margin: EdgeInsets.only(left: 7.h),
       // margin: EdgeInsets.all(7.h),
-      padding: EdgeInsets.symmetric(
-          horizontal: 5.h, vertical: 5.h),
+      padding: EdgeInsets.symmetric(horizontal: 5.h, vertical: 5.h),
       decoration: getDefaultDecoration(
           bgColor: getReportColor(context),
           // bgColor: borderColor,

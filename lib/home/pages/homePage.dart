@@ -5,12 +5,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/features/auth/auth/controller/authController.dart';
+import 'package:gslibrarydashboard/features/auth/auth/states/authState.dart';
+import 'package:gslibrarydashboard/features/author/controllers/authorController.dart';
 import 'package:gslibrarydashboard/features/author/screens/addAuthorPage.dart';
 import 'package:gslibrarydashboard/features/author/screens/authorPage.dart';
 import 'package:gslibrarydashboard/features/books/pages/bookPage.dart';
+import 'package:gslibrarydashboard/features/categories/controller/categoryController.dart';
 import 'package:gslibrarydashboard/features/categories/screens/addCategoryPage.dart';
 import 'package:gslibrarydashboard/features/categories/screens/categoryPage.dart';
 import 'package:gslibrarydashboard/home/controller/homeController.dart';
+import 'package:gslibrarydashboard/home/services/baseService.dart';
 import 'package:gslibrarydashboard/main.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
@@ -27,7 +31,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final HomeController homeController = Get.put(HomeController());
+  final AuthorController authorController = Get.put(AuthorController());
+  final CategoryController categoryController = Get.put(CategoryController());
+
   final ThemeController themeController = Get.find();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,6 +158,7 @@ class _HomePageState extends State<HomePage> {
             AdminMenuItem(
               title: 'Categories',
               icon: Icons.category,
+              route: '/HomePage',
               children: [
                 AdminMenuItem(
                   title: 'Liste des categories',
@@ -187,16 +200,14 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ],
-          selectedRoute: homeController.selectedItem!.value,
+          selectedRoute: homeController.selectedItem!.value.route!,
           onSelected: (item) {
-            setState(() {
-              homeController.selectedItem!.value = item.route!;
-            });
+            homeController.selectedItem!.value = item;
           },
         ),
         body: Obx(
           () {
-            switch (homeController.selectedItem!.value) {
+            switch (homeController.selectedItem!.value.route) {
               case '/HomePage':
                 return SingleChildScrollView(
                   child: Container(

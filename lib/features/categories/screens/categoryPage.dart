@@ -1,17 +1,16 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/features/categories/controller/categoryController.dart';
 import 'package:gslibrarydashboard/features/categories/models/categoryModel.dart';
 import 'package:gslibrarydashboard/features/categories/screens/entries_drop_down.dart';
+import 'package:gslibrarydashboard/home/controller/homeController.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/theme/theme_controller.dart';
 
 class CategoryScreen extends StatefulWidget {
- 
-
   CategoryScreen();
 
   @override
@@ -19,7 +18,8 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  final CategoryController categoryController = Get.put(CategoryController());
+  final CategoryController categoryController = Get.find();
+  final HomeController homeController = Get.find();
 
   @override
   void initState() {
@@ -39,6 +39,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController textEditingController = TextEditingController();
+
     RxString queryText = ''.obs;
 
     return SafeArea(
@@ -83,17 +84,22 @@ class _CategoryScreenState extends State<CategoryScreen> {
                               queryText(value);
                             })),
                             getHorizontalSpace(context, 15),
-                            getButtonWidget(
+                            /*   getButtonWidget(
                               context,
                               'Add New Category',
                               () {
-                                
+                                /* homeController.selectedItem!.value =
+                                    AdminMenuItem(
+                                  title: 'Ajouter une categorie',
+                                  icon: Icons.add,
+                                  route: '/HomePage/categories/add',
+                                ); */
                               },
                               horPadding: 25.h,
                               horizontalSpace: 0,
                               verticalSpace: 0,
                               btnHeight: 42.h,
-                            )
+                            ) */
                           ],
                         ),
                         isWeb(context)
@@ -106,15 +112,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         categoryController.obx(
                           (state) => Obx(() {
                             double i = state!.length / 10;
-    
+
                             int d = state.length -
                                 (totalItem.value * i.toInt()).toInt();
-    
+
                             if (d > 0) {
                               i = i + 1;
                             }
                             List<CategoryModel> paginationList = [];
-    
+
                             paginationList = state
                                 .skip(position.value * totalItem.value)
                                 .take(totalItem.value)
@@ -184,7 +190,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                     separatorBuilder: (context, index) {
                                       return Obx(() {
                                         bool cell = true;
-    
+
                                         if (queryText.value.isNotEmpty &&
                                             paginationList[index]
                                                 .name!
@@ -193,7 +199,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                     .toLowerCase())) {
                                           cell = false;
                                         }
-    
+
                                         return cell
                                             ? separatorBuilder(context,
                                                 value:
@@ -205,7 +211,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                     itemBuilder: (context, index) {
                                       return Obx(() {
                                         bool cell = true;
-    
+
                                         if (queryText.value.isNotEmpty &&
                                             !paginationList[index]
                                                 .name!
@@ -314,18 +320,40 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                                       _storePosition,
                                                                   onTap: () {
                                                                     _showPopupMenu(
-                                                                        context,
-                                                                        onTapDelete:
-                                                                            () {
-                                                                      getCommonDialog(
-                                                                                context: context,
-                                                                                title: 'Do you want to delete this category?',
-                                                                                function: () async {},
-                                                                                subTitle: 'Delete');
-                                                                    }, onTapEdit:
-                                                                            () {
-                                                                 
-                                                                    });
+                                                                      context,
+                                                                      onTapDelete:
+                                                                          () {
+                                                                        getCommonDialog(
+                                                                            context:
+                                                                                context,
+                                                                            title:
+                                                                                'Do you want to delete this category?',
+                                                                            function:
+                                                                                () async {},
+                                                                            subTitle:
+                                                                                'Delete');
+                                                                      },
+                                                                      onTapEdit:
+                                                                          () {
+                                                                        homeController
+                                                                            .selectedItem!
+                                                                            .value = AdminMenuItem(
+                                                                          title:
+                                                                              'Ajouter une categorie',
+                                                                          icon:
+                                                                              Icons.add,
+                                                                          route:
+                                                                              '/HomePage/categories/add',
+                                                                        );
+                                                                        categoryController
+                                                                            .nameController
+                                                                            .text = paginationList[
+                                                                                index]
+                                                                            .name!;
+                                                                        categoryController.categoryModel =
+                                                                            paginationList[index];
+                                                                      },
+                                                                    );
                                                                   },
                                                                   child: Icon(
                                                                     Icons
@@ -348,7 +376,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                   Container(
                                     // height: 55.h,
                                     width: double.infinity,
-    
+
                                     child: Center(
                                       child: Row(
                                         mainAxisAlignment:
@@ -371,7 +399,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                               height: 20.h,
                                               width: 20.h,
                                             ),
-    
+
                                             // child: Icon(
                                             //   Icons.chevron_left,
                                             //   color: subPrimaryColor(context),
@@ -396,7 +424,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                                         5.h),
                                                             height: 35.h,
                                                             width: 35.h,
-    
+
                                                             decoration: getDefaultDecoration(
                                                                 bgColor: position
                                                                             .value ==
@@ -453,7 +481,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                               1;
                                                     } */
                                             },
-    
+
                                             child: getSvgImage1(
                                               'right.svg',
                                               height: 18.h,

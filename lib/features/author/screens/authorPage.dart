@@ -27,7 +27,7 @@ class _AuthorScreenState extends State<AuthorScreen> {
   RxInt totalItem = 10.obs;
 
   final ScrollController _controller = ScrollController();
-  final AuthorController authorController = Get.put(AuthorController());
+  final AuthorController authorController = Get.find();
 
   @override
   void initState() {
@@ -79,7 +79,7 @@ class _AuthorScreenState extends State<AuthorScreen> {
                             queryText(value);
                           })),
                           getHorizontalSpace(context, 15),
-                          getButtonWidget(
+                       /*    getButtonWidget(
                             context,
                             'Add New Author',
                             () {
@@ -89,7 +89,7 @@ class _AuthorScreenState extends State<AuthorScreen> {
                             horizontalSpace: 0,
                             verticalSpace: 0,
                             btnHeight: 42.h,
-                          )
+                          )  */
                         ],
                       ),
                       isWeb(context)

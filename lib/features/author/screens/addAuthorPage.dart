@@ -24,7 +24,7 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
   final AuthorController authorController = Get.find();
   @override
   Widget build(BuildContext context) {
-    bool isEdit = widget.authorModel != null;
+    bool isEdit = authorController.authorModel != null;
     return SafeArea(
       child: Container(
           margin: EdgeInsets.symmetric(
@@ -65,59 +65,43 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      itemSubTitle('Name', context),
-                                      getVerticalSpace(context, 10),
-                                      getTextFiledWidget(context, "Enter name",
-                                          authorController.nameController),
-                                      getVerticalSpace(context, 30),
-                                      itemSubTitle('Designation', context),
+                                      itemSubTitle('Nom de l\'auteur', context),
                                       getVerticalSpace(context, 10),
                                       getTextFiledWidget(
                                           context,
-                                          "Enter designation",
-                                          authorController
-                                              .designationController),
-
+                                          "Entrer le nom",
+                                          authorController.firstname),
                                       getVerticalSpace(context, 30),
-                                      itemSubTitle('Adresse', context),
-                                      getVerticalSpace(context, 10),
-                                      getTextFiledWidget(
-                                          context,
-                                          "Enter facebook url",
-                                          authorController.facebookController),
-                                      getVerticalSpace(context, 30),
+                                      //Prenom
                                       itemSubTitle(
-                                          'Instagram URL (optional)', context),
+                                          'Prenom de l\'auteur', context),
                                       getVerticalSpace(context, 10),
                                       getTextFiledWidget(
                                           context,
-                                          "Enter instagram url",
-                                          authorController.instagramController),
+                                          "Entrer le prenom",
+                                          authorController.lastname),
                                       getVerticalSpace(context, 30),
+                                      //Telephone
                                       itemSubTitle(
-                                          'Twitter URL (optional)', context),
+                                          'telephone de l\'auteur', context),
                                       getVerticalSpace(context, 10),
                                       getTextFiledWidget(
                                           context,
-                                          "Enter twitter url",
-                                          authorController.twitterController),
+                                          "Numero de telephone",
+                                          authorController.phonenumber),
+                                      getVerticalSpace(context, 10),
+                                      //email
+                                      getTextFiledWidget(
+                                          context,
+                                          "Entrer l'adresse mail",
+                                          authorController.email),
                                       getVerticalSpace(context, 30),
+                                      //Designation
                                       itemSubTitle(
-                                          'Youtube URL (optional)', context),
+                                          'Designation de l\'auteur', context),
                                       getVerticalSpace(context, 10),
-                                      getTextFiledWidget(
-                                          context,
-                                          "Enter youtube url",
-                                          authorController.youTubeController),
-
-                                      getVerticalSpace(context, 30),
-                                      itemSubTitle(
-                                          'Website URL (optional)', context),
-                                      getVerticalSpace(context, 10),
-                                      getTextFiledWidget(
-                                          context,
-                                          "Enter website url",
-                                          authorController.twitterController),
+                                      getTextFiledWidget(context, "Designation",
+                                          authorController.designation),
                                       getVerticalSpace(context, 30),
                                       itemSubTitle('Status', context),
                                       getVerticalSpace(context, 10),
@@ -174,21 +158,12 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                                       .circular((getResizeRadius(
                                                           context,
                                                           35))), //add border radius
-                                                  child: (authorController
-                                                          .isSvg)
-                                                      ? Image.asset(
-                                                          Constants.placeImage,
-                                                          height: 100.h,
-                                                          width: 100.h,
-                                                          fit: BoxFit.contain,
-                                                        )
-                                                      : Image.memory(
-                                                          authorController
-                                                              .webImage,
-                                                          height: 100.h,
-                                                          width: 100.h,
-                                                          fit: BoxFit.contain,
-                                                        ),
+                                                  child: Image.memory(
+                                                    authorController.webImage,
+                                                    height: 100.h,
+                                                    width: 100.h,
+                                                    fit: BoxFit.contain,
+                                                  ),
                                                 )
                                               : isEdit
                                                   ? ClipRRect(
@@ -230,8 +205,7 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                               getTextFiledWidget(
                                                   context,
                                                   "Entrer le nom",
-                                                  authorController
-                                                      .nameController),
+                                                  authorController.firstname),
                                             ],
                                           )),
                                           getHorizontalSpace(context, 10),
@@ -247,8 +221,7 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                               getTextFiledWidget(
                                                   context,
                                                   "Entrer le prenom",
-                                                  authorController
-                                                      .designationController),
+                                                  authorController.lastname),
                                             ],
                                           )),
                                         ],
@@ -270,8 +243,7 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                               getTextFiledWidget(
                                                   context,
                                                   "adresse mail",
-                                                  authorController
-                                                      .facebookController),
+                                                  authorController.email),
                                             ],
                                           )),
                                           getHorizontalSpace(context, 10),
@@ -286,8 +258,7 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                               getTextFiledWidget(
                                                   context,
                                                   "Numero de telephone",
-                                                  authorController
-                                                      .instagramController),
+                                                  authorController.phonenumber),
                                             ],
                                           )),
                                         ],
@@ -309,8 +280,22 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                               getTextFiledWidget(
                                                   context,
                                                   "Designation",
-                                                  authorController
-                                                      .designationController),
+                                                  authorController.designation),
+                                            ],
+                                          )),
+                                          getHorizontalSpace(context, 10),
+                                          Expanded(
+                                              child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              itemSubTitle(
+                                                  'Mot de passe', context),
+                                              getVerticalSpace(context, 10),
+                                              getTextFiledWidget(
+                                                  context,
+                                                  "mot de passe",
+                                                  authorController.password),
                                             ],
                                           )),
                                           getHorizontalSpace(context, 10),
@@ -381,8 +366,7 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                                             QuillSimpleToolbarButtonOptions(
                                                           base:
                                                               QuillToolbarBaseButtonOptions(
-                                                            globalIconSize:
-                                                                20,
+                                                            globalIconSize: 20,
                                                             globalIconButtonFactor:
                                                                 1.4,
                                                           ),
@@ -395,10 +379,8 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                                         child: Row(
                                                           children: [
                                                             IconButton(
-                                                              onPressed:
-                                                                  () {},
-                                                              icon:
-                                                                  const Icon(
+                                                              onPressed: () {},
+                                                              icon: const Icon(
                                                                 Icons
                                                                     .width_normal,
                                                               ),
@@ -476,16 +458,14 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                                                   authorController
                                                                       .controller,
                                                               attribute:
-                                                                  Attribute
-                                                                      .ol,
+                                                                  Attribute.ol,
                                                             ),
                                                             QuillToolbarToggleStyleButton(
                                                               controller:
                                                                   authorController
                                                                       .controller,
                                                               attribute:
-                                                                  Attribute
-                                                                      .ul,
+                                                                  Attribute.ul,
                                                             ),
                                                             QuillToolbarToggleStyleButton(
                                                               controller:
@@ -505,15 +485,13 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                                               controller:
                                                                   authorController
                                                                       .controller,
-                                                              isIncrease:
-                                                                  true,
+                                                              isIncrease: true,
                                                             ),
                                                             QuillToolbarIndentButton(
                                                               controller:
                                                                   authorController
                                                                       .controller,
-                                                              isIncrease:
-                                                                  false,
+                                                              isIncrease: false,
                                                             ),
                                                             const VerticalDivider(),
                                                             QuillToolbarLinkStyleButton(
@@ -616,26 +594,17 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                                                 (getResizeRadius(
                                                                     context,
                                                                     35))), //add border radius
-                                                        child: (authorController
-                                                                .isSvg)
-                                                            ? Image.asset(
-                                                                Constants
-                                                                    .placeImage,
-                                                                height: 100.h,
-                                                                width: 100.h,
-                                                                fit: BoxFit
-                                                                    .contain,
-                                                              )
-                                                            : Image.memory(
-                                                                authorController
-                                                                    .webImage,
-                                                                height: 100.h,
-                                                                width: 100.h,
-                                                                fit: BoxFit
-                                                                    .contain,
-                                                              ),
+                                                        child: Image.memory(
+                                                          authorController
+                                                              .webImage,
+                                                          height: 100.h,
+                                                          width: 100.h,
+                                                          fit: BoxFit.contain,
+                                                        ),
                                                       )
-                                                    : isEdit
+                                                    : authorController
+                                                                .authorModel !=
+                                                            null
                                                         ? ClipRRect(
                                                             borderRadius:
                                                                 BorderRadius.circular(
@@ -680,7 +649,10 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                 isProgress: authorController.isLoading.value,
                                 () {
                                   if (isEdit) {
-                                  } else {}
+                                    authorController.updateCategory();
+                                  } else {
+                                    authorController.addCategory();
+                                  }
                                 },
                                 horPadding: 25.h,
                                 horizontalSpace: 0,

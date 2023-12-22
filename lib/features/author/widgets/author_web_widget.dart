@@ -96,11 +96,11 @@ class AuthorWebWidget extends StatelessWidget{
                                         ),
                                       ),
                                       getHeaderCell(
-                                          '${list[index].firstname}',
+                                          '${list[index].firstname??""}',
                                           context,
                                           130),
                                       getHeaderCell(
-                                          '${list[index].designation}',
+                                          '${list[index].designation??""}',
                                           context,
                                           150),
                                       getHorSpace(10.h),

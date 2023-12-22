@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -9,20 +8,17 @@ import 'package:gslibrarydashboard/features/categories/models/categoryModel.dart
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/utils/constants.dart';
 
-
-
 class AddCategoryScreen extends StatefulWidget {
-
   final CategoryModel? categoryModel;
 
-  AddCategoryScreen({ this.categoryModel});
+  AddCategoryScreen({this.categoryModel});
 
   @override
   State<AddCategoryScreen> createState() => _AddCategoryScreenState();
 }
 
 class _AddCategoryScreenState extends State<AddCategoryScreen> {
-  final CategoryController categoryController = Get.put(CategoryController());
+  final CategoryController categoryController = Get.find();
   @override
   void initState() {
     super.initState();
@@ -30,9 +26,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-
-    bool isEdit = widget.categoryModel != null;
+    bool isEdit = categoryController.categoryModel != null;
 
     return SafeArea(
       child: Container(
@@ -51,18 +45,14 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                 context: context,
                 verSpace: 0,
                 horSpace: isWeb(context) ? null : 15.h,
-    
                 child: ListView(
                   // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     getVerticalSpace(context, 30),
                     getCommonBackIcon(context, onTap: () {
-                     // changeAction(actionCategories);
+                      // changeAction(actionCategories);
                     }),
-
                     getVerticalSpace(context, 30),
-                  
-
                     Container(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +74,6 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                       ),
                     ),
                     getVerticalSpace(context, 35),
-
                     Align(
                       alignment: Alignment.topLeft,
                       child: Obx(() {
@@ -93,37 +82,21 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                                 borderRadius: BorderRadius.circular(
                                     (getResizeRadius(
                                         context, 35))), //add border radius
-                                child: (categoryController.isSvg)
-                                    ? Image.asset(
-                                        Constants.placeImage,
-                                        height: 200.h,
-                                        width: 300.h,
-                                        fit: BoxFit.contain,
-                                      )
-                                    : Image.memory(
+                                child: Image.memory(
                                         categoryController.webImage,
                                         height: 200.h,
                                         width: 300.h,
                                         fit: BoxFit.contain,
                                       ),
                               )
-                            : isEdit
+                            : categoryController.categoryModel!=null
                                 ? ClipRRect(
                                     borderRadius: BorderRadius.circular(
                                         (getResizeRadius(
                                             context, 35))), //add border radius
-                                    child: (widget.categoryModel!.avatar!.url!
-                                            .split(".")
-                                            .last
-                                            .startsWith("svg"))
-                                        ? Image.asset(
-                                            Constants.placeImage,
-                                            height: 200.h,
-                                            width: 300.h,
-                                            fit: BoxFit.contain,
-                                          )
-                                        : Image.network(
-                                            widget.categoryModel!.avatar!.url!,
+                                    child:  Image.network(
+                                            categoryController
+                                                .categoryModel!.avatar!.url!,
                                             height: 200.h,
                                             width: 300.h,
                                             fit: BoxFit.contain,
@@ -132,7 +105,6 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                                 : Container();
                       }),
                     ),
-
                     Obx(() =>
                         (categoryController.isImageOffline.value || isEdit)
                             ? getVerticalSpace(context, 20)
@@ -145,9 +117,10 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                               isProgress: categoryController.isLoading.value,
                               () {
                                 if (isEdit) {
-                                 
+                                  categoryController.updateCategory(
+                                      model: categoryController.categoryModel);
                                 } else {
-                                
+                                  categoryController.addCategory();
                                 }
                               },
                               horPadding: 25.h,
@@ -171,7 +144,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
     return getTextWidget(
       context,
       s,
-      45,
+      50,
       getFontColor(context),
       fontWeight: FontWeight.w500,
     );

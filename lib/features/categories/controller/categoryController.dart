@@ -1,11 +1,12 @@
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/exceptions/appException.dart';
 import 'package:gslibrarydashboard/features/categories/models/categoryModel.dart';
 import 'package:gslibrarydashboard/features/categories/services/categoryService.dart';
 import 'package:image_picker/image_picker.dart';
-
 
 class CategoryController extends GetxController
     with StateMixin<List<CategoryModel>> {
@@ -23,6 +24,9 @@ class CategoryController extends GetxController
   String oldCategory = '';
 
   CategoryController({this.categoryModel});
+
+  List<int>? avatar;
+  RxString? filename = ''.obs;
 
   @override
   void onInit() {
@@ -52,25 +56,16 @@ class CategoryController extends GetxController
   }
 
   clearData() {
-    nameController = TextEditingController();
-    imageController = TextEditingController();
+    nameController.clear();
+    imageController.clear();
     webImage = Uint8List(10);
 
     isImageOffline.value = false;
-
     categoryModel = null;
     isLoading = false.obs;
 
     oldCategory = '';
   }
-
-
-
-
-
-
-
-
 
   String getFileExtension(String fileName) {
     try {
@@ -95,12 +90,56 @@ class CategoryController extends GetxController
       if (file == "svg") {
         isSvg = true;
       }
+      print(pickImage!.name);
 
       imageController.text = pickImage!.name;
       var f = await pickImage!.readAsBytes();
       isImageOffline(false);
       webImage = f;
       isImageOffline(true);
+    }
+  }
+
+  Future<void> addCategory() async {
+    isLoading.value = true;
+    try {
+      CategoryModel categoryModel = await homeService.addCategory(
+        avatar: webImage,
+        filename: imageController.text,
+        name: nameController.text,
+      );
+      categoryList.add(categoryModel);
+      Fluttertoast.showToast(
+          msg: "categorie ajoutee", backgroundColor: Colors.green);
+      isLoading.value = false;
+      clearData();
+    } on AppException catch (e) {
+      Fluttertoast.showToast(msg: e.message!, backgroundColor: Colors.red);
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> updateCategory({CategoryModel? model}) async {
+    isLoading.value = true;
+    try {
+      print(webImage);
+      CategoryModel categoryModel = await homeService.updateCategory(
+        avatar: webImage,
+        filename: imageController.text,
+        name: nameController.text,
+        model: model,
+      );
+      int index =
+          categoryList.indexWhere((element) => element.sId == model!.sId);
+      categoryList.removeAt(index);
+      categoryList.insert(index, categoryModel);
+      Fluttertoast.showToast(
+          msg: "categorie mise a jour", backgroundColor: Colors.green);
+      isLoading.value = false;
+      clearData();
+    } on AppException catch (e) {
+      Fluttertoast.showToast(msg: e.message!, backgroundColor: Colors.red);
+      isLoading.value = false;
     }
   }
 }
