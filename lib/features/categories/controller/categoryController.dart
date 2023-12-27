@@ -142,4 +142,23 @@ class CategoryController extends GetxController
       isLoading.value = false;
     }
   }
+
+  Future<void> deleteCategory({CategoryModel? model}) async {
+
+    try {
+      print(webImage);
+      await homeService.deleteCategory(
+        model: model,
+      );
+      int index =
+          categoryList.indexWhere((element) => element.sId == model!.sId);
+      categoryList.removeAt(index);
+
+      Fluttertoast.showToast(
+          msg: "categorie Supprimer", backgroundColor: Colors.green);
+      isLoading.value = false;
+    } on AppException catch (e) {
+      isLoading.value = false;
+    }
+  }
 }

@@ -80,7 +80,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                       queryText(value);
                                     })),
                             getHorizontalSpace(context, 15),
-                            getButtonWidget(
+                            /* getButtonWidget(
                               context,
                               'Add New Book',
                                   () {
@@ -91,7 +91,7 @@ class _StoryScreenState extends State<StoryScreen> {
                               horizontalSpace: 0,
                               verticalSpace: 0,
                               btnHeight: 42.h,
-                            )
+                            ) */
                           ],
                         ),
                         isWeb(context)

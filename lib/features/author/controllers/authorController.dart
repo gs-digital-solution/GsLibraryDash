@@ -1,14 +1,18 @@
+import 'dart:convert';
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/exceptions/appException.dart';
 import 'package:gslibrarydashboard/features/author/models/author.dart';
 import 'package:gslibrarydashboard/features/author/services/authorService.dart';
+import 'package:gslibrarydashboard/home/controller/homeController.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AuthorController extends GetxController
@@ -42,7 +46,7 @@ class AuthorController extends GetxController
   }
 
   bool isStatus = true;
-
+  final HomeController homeController = Get.find();
   Future<void> fetchAuthorsData() async {
     change(null, status: RxStatus.loading());
 
@@ -59,8 +63,31 @@ class AuthorController extends GetxController
     }
   }
 
-    Future<void> addCategory() async {
+  void setAuthor(TopAuthors topAuthors) {
+    print("tap");
+    //final json = jsonDecode(topAuthors.description!);
+    lastname.text = topAuthors.lastname!;
+    firstname.text = topAuthors.firstname!;
+    email.text = topAuthors.email!;
+    phonenumber.text = topAuthors.phonenumber!;
+    designation.text = topAuthors.designation!;
+    if (topAuthors.description != null && topAuthors.description!.isNotEmpty) {
+      final doc = Document()..insert(0, decode(topAuthors.description ?? ""));
+
+      controller = QuillController(
+          document: doc, selection: TextSelection.collapsed(offset: 0));
+    }
+    homeController.selectedItem!.value = AdminMenuItem(
+      title: 'Ajouter un auteurs',
+      icon: Icons.add,
+      route: '/HomePage/authors/add',
+    );
+    authorModel = topAuthors;
+  }
+
+  Future<void> addCategory() async {
     isLoading.value = true;
+    print(controller.document.toDelta());
     try {
       TopAuthors categoryModel = await homeService.addAuthor(
         avatar: webImage,
@@ -74,6 +101,7 @@ class AuthorController extends GetxController
         password: password.text,
         status: activeStatus.value,
       );
+      print(categoryModel);
       authorList.add(categoryModel);
       Fluttertoast.showToast(
           msg: "Auteur ajoutee", backgroundColor: Colors.green);
@@ -88,7 +116,6 @@ class AuthorController extends GetxController
   Future<void> updateCategory({TopAuthors? model}) async {
     isLoading.value = true;
     try {
-     
       TopAuthors categoryModel = await homeService.updateAuthor(
         avatar: webImage,
         filename: imageController.text,
@@ -97,15 +124,15 @@ class AuthorController extends GetxController
         email: email.text,
         phonenumber: phonenumber.text,
         designation: designation.text,
-        description: controller.document.toPlainText(),
+        description: deltaToHtml(controller.document.toDelta().toJson()),
+        topAuthors: model,
         password: password.text,
       );
-      int index =
-          authorList.indexWhere((element) => element.sId == model!.sId);
+      int index = authorList.indexWhere((element) => element.sId == model!.sId);
       authorList.removeAt(index);
       authorList.insert(index, categoryModel);
       Fluttertoast.showToast(
-          msg: "categorie mise a jour", backgroundColor: Colors.green);
+          msg: "Auteur mis a jour", backgroundColor: Colors.green);
       isLoading.value = false;
       clearAuthData();
     } on AppException catch (e) {
@@ -114,7 +141,22 @@ class AuthorController extends GetxController
     }
   }
 
+  Future<void> deleteCategory({TopAuthors? model}) async {
+    try {
+      print(webImage);
+      await homeService.deleteCategory(
+        model: model,
+      );
+      int index = authorList.indexWhere((element) => element.sId == model!.sId);
+      authorList.removeAt(index);
 
+      Fluttertoast.showToast(
+          msg: "categorie Supprimer", backgroundColor: Colors.green);
+      isLoading.value = false;
+    } on AppException catch (e) {
+      isLoading.value = false;
+    }
+  }
 
   clearAuthData() {
     firstname.clear();
@@ -123,10 +165,12 @@ class AuthorController extends GetxController
     description.clear();
     designation.clear();
     phonenumber.clear();
+    controller = QuillController.basic();
+    password.clear();
     email.clear();
-    descController = QuillController.basic();
     isLoading.value = false;
     activeStatus.value = true;
+    webImage = Uint8List(10);
   }
 
   String getFileExtension(String fileName) {

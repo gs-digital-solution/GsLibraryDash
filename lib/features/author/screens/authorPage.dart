@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -13,8 +12,6 @@ import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/theme/theme_controller.dart';
 
 class AuthorScreen extends StatefulWidget {
-  
-
   AuthorScreen();
 
   @override
@@ -79,7 +76,7 @@ class _AuthorScreenState extends State<AuthorScreen> {
                             queryText(value);
                           })),
                           getHorizontalSpace(context, 15),
-                       /*    getButtonWidget(
+                          /*    getButtonWidget(
                             context,
                             'Add New Author',
                             () {
@@ -101,21 +98,21 @@ class _AuthorScreenState extends State<AuthorScreen> {
                       getVerticalSpace(context, 25),
                       authorController.obx((state) => Obx(() {
                             double i = state!.length / 10;
-      
+
                             int d = state.length -
                                 (totalItem.value * i.toInt()).toInt();
-      
+
                             if (d > 0) {
                               i = i + 1;
                             }
-      
+
                             List<TopAuthors> paginationList = [];
-      
+
                             paginationList = state
                                 .skip(position.value * totalItem.value)
                                 .take(totalItem.value)
                                 .toList();
-      
+
                             return paginationList.length > 0
                                 ? Expanded(
                                     flex: 1,
@@ -172,17 +169,21 @@ class _AuthorScreenState extends State<AuthorScreen> {
                                                 ),
                                                 getHorizontalSpace(context, 10),
                                                 Align(
-                                                  alignment: Alignment.centerLeft,
+                                                  alignment:
+                                                      Alignment.centerLeft,
                                                   child: SingleChildScrollView(
                                                     child: Row(
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment.start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment.end,
+                                                          CrossAxisAlignment
+                                                              .end,
                                                       children: List.generate(
                                                           i.toInt(),
                                                           (index) => InkWell(
-                                                                child: Container(
+                                                                child:
+                                                                    Container(
                                                                   margin: EdgeInsets
                                                                       .symmetric(
                                                                           horizontal:
@@ -206,17 +207,16 @@ class _AuthorScreenState extends State<AuthorScreen> {
                                                                         50,
                                                                         position.value ==
                                                                                 index
-                                                                            ? Colors
-                                                                                .white
-                                                                            : subPrimaryColor(
-                                                                                context)),
+                                                                            ? Colors.white
+                                                                            : subPrimaryColor(context)),
                                                                   ),
                                                                 ),
                                                                 onTap: () {
                                                                   position.value =
                                                                       index;
                                                                   _controller
-                                                                      .jumpTo(0);
+                                                                      .jumpTo(
+                                                                          0);
                                                                 },
                                                               )),
                                                     ),
@@ -243,7 +243,8 @@ class _AuthorScreenState extends State<AuthorScreen> {
                                                 Expanded(child: Container())
                                               ],
                                             ).marginOnly(
-                                                right: getCommonPadding(context)),
+                                                right:
+                                                    getCommonPadding(context)),
                                           ),
                                         ),
                                         getVerticalSpace(context,
@@ -253,7 +254,6 @@ class _AuthorScreenState extends State<AuthorScreen> {
                                   )
                                 : Center(child: getNoData(context));
                           })),
-                      
                     ],
                   ),
                 ),
@@ -266,14 +266,13 @@ class _AuthorScreenState extends State<AuthorScreen> {
   }
 
   updateStatus(BuildContext context, TopAuthors storyModel) {
-     getCommonDialog(
-              context: context,
-              title: storyModel.status!
-                  ? 'Do you want to de-active this Author?'
-                  : 'Do you want to active this Author?',
-              function: () {},
-              subTitle: 'Author');
-    
+    getCommonDialog(
+        context: context,
+        title: storyModel.status!
+            ? 'Do you want to de-active this Author?'
+            : 'Do you want to active this Author?',
+        function: () {},
+        subTitle: 'Author');
   }
 
   _showPopupMenu(
@@ -293,16 +292,17 @@ class _AuthorScreenState extends State<AuthorScreen> {
           : getCardColor(context),
       items: [
         PopupMenuItem<String>(
-            child: Container(
-              child: MenuItem(
-                title: "Edit",
-                space: 0,
-              ),
+          child: Container(
+            child: MenuItem(
+              title: "Edit",
+              space: 0,
             ),
-            onTap: () {
-             
-            },
-            value: 'Edit'),
+          ),
+          onTap: () {
+            authorController.setAuthor(authorModel);
+          },
+          value: 'Edit',
+        ),
         PopupMenuItem<String>(
             child: Container(
               child: MenuItem(
@@ -313,13 +313,10 @@ class _AuthorScreenState extends State<AuthorScreen> {
             ),
             onTap: () {
               getCommonDialog(
-                        context: context,
-                        title: 'Do you want to delete this Author?',
-                        function: () async {},
-                        subTitle: 'Delete');
-              
-
-        
+                  context: context,
+                  title: 'Do you want to delete this Author?',
+                  function: () async {},
+                  subTitle: 'Delete');
             },
             value: 'Delete'),
       ],

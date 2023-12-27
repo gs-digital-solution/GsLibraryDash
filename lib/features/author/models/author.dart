@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class TopAuthors {
   Avatar? avatar;
   String? sId;
@@ -72,6 +73,11 @@ class TopAuthors {
     data['__v'] = this.iV;
     return data;
   }
+
+  @override
+  String toString() {
+    return 'TopAuthors(avatar: $avatar, sId: $sId, lastname: $lastname, firstname: $firstname, email: $email, phonenumber: $phonenumber, role: $role, isActivated: $isActivated, status: $status, description: $description, designation: $designation, solde: $solde, createdAt: $createdAt, updatedAt: $updatedAt, iV: $iV)';
+  }
 }
 
 class Avatar {
@@ -91,4 +97,7 @@ class Avatar {
     data['name'] = this.name;
     return data;
   }
+
+  @override
+  String toString() => 'Avatar(url: $url, name: $name)';
 }

@@ -8,7 +8,6 @@ import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/features/author/controllers/authorController.dart';
 import 'package:gslibrarydashboard/features/author/models/author.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
-import 'package:gslibrarydashboard/utils/constants.dart';
 import 'package:gslibrarydashboard/utils/responsive.dart';
 
 class AddAuthorScreen extends StatefulWidget {
@@ -51,7 +50,6 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                     children: [
                       Expanded(
                         child: ListView(
-                          // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             getVerticalSpace(context, 30),
                             getCommonBackIcon(
@@ -165,7 +163,8 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                                     fit: BoxFit.contain,
                                                   ),
                                                 )
-                                              : isEdit
+                                              : authorController.authorModel !=
+                                                      null
                                                   ? ClipRRect(
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -173,8 +172,10 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                                                   context,
                                                                   35))), //add border radius
                                                       child: Image.network(
-                                                        widget.authorModel!
-                                                            .avatar!.url!,
+                                                        authorController
+                                                            .authorModel!
+                                                            .avatar!
+                                                            .url!,
                                                         height: 150.h,
                                                         width: 200.h,
                                                         fit: BoxFit.contain,
@@ -184,8 +185,6 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                         }),
                                       ),
                                       getVerticalSpace(context, 30),
-
-                                      // getHorizontalSpace(context, 10),
                                     ],
                                   )
                                 : Column(
@@ -521,23 +520,8 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                                               EdgeInsets.zero,
                                                           placeholder:
                                                               "Enter Description..",
-                                                          customStyles: DefaultStyles(
-                                                              // placeHolder: quillView.DefaultTextBlockStyle(
-                                                              //     TextStyle(
-                                                              //       color: getSubFontColor(context),
-                                                              //     ),
-                                                              //     const Tuple2(16, 0),
-                                                              //     const Tuple2(0, 0),
-                                                              //     null),
-                                                              //
-                                                              // paragraph: quillView.DefaultTextBlockStyle(
-                                                              //     TextStyle(
-                                                              //       color: textColor,
-                                                              //     ),
-                                                              //     const Tuple2(16, 0),
-                                                              //     const Tuple2(0, 0),
-                                                              //     null),
-                                                              ),
+                                                          customStyles:
+                                                              DefaultStyles(),
                                                           readOnly: false,
                                                         ),
                                                         focusNode: FocusNode(),
@@ -552,7 +536,7 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                               ),
                                             ],
                                           )),
-                                          Expanded(child: Container()),
+                                          //Expanded(child: Container()),
                                         ],
                                       ),
                                       getVerticalSpace(context, 30),
@@ -613,7 +597,7 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                                                         35))), //add border radius
                                                             child:
                                                                 Image.network(
-                                                              widget
+                                                              authorController
                                                                   .authorModel!
                                                                   .avatar!
                                                                   .url!,
@@ -641,25 +625,26 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                         ),
                       ),
                       getVerticalSpace(context, 20),
-                      Row(
-                        children: [
-                          Obx(() => getButtonWidget(
-                                context,
-                                isEdit ? 'Update' : 'Save',
-                                isProgress: authorController.isLoading.value,
-                                () {
-                                  if (isEdit) {
-                                    authorController.updateCategory();
-                                  } else {
-                                    authorController.addCategory();
-                                  }
-                                },
-                                horPadding: 25.h,
-                                horizontalSpace: 0,
-                                verticalSpace: 0,
-                                btnHeight: 40.h,
-                              )),
-                        ],
+                      Container(
+                        width: Get.width / 3,
+                        child: Obx(() => getButtonWidget(
+                              context,
+                              isEdit ? 'Mettre a jour' : 'Enregistrer',
+                              isProgress: authorController.isLoading.value,
+                              () {
+                                if (isEdit) {
+                                  authorController.updateCategory(
+                                    model: authorController.authorModel,
+                                  );
+                                } else {
+                                  authorController.addCategory();
+                                }
+                              },
+                              horPadding: 25.h,
+                              horizontalSpace: 0,
+                              verticalSpace: 0,
+                              btnHeight: 50.h,
+                            )),
                       ),
                       getVerticalSpace(context, 20),
                     ],

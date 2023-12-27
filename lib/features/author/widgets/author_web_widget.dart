@@ -33,19 +33,7 @@ class AuthorWebWidget extends StatelessWidget{
               Expanded(
                   child: ListView
                       .builder(
-                    // separatorBuilder: (context, index) {
-                    //   TopAuthors model =
-                    //   TopAuthors.fromFirestore(list[index]);
-                    //   return FutureBuilder<bool>(future: FirebaseData.checkCategoryExists(
-                    //       model.refId!),builder: (context, snapshot) {
-                    //     if (snapshot.data != null && snapshot.data!) {
-                    //       return separatorBuilder(
-                    //           context, queryText: queryText, value: model.authorName!);
-                    //     }
-                    //
-                    //     return Container();
-                    //   },);
-                    // },
+             
                     itemCount:
                     list.length,
                     itemBuilder:
@@ -120,7 +108,7 @@ class AuthorWebWidget extends StatelessWidget{
                                         width: 120.h,
                                         child: getActiveDeActiveCell(
                                             context,
-                                            list[index].status!, list[index]),
+                                            list[index].status??false, list[index]),
                                       ),
                                       Stack(
                                         children: [

@@ -42,7 +42,7 @@ class AuthorService extends getX.GetxService {
     String? password,
     String? designation,
     String? description,
-    bool?status,
+    bool? status,
   }) async {
     FormData formData = FormData.fromMap({
       'avatar': await MultipartFile.fromBytes(avatar!, filename: filename),
@@ -56,6 +56,8 @@ class AuthorService extends getX.GetxService {
     formData.fields.add(MapEntry("description", description!));
     formData.fields.add(MapEntry("designation", designation!));
     formData.fields.add(MapEntry("status", '${status}'));
+
+    print(formData.fields);
 
     try {
       final response =
@@ -91,6 +93,7 @@ class AuthorService extends getX.GetxService {
     FormData formData = FormData.fromMap({});
 
     if (avatar!.isNotEmpty) {
+      print("check");
       formData.files.add(MapEntry(
         'avatar',
         await MultipartFile.fromBytes(
@@ -100,12 +103,16 @@ class AuthorService extends getX.GetxService {
       ));
     }
 
+    if (password!.isNotEmpty) {
+      formData.fields.add(MapEntry("password", password));
+    }
+
     formData.fields
         .add(MapEntry("fisrtname", firstname ?? topAuthors!.firstname!));
     formData.fields.add(MapEntry("status", '${topAuthors!.status!}'));
     formData.fields.add(MapEntry("lastname", lastname ?? topAuthors.lastname!));
     formData.fields.add(MapEntry("email", email ?? topAuthors.email!));
-    
+
     formData.fields
         .add(MapEntry("phonenumber", phonenumber ?? topAuthors.phonenumber!));
     formData.fields
@@ -113,11 +120,38 @@ class AuthorService extends getX.GetxService {
     formData.fields
         .add(MapEntry("designation", designation ?? topAuthors.designation!));
 
+    print(formData.fields);
+    print(formData.files);
+
     try {
       final response = await BaseService.dio
-          .post("/updateUser/${topAuthors.sId}", data: formData);
-      if (response.statusCode == 201) {
-        return TopAuthors.fromJson(response.data['author']);
+          .patch("users/updateUser/${topAuthors.sId}", data: formData);
+      print(response.data);
+      if (response.statusCode == 200) {
+        return TopAuthors.fromJson(response.data['user']);
+      } else {
+        throw AppException(message: "Une erreur est survenue");
+      }
+    } on DioException catch (e) {
+      print(e.message);
+      if (e.type == DioExceptionType.badResponse) {
+        throw AppException(message: e.response!.data['msg']);
+      } else {
+        throw AppException(
+            message: "Verifier votre connexion internet et ressayez");
+      }
+    }
+  }
+
+  Future<bool> deleteCategory({
+    TopAuthors? model,
+  }) async {
+    try {
+      final response = await BaseService.dio.delete(
+        "users/${model!.sId}",
+      );
+      if (response.statusCode == 200) {
+        return true;
       } else {
         throw AppException(message: "Une erreur est survenue");
       }
