@@ -9,6 +9,7 @@ import 'package:gslibrarydashboard/features/auth/auth/states/authState.dart';
 import 'package:gslibrarydashboard/features/author/controllers/authorController.dart';
 import 'package:gslibrarydashboard/features/author/screens/addAuthorPage.dart';
 import 'package:gslibrarydashboard/features/author/screens/authorPage.dart';
+import 'package:gslibrarydashboard/features/books/pages/addBook.dart';
 import 'package:gslibrarydashboard/features/books/pages/bookPage.dart';
 import 'package:gslibrarydashboard/features/categories/controller/categoryController.dart';
 import 'package:gslibrarydashboard/features/categories/screens/addCategoryPage.dart';
@@ -197,6 +198,11 @@ class _HomePageState extends State<HomePage> {
                   icon: Icons.list,
                   route: '/HomePage/books',
                 ),
+                AdminMenuItem(
+                  title: 'ajouter un livre',
+                  icon: Icons.add,
+                  route: '/HomePage/books/add',
+                ),
               ],
             ),
           ],
@@ -232,6 +238,8 @@ class _HomePageState extends State<HomePage> {
                 return AddAuthorScreen();
               case '/HomePage/books':
                 return StoryScreen();
+               case '/HomePage/books/add':
+                return AddStoryScreen();
               default:
                 return SizedBox();
             }

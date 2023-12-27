@@ -1,11 +1,10 @@
-import 'dart:convert';
+
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
@@ -13,6 +12,8 @@ import 'package:gslibrarydashboard/exceptions/appException.dart';
 import 'package:gslibrarydashboard/features/author/models/author.dart';
 import 'package:gslibrarydashboard/features/author/services/authorService.dart';
 import 'package:gslibrarydashboard/home/controller/homeController.dart';
+import 'package:gslibrarydashboard/theme/color_scheme.dart';
+import 'package:gslibrarydashboard/utils/responsive.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AuthorController extends GetxController
@@ -38,6 +39,9 @@ class AuthorController extends GetxController
 
   RxBool isLoading = false.obs;
   RxBool activeStatus = true.obs;
+  RxString author = ''.obs;
+    RxList selectedAuthors = [].obs;
+  RxList selectedAuthorsNameList = [].obs;
 
   @override
   void onInit() {
@@ -212,4 +216,76 @@ class AuthorController extends GetxController
       isImageOffline(true);
     }
   }
+
+
+    Future<void> showAuthorDialog(BuildContext context) async {
+
+    return showDialog(
+        context: context,
+        builder: (context) {
+
+          return AlertDialog(
+
+            title: getTextWidget(context,'Select Author',60,getFontColor(context),fontWeight: FontWeight.w700),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            backgroundColor: getBackgroundColor(context),
+
+            contentPadding: EdgeInsets.zero,
+
+            content: Container(
+              padding: EdgeInsets.symmetric(horizontal: 25.h,vertical: 15.h),
+              width: Responsive.isDesktop(context) ||Responsive.isDesktop(context)? 450.h: 350.h,
+
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: authorList.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    // title: getCustomFont("text", 18, getFontColor(context), 1),
+                    title: getCustomFont(authorList[index].firstname??"", 14, getFontColor(context), 1),
+                    trailing: Obx(() => Checkbox(
+                        activeColor: getPrimaryColor(context),
+                        checkColor: Colors.white,
+
+                        onChanged: (checked) {
+
+                          if(selectedAuthors.contains(authorList[index].sId!)){
+                            selectedAuthors.remove(authorList[index].sId!);
+                            selectedAuthorsNameList.remove(authorList[index].lastname!);
+                          }else{
+                            selectedAuthors.add(authorList[index].sId!);
+                            selectedAuthorsNameList.add(authorList[index].firstname!);
+                          }
+
+                     
+
+                         
+                        },
+                        value: selectedAuthors.contains(authorList[index].sId!),),),
+                  );
+                },
+              ),
+            ),
+            actions: [
+              getButtonWidget(
+                context,
+                'Submit',
+                isProgress: false,
+                    () {
+                  Get.back();
+                  firstname.text = selectedAuthorsNameList.toString().replaceAll('[', '').replaceAll(']', '');
+                },
+                horPadding: 25.h,
+                horizontalSpace: 0,
+                verticalSpace: 0,
+                btnHeight: 40.h,
+              )
+            ],
+
+          );
+        });
+  }
 }
+

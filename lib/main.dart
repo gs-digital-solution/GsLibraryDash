@@ -10,6 +10,7 @@ import 'package:gslibrarydashboard/features/auth/auth/states/authState.dart';
 import 'package:gslibrarydashboard/features/auth/screens/login_page.dart';
 import 'package:gslibrarydashboard/features/author/screens/addAuthorPage.dart';
 import 'package:gslibrarydashboard/features/author/screens/authorPage.dart';
+import 'package:gslibrarydashboard/features/books/pages/addBook.dart';
 import 'package:gslibrarydashboard/features/books/pages/bookPage.dart';
 import 'package:gslibrarydashboard/features/categories/screens/addCategoryPage.dart';
 import 'package:gslibrarydashboard/features/categories/screens/categoryPage.dart';
@@ -53,6 +54,7 @@ class MyApp extends GetWidget<AuthController> {
             GetPage(name: '/HomePage/authors', page: ()=>AuthorScreen()),
             GetPage(name: '/HomePage/authors/add', page: ()=>AddAuthorScreen()),
             GetPage(name: '/HomePage/books', page: ()=>StoryScreen()),
+            GetPage(name: '/HomePage/books/add', page: ()=>AddStoryScreen()),
             
           ],
 

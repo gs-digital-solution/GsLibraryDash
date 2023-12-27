@@ -1,9 +1,10 @@
-/* 
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'package:gslibrarydashboard/common/common.dart';
+import 'package:gslibrarydashboard/features/books/controller/bookController.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/utils/responsive.dart';
 
@@ -13,7 +14,7 @@ class PDFDropDown extends StatelessWidget {
   final Function? onChanged;
   final String? value;
 
-  final  HomeController homeController;
+  final  BookController homeController;
   PDFDropDown(this.homeController,{
     Key? key,
     this.onChanged,
@@ -33,7 +34,7 @@ class PDFDropDown extends StatelessWidget {
         : Container();
   }
   getDropDown(
-      {required HomeController dataController,
+      {required BookController dataController,
 
 
         required BuildContext context,
@@ -89,4 +90,4 @@ class PDFDropDown extends StatelessWidget {
 
 }
 
- */
+ 

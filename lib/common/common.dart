@@ -299,50 +299,51 @@ Widget getTextFiledWidget(
         fontWeight: FontWeight.w400,
         fontSize: fontSize),
     decoration: InputDecoration(
-        contentPadding: EdgeInsets.only(
-          left: 10.h,
-        ),
-        border: InputBorder.none,
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(radius)),
-            borderSide: BorderSide(
-              color: getPrimaryColor(context),
-            )),
-        enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(radius)),
-            borderSide: BorderSide(
-              color: borderColor,
-            )),
-        errorBorder: InputBorder.none,
-        disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(radius)),
-            borderSide: BorderSide(
-              color: borderColor,
-            )),
-        // suffixIcon: (child != null)?InkWell(
-        //   onTap: (){
-        //     if(function != null){
-        //       function();
-        //     }
-        //   },
-        //   child: Container(
-        //     height: height,
-        //     width: 112.h,
-        //     child: child,
-        //   ),
-        // ):null,
-        // suffixIcon: Container(height: height,child: child),
-        filled: true,
-        fillColor: getCardColor(context),
-        // fillColor: getReportColor(context),
-        focusColor: Colors.green,
-        hintText: s,
-        isDense: false,
-        hintStyle: TextStyle(
-            fontFamily: Constants.fontsFamily,
-            color: getSubFontColor(context),
-            fontWeight: FontWeight.w400,
-            fontSize: fontSize)),
+      contentPadding: EdgeInsets.only(
+        left: 10.h,
+      ),
+      border: InputBorder.none,
+      focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(radius)),
+          borderSide: BorderSide(
+            color: getPrimaryColor(context),
+          )),
+      enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(radius)),
+          borderSide: BorderSide(
+            color: borderColor,
+          )),
+      errorBorder: InputBorder.none,
+      disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(radius)),
+          borderSide: BorderSide(
+            color: borderColor,
+          )),
+      // suffixIcon: (child != null)?InkWell(
+      //   onTap: (){
+      //     if(function != null){
+      //       function();
+      //     }
+      //   },
+      //   child: Container(
+      //     height: height,
+      //     width: 112.h,
+      //     child: child,
+      //   ),
+      // ):null,
+      // suffixIcon: Container(height: height,child: child),
+      filled: true,
+      fillColor: getCardColor(context),
+      // fillColor: getReportColor(context),
+      focusColor: Colors.green,
+      hintText: s,
+      isDense: false,
+      hintStyle: TextStyle(
+          fontFamily: Constants.fontsFamily,
+          color: getSubFontColor(context),
+          fontWeight: FontWeight.w400,
+          fontSize: fontSize),
+    ),
   );
 
   // return Container(

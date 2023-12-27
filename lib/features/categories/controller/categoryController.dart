@@ -22,6 +22,9 @@ class CategoryController extends GetxController
   final CategoryService homeService = Get.put(CategoryService());
 
   String oldCategory = '';
+  RxString category = 'text'.obs;
+  RxString slider = ''.obs;
+  RxString author = ''.obs;
 
   CategoryController({this.categoryModel});
 
