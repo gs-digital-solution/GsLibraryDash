@@ -210,7 +210,7 @@ class BookController extends GetxController with StateMixin<List<Book>> {
         nom: nameController.text,
         prix: price.text,
         pourcentage: pourcentage.text,
-        description: deltaToHtml(descController.document.toDelta().toJson()),
+        description: descController.document.toPlainText(),
         topAuthors: topAuthors,
        categoryModel: categoryModel!
       );

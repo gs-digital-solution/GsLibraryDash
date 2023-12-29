@@ -48,9 +48,9 @@ class BookService extends getX.GetxService {
     String? description,
     bool? status,
   }) async {
-    FormData formData = FormData.fromMap({
-      'avatar': await MultipartFile.fromBytes(avatar!, filename: filename),
-    });
+    FormData formData = FormData.fromMap({});
+
+    print(description);
 
     formData.files.add(MapEntry(
       'gratuite',
@@ -66,6 +66,13 @@ class BookService extends getX.GetxService {
         filename: payanteFilename,
       ),
     ));
+    formData.files.add(MapEntry(
+      'avatar',
+      await MultipartFile.fromBytes(
+        avatar!,
+        filename: filename,
+      ),
+    ));
 
     formData.fields.add(MapEntry("nom", nom!));
     formData.fields.add(MapEntry("author", topAuthors!.sId!));
@@ -73,11 +80,7 @@ class BookService extends getX.GetxService {
     formData.fields.add(MapEntry("prix", prix!));
     formData.fields.add(MapEntry("pourcentage", pourcentage!));
     formData.fields.add(MapEntry("description", description!));
-  //  formData.fields.add(MapEntry("status", '${true}'));
-    print(filename);
-    print(gratuiteFilename);
-    print(payanteFilename);
-    print(formData.files);
+    //  formData.fields.add(MapEntry("status", '${true}'));
 
     try {
       final response = await BaseService.dio.post("books", data: formData);
@@ -97,23 +100,24 @@ class BookService extends getX.GetxService {
     }
   }
 
-  Future<TopAuthors> updateAuthor(
+  Future<Book> updateBook(
       {List<int>? avatar,
       String? filename,
-      String? name,
-      String? firstname,
-      String? lastname,
-      String? email,
-      String? phonenumber,
-      String? password,
-      String? designation,
+      List<int>? payante,
+      String? payanteFilename,
+      List<int>? gratuite,
+      String? gratuiteFilename,
+      String? nom,
+      String? prix,
+      String? pourcentage,
+      TopAuthors? topAuthors,
+      CategoryModel? categoryModel,
       String? description,
       bool? status,
-      TopAuthors? topAuthors}) async {
+      Book? book}) async {
     FormData formData = FormData.fromMap({});
 
     if (avatar!.isNotEmpty) {
-      print("check");
       formData.files.add(MapEntry(
         'avatar',
         await MultipartFile.fromBytes(
@@ -123,37 +127,50 @@ class BookService extends getX.GetxService {
       ));
     }
 
-    if (password!.isNotEmpty) {
-      formData.fields.add(MapEntry("password", password));
+    if (gratuite!.isNotEmpty) {
+      formData.files.add(MapEntry(
+        'gratuite',
+        await MultipartFile.fromBytes(
+          gratuite,
+          filename: gratuiteFilename,
+        ),
+      ));
     }
 
-    formData.fields
-        .add(MapEntry("fisrtname", firstname ?? topAuthors!.firstname!));
-    formData.fields.add(MapEntry("status", '${topAuthors!.status!}'));
-    formData.fields.add(MapEntry("lastname", lastname ?? topAuthors.lastname!));
-    formData.fields.add(MapEntry("email", email ?? topAuthors.email!));
+    if (gratuite.isNotEmpty) {
+      formData.files.add(
+        MapEntry(
+          'payante',
+          await MultipartFile.fromBytes(
+            payante!,
+            filename: payanteFilename,
+          ),
+        ),
+      );
+    }
 
-    formData.fields
-        .add(MapEntry("phonenumber", phonenumber ?? topAuthors.phonenumber!));
-    formData.fields
-        .add(MapEntry("description", description ?? topAuthors.description!));
-    formData.fields
-        .add(MapEntry("designation", designation ?? topAuthors.designation!));
-
-    print(formData.fields);
+    formData.fields.add(MapEntry("nom", nom!));
+    formData.fields.add(MapEntry("author", topAuthors!.sId!));
+    formData.fields.add(MapEntry("categories", categoryModel!.sId!));
+    formData.fields.add(MapEntry("prix", prix!));
+    formData.fields.add(MapEntry("pourcentage", pourcentage!));
+    formData.fields.add(MapEntry("description", description!));
+    //  formData.fields.add(MapEntry("status", '${true}'));
+    print(filename);
+    print(gratuiteFilename);
+    print(payanteFilename);
     print(formData.files);
 
     try {
-      final response = await BaseService.dio
-          .patch("users/updateUser/${topAuthors.sId}", data: formData);
+      final response =
+          await BaseService.dio.post("books/${book!.sId}", data: formData);
       print(response.data);
-      if (response.statusCode == 200) {
-        return TopAuthors.fromJson(response.data['user']);
+      if (response.statusCode == 201) {
+        return Book.fromJson(response.data['book']);
       } else {
         throw AppException(message: "Une erreur est survenue");
       }
     } on DioException catch (e) {
-      print(e.message);
       if (e.type == DioExceptionType.badResponse) {
         throw AppException(message: e.response!.data['msg']);
       } else {

@@ -93,7 +93,7 @@ class AuthorService extends getX.GetxService {
     FormData formData = FormData.fromMap({});
 
     if (avatar!.isNotEmpty) {
-      print("check");
+      
       formData.files.add(MapEntry(
         'avatar',
         await MultipartFile.fromBytes(

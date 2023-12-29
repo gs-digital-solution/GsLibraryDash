@@ -1134,8 +1134,8 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                           QuillToolbarHistoryButton(
                                                             isUndo: true,
                                                             controller:
-                                                                authorController
-                                                                    .controller,
+                                                                bookController
+                                                                    .descController,
                                                           ),
                                                           QuillToolbarHistoryButton(
                                                             isUndo: false,
@@ -1147,8 +1147,8 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                             options:
                                                                 const QuillToolbarToggleStyleButtonOptions(),
                                                             controller:
-                                                                authorController
-                                                                    .controller,
+                                                                  bookController
+                                                                    .descController,
                                                             attribute:
                                                                 Attribute.bold,
                                                           ),
@@ -1156,89 +1156,89 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                             options:
                                                                 const QuillToolbarToggleStyleButtonOptions(),
                                                             controller:
-                                                                authorController
-                                                                    .controller,
+                                                                bookController
+                                                                    .descController,
                                                             attribute: Attribute
                                                                 .italic,
                                                           ),
                                                           QuillToolbarToggleStyleButton(
                                                             controller:
-                                                                authorController
-                                                                    .controller,
+                                                                  bookController
+                                                                    .descController,
                                                             attribute: Attribute
                                                                 .underline,
                                                           ),
                                                           QuillToolbarClearFormatButton(
                                                             controller:
-                                                                authorController
-                                                                    .controller,
+                                                                bookController
+                                                                    .descController,
                                                           ),
                                                           const VerticalDivider(),
                                                           const VerticalDivider(),
                                                           QuillToolbarColorButton(
                                                             controller:
-                                                                authorController
-                                                                    .controller,
+                                                                 bookController
+                                                                    .descController,
                                                             isBackground: false,
                                                           ),
                                                           QuillToolbarColorButton(
                                                             controller:
-                                                                authorController
-                                                                    .controller,
+                                                                bookController
+                                                                    .descController,
                                                             isBackground: true,
                                                           ),
                                                           const VerticalDivider(),
                                                           const VerticalDivider(),
                                                           QuillToolbarToggleCheckListButton(
                                                             controller:
-                                                                authorController
-                                                                    .controller,
+                                                                  bookController
+                                                                    .descController,
                                                           ),
                                                           QuillToolbarToggleStyleButton(
                                                             controller:
-                                                                authorController
-                                                                    .controller,
+                                                                  bookController
+                                                                    .descController,
                                                             attribute:
                                                                 Attribute.ol,
                                                           ),
                                                           QuillToolbarToggleStyleButton(
                                                             controller:
-                                                                authorController
-                                                                    .controller,
+                                                                bookController
+                                                                    .descController,
                                                             attribute:
                                                                 Attribute.ul,
                                                           ),
                                                           QuillToolbarToggleStyleButton(
                                                             controller:
-                                                                authorController
-                                                                    .controller,
+                                                                 bookController
+                                                                    .descController,
                                                             attribute: Attribute
                                                                 .inlineCode,
                                                           ),
                                                           QuillToolbarToggleStyleButton(
                                                             controller:
-                                                                authorController
-                                                                    .controller,
+                                                               bookController
+                                                                    .descController,
                                                             attribute: Attribute
                                                                 .blockQuote,
                                                           ),
                                                           QuillToolbarIndentButton(
                                                             controller:
-                                                                authorController
-                                                                    .controller,
+                                                                bookController
+                                                                    .descController,
                                                             isIncrease: true,
                                                           ),
                                                           QuillToolbarIndentButton(
                                                             controller:
-                                                                authorController
-                                                                    .controller,
+                                                                  bookController
+                                                                    .descController,
                                                             isIncrease: false,
                                                           ),
                                                           const VerticalDivider(),
                                                           QuillToolbarLinkStyleButton(
                                                             controller:
-                                                                authorController
-                                                                    .controller,
+                                                                 bookController
+                                                                    .descController,
                                                           ),
                                                         ],
                                                       ),
@@ -1253,8 +1253,8 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                       configurations:
                                                           QuillEditorConfigurations(
                                                         controller:
-                                                            authorController
-                                                                .controller,
+                                                              bookController
+                                                                    .descController,
                                                         scrollable: true,
                                                         autoFocus: true,
                                                         expands: false,

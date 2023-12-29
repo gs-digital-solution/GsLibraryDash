@@ -1199,9 +1199,6 @@ String deltaToHtml(List<dynamic> desc) {
 
     final converter = QuillDeltaToHtmlConverter(
         List.castFrom(deltaJson), ConverterOptions.forEmail());
-
-    print("delta--------------${converter.convert()}");
-
     return converter.convert();
   } catch (e, s) {
     print("eroor-----------${e}-----------_${s}");
