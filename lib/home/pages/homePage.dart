@@ -14,6 +14,8 @@ import 'package:gslibrarydashboard/features/books/pages/bookPage.dart';
 import 'package:gslibrarydashboard/features/categories/controller/categoryController.dart';
 import 'package:gslibrarydashboard/features/categories/screens/addCategoryPage.dart';
 import 'package:gslibrarydashboard/features/categories/screens/categoryPage.dart';
+import 'package:gslibrarydashboard/features/commandes/pages/commandePage.dart';
+import 'package:gslibrarydashboard/features/retraits/pages/retraitPage.dart';
 import 'package:gslibrarydashboard/home/controller/homeController.dart';
 import 'package:gslibrarydashboard/home/services/baseService.dart';
 import 'package:gslibrarydashboard/main.dart';
@@ -205,6 +207,22 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+            AdminMenuItem(
+              title: 'Historique',
+              icon: Icons.history,
+              children: [
+                AdminMenuItem(
+                  title: 'Commandes',
+                  icon: Icons.list,
+                  route: '/HomePage/commandes',
+                ),
+                AdminMenuItem(
+                  title: 'Retraits',
+                  icon: Icons.list,
+                  route: '/HomePage/retraits',
+                ),
+              ],
+            ),
           ],
           selectedRoute: homeController.selectedItem!.value.route!,
           onSelected: (item) {
@@ -238,8 +256,12 @@ class _HomePageState extends State<HomePage> {
                 return AddAuthorScreen();
               case '/HomePage/books':
                 return StoryScreen();
-               case '/HomePage/books/add':
+              case '/HomePage/books/add':
                 return AddStoryScreen();
+              case '/HomePage/commandes':
+                return CommandePage();
+              case '/HomePage/retraits':
+                return RetraitPage();
               default:
                 return SizedBox();
             }

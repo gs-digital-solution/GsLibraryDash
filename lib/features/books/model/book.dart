@@ -60,6 +60,25 @@ class Book {
     iV = json['__v'];
   }
 
+    Book.fromJsonCommande(Map<String, dynamic> json) {
+    gratuite = json['gratuite'] != null
+        ? new Gratuite.fromJson(json['gratuite'])
+        : null;
+    payante =
+        json['payante'] != null ? new Gratuite.fromJson(json['payante']) : null;
+    sId = json['_id'];
+    nom = json['nom'];
+    description = json['description'];
+        avatar =
+        json['avatar'] != null ? new Avatar.fromJson(json['avatar']) : null;
+    prix = json['prix'];
+    pourcentage = json['pourcentage'];
+    status = json['status'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+  }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.gratuite != null) {
