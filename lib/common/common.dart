@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/theme/theme_controller.dart';
@@ -271,6 +272,7 @@ Widget getTextFiledWidget(
     var inputType,
     var inputFormatters,
     var onChanged,
+    dynamic validator,
     Function? function,
     Widget? child}) {
   double height = 45.h;
@@ -293,6 +295,7 @@ Widget getTextFiledWidget(
     keyboardType: (inputType != null) ? inputType : null,
     inputFormatters: (inputFormatters != null) ? inputFormatters : null,
     onChanged: (onChanged != null) ? onChanged : null,
+    validator:validator,
     style: TextStyle(
         fontFamily: Constants.fontsFamily,
         color: getFontColor(context),
@@ -315,10 +318,11 @@ Widget getTextFiledWidget(
           )),
       errorBorder: InputBorder.none,
       disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(radius)),
-          borderSide: BorderSide(
-            color: borderColor,
-          )),
+        borderRadius: BorderRadius.all(Radius.circular(radius)),
+        borderSide: BorderSide(
+          color: borderColor,
+        ),
+      ),
       // suffixIcon: (child != null)?InkWell(
       //   onTap: (){
       //     if(function != null){
@@ -418,19 +422,6 @@ Widget getMessageTextFiledWidget(
             borderSide: BorderSide(
               color: borderColor,
             )),
-        // suffixIcon: (child != null)?InkWell(
-        //   onTap: (){
-        //     if(function != null){
-        //       function();
-        //     }
-        //   },
-        //   child: Container(
-        //     height: height,
-        //     width: 112.h,
-        //     child: child,
-        //   ),
-        // ):null,
-        // suffixIcon: Container(height: height,child: child),
         filled: true,
         fillColor: getCardColor(context),
         // fillColor: getReportColor(context),

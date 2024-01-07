@@ -77,6 +77,13 @@ class _RetraitPageState extends State<RetraitPage> {
                             child: Expanded(child: Container()),
                             visible: isWeb(context),
                           ),
+                          ElevatedButton(
+                            onPressed: () {
+                              bookController.fetchCategoryData();
+                            },
+                            child: Text('Actualiser'),
+                          ),
+                          getHorizontalSpace(context, 15),
                           Expanded(
                               child: getSearchTextFiledWidget(
                                   context, 'Search..', textEditingController,
@@ -148,7 +155,6 @@ class _RetraitPageState extends State<RetraitPage> {
                                                       _showPopupMenu(context,
                                                           detail, model);
                                                     },
-                                                    
                                                   ),
                                             getVerticalSpace(
                                                 context,

@@ -69,6 +69,12 @@ class _AuthorScreenState extends State<AuthorScreen> {
                             child: Expanded(child: Container()),
                             visible: isWeb(context),
                           ),
+                          ElevatedButton(
+                            onPressed: () {
+                              authorController.fetchAuthorsData();
+                            },
+                            child: Text('Actualiser'),
+                          ),
                           Expanded(
                               child: getSearchTextFiledWidget(
                                   context, 'Search..', textEditingController,

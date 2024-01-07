@@ -77,6 +77,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
                               child: Expanded(child: Container()),
                               visible: isWeb(context),
                             ),
+                            ElevatedButton(
+                            onPressed: () {
+                              categoryController.fetchCategoryData();
+                            },
+                            child: Text('Actualiser'),
+                          ),
                             Expanded(
                                 child: getSearchTextFiledWidget(
                                     context, 'Search..', textEditingController,

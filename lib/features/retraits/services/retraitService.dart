@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getX;
 import 'package:gslibrarydashboard/exceptions/appException.dart';
@@ -10,12 +12,10 @@ class RetraitService extends getX.GetxService {
     int? pageSize,
   }) async {
     try {
-      final response = await BaseService.dio.get(
-        'retraits',  queryParameters: {
+      final response = await BaseService.dio.get('retraits', queryParameters: {
         "page": page,
         "pageSize": pageSize,
-      } 
-      );
+      });
 
       print(response.data);
 
@@ -33,9 +33,23 @@ class RetraitService extends getX.GetxService {
     }
   }
 
-
-
-
-
-
+  Future<bool> createRetrait({Map<String, dynamic>? data}) async {
+    try {
+      final response =
+          await BaseService.dio.post('retraits', data: json.encode(data));
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        throw AppException(message: response.data);
+      }
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse) {
+        throw AppException(message: e.response!.data['msg']);
+      } else {
+        throw AppException(
+            message:
+                "Une erreur est survenue. Verifier votre connexion internet et ressayez");
+      }
+    }
+  }
 }
