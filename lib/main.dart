@@ -14,6 +14,9 @@ import 'package:gslibrarydashboard/features/books/pages/addBook.dart';
 import 'package:gslibrarydashboard/features/books/pages/bookPage.dart';
 import 'package:gslibrarydashboard/features/categories/screens/addCategoryPage.dart';
 import 'package:gslibrarydashboard/features/categories/screens/categoryPage.dart';
+import 'package:gslibrarydashboard/features/commandes/pages/commandePage.dart';
+import 'package:gslibrarydashboard/features/retraits/pages/addRetrait.dart';
+import 'package:gslibrarydashboard/features/retraits/pages/retraitPage.dart';
 import 'package:gslibrarydashboard/home/pages/homePage.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/theme_controller.dart';
@@ -81,6 +84,9 @@ class MyApp extends GetWidget<AuthController> {
             '/authors/add': (_) => AddAuthorScreen(),
             '/books': (_) => StoryScreen(),
             '/books/add': (_) => AddStoryScreen(),
+             '/transactions/commandes': (_) => CommandePage(),
+             '/transactions/paiements': (_) => RetraitPage(),
+             '/transactions/add': (_) => NewRetrait(),
           },
           
 

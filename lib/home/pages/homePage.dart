@@ -210,21 +210,22 @@ class _HomePageState extends State<HomePage> {
               AdminMenuItem(
                 title: 'Transactions',
                 icon: Icons.history,
+                route: '/transactions',
                 children: [
                   AdminMenuItem(
                     title: 'Commandes',
                     icon: Icons.list,
-                    route: '/commandes',
+                    route: '/transactions/commandes',
                   ),
                   AdminMenuItem(
                     title: 'Paiements',
                     icon: Icons.list,
-                    route: '/retraits',
+                    route: '/transactions/retraits',
                   ),
                   AdminMenuItem(
                     title: 'Nouveau paiement',
                     icon: Icons.add,
-                    route: '/retraits/add',
+                    route: '/transactions/add',
                   ),
                 ],
               ),
@@ -253,11 +254,11 @@ class _HomePageState extends State<HomePage> {
                   return StoryScreen();
                 case '/books/add':
                   return AddStoryScreen();
-                case '/commandes':
+                case '/transactions/commandes':
                   return CommandePage();
-                case '/retraits':
+                case '/transactions/retraits':
                   return RetraitPage();
-                case '/retraits/add':
+                case '/transactions/add':
                   return NewRetrait();
                 default:
                   return SizedBox();
