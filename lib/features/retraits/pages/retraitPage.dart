@@ -58,7 +58,7 @@ class _RetraitPageState extends State<RetraitPage> {
           getTextWidget(context, 'Paiements', 75, getFontColor(context),
               fontWeight: FontWeight.w700),
           getVerticalSpace(context, 35),
-          FutureBuilder(
+          /* FutureBuilder(
             future: dashboardController.getStatAdmin(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -123,7 +123,7 @@ class _RetraitPageState extends State<RetraitPage> {
               }
             },
           ),
-          getVerticalSpace(context, 25),
+          getVerticalSpace(context, 25), */
           Expanded(
               child: getCommonContainer(
                   context: context,
