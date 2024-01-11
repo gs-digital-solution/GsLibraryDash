@@ -50,7 +50,7 @@ class _NewRetraitState extends State<NewRetrait> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FutureBuilder(
+           /*  FutureBuilder(
               future: dashboardController.getStatAdmin(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -114,7 +114,7 @@ class _NewRetraitState extends State<NewRetrait> {
                   return getNoData(context);
                 }
               },
-            ),
+            ), */
             getVerticalSpace(context, 35),
             Expanded(
               child: getCommonContainer(

@@ -137,8 +137,9 @@ class _RetraitPageState extends State<RetraitPage> {
                           isWeb(context)
                               ? Expanded(
                                   child: Container(
-                                  child: getEntryWidget(context),
-                                ))
+                                    child: getEntryWidget(context),
+                                  ),
+                                )
                               : Container(),
                           getHorizontalSpace(context, isWeb(context) ? 0 : 0),
                           Visibility(
