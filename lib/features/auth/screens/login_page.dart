@@ -88,7 +88,7 @@ class _LoginPage extends State<LoginPage> {
                 alignment: Alignment.center,
                 child: getTextWidget(
                   context,
-                  'Login',
+                  'Se Connecter',
                   100,
                   getFontColor(context),
                   fontWeight: FontWeight.bold,
@@ -98,7 +98,7 @@ class _LoginPage extends State<LoginPage> {
               getVerticalSpace(context, 30),
               getTextWidget(
                 context,
-                'Email',
+                'Adresse mail',
                 40,
                 getFontColor(context),
                 fontWeight: FontWeight.w500,
@@ -106,23 +106,25 @@ class _LoginPage extends State<LoginPage> {
               getVerticalSpace(context, 15),
               getDefaultTextFiledWidget(
                 context,
-                "Email",
+                "Adresse mail",
                 loginController.email!,
               ),
               getVerticalSpace(context, 30),
               getTextWidget(
                 context,
-                'Password',
+                'Mot de passe',
                 40,
                 getFontColor(context),
                 fontWeight: FontWeight.w500,
               ),
               getVerticalSpace(context, 15),
               getPasswordTextFiledWidget(
-                  context, "Password", loginController.password!,
+                  context, "Mot de passe", loginController.password!,
                   onSubmit: (value) async {
                 if (await loginController.login()) {
-                  Constants.pushPage(KeyUtil.homePage, function: (value) {});
+                  print("true");
+                  Get.offAllNamed('/');
+                 // Constants.pushPage(KeyUtil.homePage, function: (value) {});
                 } else {
                   Fluttertoast.showToast(
                     msg: (loginController.state as LoginFailure).error,
@@ -132,10 +134,10 @@ class _LoginPage extends State<LoginPage> {
               }),
               getVerticalSpace(context, 30),
               Obx(() {
-                return getButtonWidget(context, 'Log In', () async {
+                return getButtonWidget(context, 'Se connecter', () async {
                   if (await loginController.login()) {
                     
-                    Constants.pushPage(KeyUtil.homePage, function: (value) {});
+                   Get.offAllNamed('/');
                   } else {
                     Fluttertoast.showToast(
                       msg: (loginController.state as LoginFailure).error,

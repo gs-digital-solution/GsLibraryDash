@@ -45,7 +45,7 @@ class _AuthorScreenState extends State<AuthorScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              getTextWidget(context, 'Author', 75, getFontColor(context),
+              getTextWidget(context, 'Auteurs', 75, getFontColor(context),
                   fontWeight: FontWeight.w700),
               getVerticalSpace(context, 35),
               Expanded(
@@ -75,6 +75,7 @@ class _AuthorScreenState extends State<AuthorScreen> {
                             },
                             child: Text('Actualiser'),
                           ),
+                          getHorizontalSpace(context, 15),
                           Expanded(
                               child: getSearchTextFiledWidget(
                                   context, 'Search..', textEditingController,
@@ -300,19 +301,19 @@ class _AuthorScreenState extends State<AuthorScreen> {
         PopupMenuItem<String>(
           child: Container(
             child: MenuItem(
-              title: "Edit",
+              title: "Mettre a jour",
               space: 0,
             ),
           ),
           onTap: () {
             authorController.setAuthor(authorModel);
           },
-          value: 'Edit',
+          value: 'Mettre a jour',
         ),
         PopupMenuItem<String>(
             child: Container(
               child: MenuItem(
-                title: "Delete",
+                title: "Supprimer",
                 space: 0,
                 visibility: false,
               ),
@@ -320,11 +321,13 @@ class _AuthorScreenState extends State<AuthorScreen> {
             onTap: () {
               getCommonDialog(
                   context: context,
-                  title: 'Do you want to delete this Author?',
-                  function: () async {},
-                  subTitle: 'Delete');
+                  title: 'Voulez-vous supprimer cet auteur?',
+                  function: () async {
+                    authorController.deleteCategory(model: authorModel);
+                  },
+                  subTitle: 'Supprimer');
             },
-            value: 'Delete'),
+            value: 'Supprimer'),
       ],
       elevation: 1,
     );

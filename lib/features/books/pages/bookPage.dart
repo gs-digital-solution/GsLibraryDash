@@ -45,7 +45,7 @@ class _StoryScreenState extends State<StoryScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          getTextWidget(context, 'Books', 75, getFontColor(context),
+          getTextWidget(context, 'Livres', 75, getFontColor(context),
               fontWeight: FontWeight.w700),
           getVerticalSpace(context, 35),
           Expanded(
@@ -75,6 +75,7 @@ class _StoryScreenState extends State<StoryScreen> {
                             },
                             child: Text('Actualiser'),
                           ),
+                          getHorizontalSpace(context, 15),
                           Expanded(
                               child: getSearchTextFiledWidget(
                                   context, 'Search..', textEditingController,
@@ -284,11 +285,14 @@ class _StoryScreenState extends State<StoryScreen> {
   updateStatus(BuildContext context, Book storyModel) {
     getCommonDialog(
         context: context,
-        title: storyModel.status!
-            ? 'Do you want to de-active this book?'
-            : 'Do you want to active this book?',
-        function: () {},
-        subTitle: 'Book');
+        title: storyModel.status!.value
+            ? 'Voulez-vous desactiver ce livre?'
+            : 'Voulez-vous activer ce livre?',
+        function: () {
+          storyModel.status!.value = !storyModel.status!.value;
+          bookController.updateBookStatus(book: storyModel);
+        },
+        subTitle: 'Livre');
   }
 
   _showPopupMenu(BuildContext context, var detail, Book storyModel) async {
@@ -309,16 +313,18 @@ class _StoryScreenState extends State<StoryScreen> {
         PopupMenuItem<String>(
             child: Container(
               child: MenuItem(
-                title: "Edit",
+                title: "Mettre a jour",
                 space: 0,
               ),
             ),
-            onTap: () {},
-            value: 'Edit'),
+            onTap: () {
+              bookController.setBook(storyModel);
+            },
+            value: 'Mettre a jour'),
         PopupMenuItem<String>(
             child: Container(
               child: MenuItem(
-                title: "Delete",
+                title: "Supprimer",
                 space: 0,
                 visibility: false,
               ),
@@ -326,11 +332,13 @@ class _StoryScreenState extends State<StoryScreen> {
             onTap: () {
               getCommonDialog(
                   context: context,
-                  title: 'Do you want to delete this book?',
-                  function: () {},
-                  subTitle: 'Delete');
+                  title: 'Voulez-vous supprimer ce livre?',
+                  function: () {
+                    bookController.deleteCategory(model: storyModel);
+                  },
+                  subTitle: 'Supprimer');
             },
-            value: 'Delete'),
+            value: 'Supprimer'),
       ],
       elevation: 1,
     );

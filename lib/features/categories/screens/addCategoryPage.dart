@@ -36,9 +36,32 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            getTextWidget(context, isEdit ? 'Edit Category' : 'Add Category',
-                75, getFontColor(context),
-                fontWeight: FontWeight.w700),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                getTextWidget(
+                    context,
+                    isEdit ? 'Mettre a jour' : 'Ajouter une categorie',
+                    75,
+                    getFontColor(context),
+                    fontWeight: FontWeight.w700),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                    ),
+                  onPressed: () {
+                    setState(() {
+                      categoryController.clearData();
+                    });
+                  },
+                  child: Text('Supprimer le formulaire',style: TextStyle(
+                      fontFamily: Constants.fontsFamily,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    )),
+                ),
+              ],
+            ),
             getVerticalSpace(context, 35),
             Expanded(
               child: getCommonContainer(
@@ -46,25 +69,20 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                 verSpace: 0,
                 horSpace: isWeb(context) ? null : 15.h,
                 child: ListView(
-                  // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    getVerticalSpace(context, 30),
-                    getCommonBackIcon(context, onTap: () {
-                      // changeAction(actionCategories);
-                    }),
                     getVerticalSpace(context, 30),
                     Container(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          itemSubTitle('Category Name', context),
+                          itemSubTitle('Nom de la categorie', context),
                           getVerticalSpace(context, 10),
-                          getTextFiledWidget(context, "Enter here..",
+                          getTextFiledWidget(context, "Entrer ici..",
                               categoryController.nameController),
                           getVerticalSpace(context, 30),
-                          itemSubTitle('Category Image', context),
+                          itemSubTitle('Image de la categorie', context),
                           getVerticalSpace(context, 10),
-                          getTextFiledWidget(context, "No file chosen",
+                          getTextFiledWidget(context, "Aucun fichier selectionne",
                               categoryController.imageController,
                               isEnabled: false,
                               child: getCommonChooseFileBtn(context, () {
@@ -83,24 +101,24 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                                     (getResizeRadius(
                                         context, 35))), //add border radius
                                 child: Image.memory(
-                                        categoryController.webImage,
-                                        height: 200.h,
-                                        width: 300.h,
-                                        fit: BoxFit.contain,
-                                      ),
+                                  categoryController.webImage,
+                                  height: 200.h,
+                                  width: 300.h,
+                                  fit: BoxFit.contain,
+                                ),
                               )
-                            : categoryController.categoryModel!=null
+                            : categoryController.categoryModel != null
                                 ? ClipRRect(
                                     borderRadius: BorderRadius.circular(
                                         (getResizeRadius(
                                             context, 35))), //add border radius
-                                    child:  Image.network(
-                                            categoryController
-                                                .categoryModel!.avatar!.url!,
-                                            height: 200.h,
-                                            width: 300.h,
-                                            fit: BoxFit.contain,
-                                          ),
+                                    child: Image.network(
+                                      categoryController
+                                          .categoryModel!.avatar!.url!,
+                                      height: 200.h,
+                                      width: 300.h,
+                                      fit: BoxFit.contain,
+                                    ),
                                   )
                                 : Container();
                       }),
@@ -109,27 +127,23 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                         (categoryController.isImageOffline.value || isEdit)
                             ? getVerticalSpace(context, 20)
                             : getVerticalSpace(context, 0)),
-                    Row(
-                      children: [
-                        Obx(() => getButtonWidget(
-                              context,
-                              isEdit ? 'Update' : 'Save',
-                              isProgress: categoryController.isLoading.value,
-                              () {
-                                if (isEdit) {
-                                  categoryController.updateCategory(
-                                      model: categoryController.categoryModel);
-                                } else {
-                                  categoryController.addCategory();
-                                }
-                              },
-                              horPadding: 25.h,
-                              horizontalSpace: 0,
-                              verticalSpace: 0,
-                              btnHeight: 40.h,
-                            )),
-                      ],
-                    ),
+                    Obx(() => getButtonWidget(
+                          context,
+                          isEdit ? 'Mettre a jour' : 'Ajouter',
+                          isProgress: categoryController.isLoading.value,
+                          () {
+                            if (isEdit) {
+                              categoryController.updateCategory(
+                                  model: categoryController.categoryModel);
+                            } else {
+                              categoryController.addCategory();
+                            }
+                          },
+                          horPadding: 25.h,
+                          horizontalSpace: 0,
+                          verticalSpace: 0,
+                          btnHeight: 60.h,
+                        )),
                   ],
                 ),
               ),

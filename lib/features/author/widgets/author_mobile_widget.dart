@@ -79,12 +79,13 @@ class AuthorMobileWidget extends StatelessWidget{
                                                         ),
                                                       ),
                                                     ),
-                                                    getSubCell('${authorModel.firstname}', context, 130),
+                                                    getSubCell('${authorModel.firstname??''} ${authorModel.lastname??''}', context, 130),
                                                     getSubCell('${authorModel.designation}', context, 120),
 
                                                     getSubCell(removeAllHtmlTags(authorModel.description ?? ""), context, 325,isMaxLine: true),
                                                     getHorizontalSpace(context, 20),
-                                                    getActiveDeActiveCell(context, authorModel.status! , authorModel),
+                                                     getSubCell(removeAllHtmlTags(authorModel.solde.toString()+'XAF'), context, 325,isMaxLine: true),
+                                                 //   getActiveDeActiveCell(context, authorModel.status! , authorModel),
                                                     // getActiveDeActiveCell( context, storyModel.isActive!),
 
                                                     Container(
@@ -185,10 +186,11 @@ class AuthorMobileWidget extends StatelessWidget{
         // physics: NeverScrollableScrollPhysics(),
         children: [
           getHeaderCell('Image', context, 100),
-          getHeaderCell('Name', context, 130),
+          getHeaderCell('Nom & Prenom', context, 130),
+          getHeaderCell('Solde', context, 130),
           getHeaderCell('Designation', context, 120),
           getHeaderCell('Description', context, 350),
-          getHeaderCell('Status', context, 120),
+         // getHeaderCell('Status', context, 120),
           getHeaderCell('Action', context, 80),
         ],
       ),

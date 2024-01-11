@@ -6,8 +6,6 @@ import 'package:gslibrarydashboard/features/auth/auth/model/adminUser.dart';
 import 'package:gslibrarydashboard/home/services/baseService.dart';
 import 'package:gslibrarydashboard/utils/prefData.dart';
 
-
-
 class AuthService extends AuthApi {
   @override
   Future<AdminUser?> getCurrentUser() async {
@@ -35,11 +33,16 @@ class AuthService extends AuthApi {
         return adminUser;
       } else {
         print(response.statusMessage);
-        throw AuthException(message: response.data["msg"]+"${response.statusCode}");
+        throw AuthException(
+            message: response.data["msg"] + "${response.statusCode}");
       }
     } on DioException catch (e) {
-      print(e.message);
-      throw AuthException(message:e.message);
+      if (e.type == DioExceptionType.badResponse) {
+        throw AuthException(message: e.response!.data['msg']);
+      } else {
+        throw AuthException(
+            message: "Verifier votre connexion internet et ressayez");
+      }
     }
   }
 

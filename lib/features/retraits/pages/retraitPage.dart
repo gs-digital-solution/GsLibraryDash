@@ -12,6 +12,7 @@ import 'package:gslibrarydashboard/features/commandes/controller/commandeControl
 import 'package:gslibrarydashboard/features/commandes/model/commande.dart';
 import 'package:gslibrarydashboard/features/commandes/pages/subwidget/mobile_commande_widget.dart';
 import 'package:gslibrarydashboard/features/commandes/pages/subwidget/web_commande_widget.dart';
+import 'package:gslibrarydashboard/features/dashboard/controllers/dashboardController.dart';
 import 'package:gslibrarydashboard/features/retraits/controller/retraitController.dart';
 import 'package:gslibrarydashboard/features/retraits/model/retrait.dart';
 import 'package:gslibrarydashboard/features/retraits/pages/subwidget/mobile_retrait_widget.dart';
@@ -39,6 +40,7 @@ class _RetraitPageState extends State<RetraitPage> {
   final ScrollController _controller = ScrollController();
 
   final RetraitController bookController = Get.put(RetraitController());
+  final DashboardController dashboardController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +55,75 @@ class _RetraitPageState extends State<RetraitPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          getTextWidget(context, 'Retraits', 75, getFontColor(context),
+          getTextWidget(context, 'Paiements', 75, getFontColor(context),
               fontWeight: FontWeight.w700),
           getVerticalSpace(context, 35),
+          FutureBuilder(
+            future: dashboardController.getStatAdmin(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return getProgressDialog(context);
+              } else if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.data != null) {
+                double iconSize =
+                    (MediaQuery.of(context).size.width < 1338) ? 25.h : 40.h;
+                double fontSize =
+                    (MediaQuery.of(context).size.width < 1338) ? 15 : 17.sp;
+                double fontSize1 =
+                    (MediaQuery.of(context).size.width < 1338) ? 35 : 40.h;
+                return Container(
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                            offset: Offset(0, 16),
+                            blurRadius: 31,
+                            color: Color(0XFFACBFC1).withOpacity(0.10))
+                      ],
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(16.h),
+                      ),
+                      color: getSubCardColor(context)),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 96.h,
+                        decoration: BoxDecoration(color: Color(0XFFD8F1E4)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            getSvgImage("dashboard_category_icon.svg",
+                                height: iconSize, width: iconSize),
+                            getHorSpace(12.h),
+                            getMultilineCustomFont(
+                              "Total paiements",
+                              fontSize,
+                              Colors.black,
+                              fontWeight: FontWeight.w300,
+                              overflow: TextOverflow.visible,
+                            ),
+                          ],
+                        ).paddingSymmetric(horizontal: 15.h),
+                      ),
+                      getHorSpace(12.h),
+                      getCustomFont(
+                        '${snapshot.data!.retrait} XAF',
+                        fontSize1,
+                        Colors.orangeAccent,
+                        1,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                return getNoData(context);
+              }
+            },
+          ),
+          getVerticalSpace(context, 25),
           Expanded(
               child: getCommonContainer(
                   context: context,

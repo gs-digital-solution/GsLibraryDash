@@ -78,11 +78,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
                               visible: isWeb(context),
                             ),
                             ElevatedButton(
-                            onPressed: () {
-                              categoryController.fetchCategoryData();
-                            },
-                            child: Text('Actualiser'),
-                          ),
+                              onPressed: () {
+                                categoryController.fetchCategoryData();
+                              },
+                              child: Text('Actualiser'),
+                            ),
+                            getHorizontalSpace(context, 15),
                             Expanded(
                                 child: getSearchTextFiledWidget(
                                     context, 'Search..', textEditingController,
@@ -330,14 +331,17 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                                       onTapDelete:
                                                                           () {
                                                                         getCommonDialog(
-                                                                            context:
-                                                                                context,
-                                                                            title:
-                                                                                'Do you want to delete this category?',
-                                                                            function:
-                                                                                () async {},
-                                                                            subTitle:
-                                                                                'Delete');
+                                                                          context:
+                                                                              context,
+                                                                          title:
+                                                                              'Voulez-vous supprimer cette categorie?',
+                                                                          function:
+                                                                              () async {
+                                                                            categoryController.deleteCategory(model: paginationList[index]);
+                                                                          },
+                                                                          subTitle:
+                                                                              'Supprimer',
+                                                                        );
                                                                       },
                                                                       onTapEdit:
                                                                           () {
@@ -349,7 +353,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                                           icon:
                                                                               Icons.add,
                                                                           route:
-                                                                              '/HomePage/categories/add',
+                                                                              '/categories/add',
                                                                         );
                                                                         categoryController
                                                                             .nameController
@@ -565,18 +569,18 @@ class _CategoryScreenState extends State<CategoryScreen> {
         PopupMenuItem<String>(
             child: Container(
               child: MenuItem(
-                title: "Edit",
+                title: "Mettre a jour",
                 space: 0,
               ),
             ),
             onTap: () {
               onTapEdit();
             },
-            value: 'Edit'),
+            value: 'Mettre a jour'),
         PopupMenuItem<String>(
             child: Container(
               child: MenuItem(
-                title: "Delete",
+                title: "Supprimer",
                 space: 0,
                 visibility: false,
               ),
@@ -584,7 +588,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             onTap: () {
               onTapDelete();
             },
-            value: 'Delete'),
+            value: 'Supprimer'),
       ],
       elevation: 1.0,
     );

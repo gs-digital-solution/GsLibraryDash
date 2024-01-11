@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
-
-import 'package:gslibrarydashboard/features/books/controller/bookController.dart';
 import 'package:gslibrarydashboard/features/books/model/book.dart';
-import 'package:gslibrarydashboard/features/books/pages/subwidget/mobile_widget.dart';
-import 'package:gslibrarydashboard/features/books/pages/subwidget/web_widget.dart';
+
 import 'package:gslibrarydashboard/features/categories/screens/entries_drop_down.dart';
 import 'package:gslibrarydashboard/features/commandes/controller/commandeController.dart';
 import 'package:gslibrarydashboard/features/commandes/model/commande.dart';
 import 'package:gslibrarydashboard/features/commandes/pages/subwidget/mobile_commande_widget.dart';
 import 'package:gslibrarydashboard/features/commandes/pages/subwidget/web_commande_widget.dart';
+import 'package:gslibrarydashboard/features/dashboard/controllers/dashboardController.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/theme/theme_controller.dart';
 
@@ -35,6 +33,7 @@ class _CommandePageState extends State<CommandePage> {
   final ScrollController _controller = ScrollController();
 
   final CommandeController bookController = Get.put(CommandeController());
+  final DashboardController dashboardController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +51,72 @@ class _CommandePageState extends State<CommandePage> {
           getTextWidget(context, 'Commandes', 75, getFontColor(context),
               fontWeight: FontWeight.w700),
           getVerticalSpace(context, 35),
+          FutureBuilder(
+            future: dashboardController.getStatAdmin(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return getProgressDialog(context);
+              } else if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.data != null) {
+                double iconSize =
+                    (MediaQuery.of(context).size.width < 1338) ? 25.h : 40.h;
+                double fontSize =
+                    (MediaQuery.of(context).size.width < 1338) ? 15 : 17.sp;
+                double fontSize1 =
+                    (MediaQuery.of(context).size.width < 1338) ? 35 : 40.h;
+                return Container(
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                            offset: Offset(0, 16),
+                            blurRadius: 31,
+                            color: Color(0XFFACBFC1).withOpacity(0.10))
+                      ],
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(16.h),
+                      ),
+                      color: getSubCardColor(context)),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 96.h,
+                        decoration: BoxDecoration(color: Color(0XFFD8F1E4)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            getSvgImage("dashboard_category_icon.svg",
+                                height: iconSize, width: iconSize),
+                            getHorSpace(12.h),
+                            getMultilineCustomFont(
+                              "Total comandes",
+                              fontSize,
+                              Colors.black,
+                              fontWeight: FontWeight.w300,
+                              overflow: TextOverflow.visible,
+                            ),
+                          ],
+                        ).paddingSymmetric(horizontal: 15.h),
+                      ),
+                      getHorSpace(12.h),
+                      getCustomFont(
+                        '${snapshot.data!.commande} XAF',
+                        fontSize1,
+                        Colors.green,
+                        1,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                return getNoData(context);
+              }
+            },
+          ),
+          getVerticalSpace(context, 25),
           Expanded(
               child: getCommonContainer(
                   context: context,
@@ -79,6 +144,7 @@ class _CommandePageState extends State<CommandePage> {
                             },
                             child: Text('Actualiser'),
                           ),
+                            getHorizontalSpace(context, 15),
                           Expanded(
                               child: getSearchTextFiledWidget(
                                   context, 'Search..', textEditingController,
@@ -288,10 +354,12 @@ class _CommandePageState extends State<CommandePage> {
   updateStatus(BuildContext context, Book storyModel) {
     getCommonDialog(
         context: context,
-        title: storyModel.status!
+        title: storyModel.status!.value
             ? 'Do you want to de-active this book?'
             : 'Do you want to active this book?',
-        function: () {},
+        function: () {
+          
+        },
         subTitle: 'Book');
   }
 

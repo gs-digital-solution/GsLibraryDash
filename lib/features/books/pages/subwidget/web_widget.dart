@@ -49,14 +49,13 @@ class WebWidget extends StatelessWidget {
                             padding: padding,
                             child: Row(
                               children: [
+                                getHeaderCell(
+                                    '${mainList.indexOf(list[index]) + 1}',
+                                    context,
+                                    80),
                                 Expanded(
                                     child: getHeaderCell(
-                                        '${mainList.indexOf(list[index]) + 1}',
-                                        context,
-                                        80)),
-                                Expanded(
-                                    child: getHeaderCell(
-                                        '${list[index].categories![0].name}',
+                                       list[index].categories!.isNotEmpty? '${list[index].categories![0].name}':'Aucune categories',
                                         context,
                                         130)),
                                 Expanded(
@@ -93,7 +92,7 @@ class WebWidget extends StatelessWidget {
                                 Expanded(
                                   flex: 1,
                                   child: getActiveDeActiveCell(context,
-                                      list[index].status!, list[index]),
+                                      list[index].status!.value, list[index]),
                                 ),
                                 Stack(
                                   children: [
@@ -150,7 +149,7 @@ class WebWidget extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: getButton(
               context,
-              isActive ? 'Active' : 'Deactive',
+              isActive ? 'Activer' : 'Desactiver',
               isActive ? "#00A010".toColor() : "#FD3E3E".toColor(),
               isActive ? "#E7FFE8".toColor() : "#FFF2F2".toColor())),
       onTap: () {
@@ -179,21 +178,21 @@ class WebWidget extends StatelessWidget {
       decoration: decoration,
       child: Row(
         children: [
-          Expanded(child: getHeaderCell('ID', context, 80)),
-          Expanded(child: getHeaderCell('Category', context, 130)),
+          getHeaderCell('ID', context, 80),
+          Expanded(child: getHeaderCell('Categorie', context, 130)),
           Expanded(child: getHeaderCell('Image', context, 100)),
-          Expanded(flex: 1, child: getHeaderTitle(context, 'Book Title')),
+          Expanded(flex: 1, child: getHeaderTitle(context, 'Titre')),
           Expanded(
             flex: 1,
-            child: getHeaderCell('Author', context, 100),
+            child: getHeaderCell('Auteur', context, 100),
           ),
           Expanded(
             flex: 1,
-            child: getHeaderCell('Price', context, 100),
+            child: getHeaderCell('Prix', context, 100),
           ),
           Expanded(
               child: getHeaderCell(
-                  'Book Status'
+                  'Status'
                   '',
                   context,
                   120)),

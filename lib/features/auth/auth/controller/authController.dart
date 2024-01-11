@@ -43,6 +43,6 @@ class AuthController extends GetxController {
   Future<void> signOut() async {
     _authenticationStateStream.value = UnAuthenticated();
     await _authService!.signOut();
-    Get.offAllNamed('/LoginPage');
+    Get.offAllNamed('/');
   }
 }

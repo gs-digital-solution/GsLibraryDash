@@ -26,6 +26,32 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
+Widget? _getPageWidget(RouteSettings settings) {
+  if (settings.name == null) {
+    return null;
+  }
+  final uri = Uri.parse(settings.name!);
+  switch (uri.path) {
+    case '/':
+      return Get.find<AuthController>().state is Authenticated
+          ? HomePage()
+          : LoginPage();
+    case '/categories':
+      return CategoryScreen();
+    case '/categories/add':
+      return CategoryScreen();
+    case '/authors':
+      return AuthorScreen();
+    case '/authors/add':
+      return AddAuthorScreen();
+    case '/books':
+      return StoryScreen();
+    case '/books/add':
+      return AddStoryScreen();
+  }
+  return null;
+}
+
 class MyApp extends GetWidget<AuthController> {
   const MyApp({super.key});
 
@@ -45,26 +71,39 @@ class MyApp extends GetWidget<AuthController> {
           supportedLocales: [
             Locale("en", " "),
           ],
-        
-          getPages: [
-            GetPage(name: '/LoginPage', page: ()=>LoginPage()),
-            GetPage(name: '/HomePage', page: ()=>HomePage()),
-            GetPage(name: '/HomePage/categories', page: ()=>CategoryScreen()),
-            GetPage(name: '/HomePage/categories/add', page: ()=>AddCategoryScreen()),
-            GetPage(name: '/HomePage/authors', page: ()=>AuthorScreen()),
-            GetPage(name: '/HomePage/authors/add', page: ()=>AddAuthorScreen()),
-            GetPage(name: '/HomePage/books', page: ()=>StoryScreen()),
-            GetPage(name: '/HomePage/books/add', page: ()=>AddStoryScreen()),
-            
-          ],
+          routes: {
+            '/': (_) => Get.find<AuthController>().state is Authenticated
+                ? HomePage()
+                : LoginPage(),
+            '/categories': (_) => CategoryScreen(),
+            '/categories/add': (_) => AddCategoryScreen(),
+            '/authors': (_) => AuthorScreen(),
+            '/authors/add': (_) => AddAuthorScreen(),
+            '/books': (_) => StoryScreen(),
+            '/books/add': (_) => AddStoryScreen(),
+          },
+          
+
+          /* getPages: [
+            GetPage(name: '/LoginPage', page: () => LoginPage()),
+            GetPage(name: '/HomePage', page: () => HomePage()),
+            GetPage(name: '/HomePage/categories', page: () => CategoryScreen()),
+            GetPage(
+                name: '/HomePage/categories/add',
+                page: () => AddCategoryScreen()),
+            GetPage(name: '/HomePage/authors', page: () => AuthorScreen()),
+            GetPage(
+                name: '/HomePage/authors/add', page: () => AddAuthorScreen()),
+            GetPage(name: '/HomePage/books', page: () => StoryScreen()),
+            GetPage(name: '/HomePage/books/add', page: () => AddStoryScreen()),
+          ], */
 
           themeMode: provider.themeMode,
-         // darkTheme: AppTheme.darkTheme,
-         
-           initialRoute: Get.find<AuthController>().state is Authenticated
+          // darkTheme: AppTheme.darkTheme,
+
+          /* initialRoute: Get.find<AuthController>().state is Authenticated
               ? KeyUtil.homePage
-              : KeyUtil.loginPage, 
-          
+              : KeyUtil.loginPage, */
         );
       },
       init: ThemeController(),

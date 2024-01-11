@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:gslibrarydashboard/features/author/models/author.dart';
 import 'package:gslibrarydashboard/features/categories/models/categoryModel.dart';
 
@@ -11,11 +12,13 @@ class Book {
   int? pourcentage;
   TopAuthors? author;
   List<CategoryModel>? categories;
-  bool? status;
+  RxBool? status;
   String? createdAt;
   String? updatedAt;
   int? iV;
-  Avatar?avatar;
+  Avatar? avatar;
+  RxBool? popular;
+  RxBool? featured;
 
   Book(
       {this.gratuite,
@@ -31,6 +34,8 @@ class Book {
       this.createdAt,
       this.updatedAt,
       this.avatar,
+      this.popular,
+      this.featured,
       this.iV});
 
   Book.fromJson(Map<String, dynamic> json) {
@@ -42,7 +47,7 @@ class Book {
     sId = json['_id'];
     nom = json['nom'];
     description = json['description'];
-        avatar =
+    avatar =
         json['avatar'] != null ? new Avatar.fromJson(json['avatar']) : null;
     prix = json['prix'];
     pourcentage = json['pourcentage'];
@@ -54,13 +59,15 @@ class Book {
         categories!.add(new CategoryModel.fromJson(v));
       });
     }
-    status = json['status'];
+    status = RxBool(json['status']);
+    popular = RxBool(json['popular']);
+    featured = RxBool(json['featured']);
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
   }
 
-    Book.fromJsonCommande(Map<String, dynamic> json) {
+  Book.fromJsonCommande(Map<String, dynamic> json) {
     gratuite = json['gratuite'] != null
         ? new Gratuite.fromJson(json['gratuite'])
         : null;
@@ -69,11 +76,13 @@ class Book {
     sId = json['_id'];
     nom = json['nom'];
     description = json['description'];
-        avatar =
+    avatar =
         json['avatar'] != null ? new Avatar.fromJson(json['avatar']) : null;
     prix = json['prix'];
     pourcentage = json['pourcentage'];
-    status = json['status'];
+    status = RxBool(json['status']);
+    popular = RxBool(json['popular']);
+    featured = RxBool(json['featured']);
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
@@ -143,5 +152,3 @@ class Avatar {
     return data;
   }
 }
-
-

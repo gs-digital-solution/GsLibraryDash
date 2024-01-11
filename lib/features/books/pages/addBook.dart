@@ -38,7 +38,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
     final CategoryController categoryController = Get.put(CategoryController());
     final AuthorController authorController = Get.put(AuthorController());
 
-    bool isEdit = widget.storyModel != null;
+    bool isEdit = bookController.mybook != null;
     return SafeArea(
       child: Container(
         margin: EdgeInsets.symmetric(
@@ -47,9 +47,35 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            getTextWidget(context, isEdit ? 'Edit Book' : 'Add Book', 75,
-                getFontColor(context),
-                fontWeight: FontWeight.w700),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                getTextWidget(
+                    context,
+                    isEdit ? 'Mettre a jour le livre' : 'Ajouter un livre',
+                    75,
+                    getFontColor(context),
+                    fontWeight: FontWeight.w700),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      bookController.clearData();
+                    });
+                  },
+                  child: Text(
+                    'Supprimer le formulaire',
+                    style: TextStyle(
+                      fontFamily: Constants.fontsFamily,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
             getVerticalSpace(context, 35),
             Expanded(
               child: getCommonContainer(
@@ -62,10 +88,6 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                       flex: 1,
                       child: ListView(
                         children: [
-                          getVerticalSpace(context, 30),
-
-                          getCommonBackIcon(context, onTap: () {}),
-
                           getVerticalSpace(context, 30),
                           Responsive.isMobile(context)
                               ? Column(
@@ -485,20 +507,52 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                     fontWeight: FontWeight.w400,
                                                     fontSize: 15),
                                               ),
-                                              items: categoryController
-                                                  .categoryList
-                                                  .map(
-                                                    (element) =>
-                                                        DropdownMenuItem(
-                                                      value: element,
-                                                      child:
-                                                          Text(element.name!),
-                                                    ),
-                                                  )
-                                                  .toList(),
+                                              items: isEdit && bookController
+                                                            .categoryModel!=null
+                                                  ? [
+                                                      DropdownMenuItem(
+                                                        child: Text(
+                                                            bookController
+                                                                .categoryModel!
+                                                                .name!),
+                                                        value: bookController
+                                                            .categoryModel,
+                                                      ),
+                                                      ...categoryController
+                                                          .categoryList
+                                                          .where((category) =>
+                                                              category.sId !=
+                                                              bookController
+                                                                  .categoryModel!
+                                                                  .sId)
+                                                          .map(
+                                                            (element) =>
+                                                                DropdownMenuItem(
+                                                              value: element,
+                                                              child: Text(
+                                                                  element
+                                                                      .name!),
+                                                            ),
+                                                          )
+                                                          .toList()
+                                                    ]
+                                                  : categoryController
+                                                      .categoryList
+                                                      .map(
+                                                        (element) =>
+                                                            DropdownMenuItem(
+                                                          value: element,
+                                                          child: Text(
+                                                              element.name!),
+                                                        ),
+                                                      )
+                                                      .toList(),
                                               onChanged: (value) {
-                                                bookController.categoryModel=value;
+                                                bookController.categoryModel =
+                                                    value;
                                               },
+                                              value:
+                                                  bookController.categoryModel,
                                             ),
 /*                                             Obx(() {
                                               return categoryController
@@ -550,6 +604,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                 'Select Author', context),
                                             getVerticalSpace(context, 10),
                                             DropdownButtonFormField(
+                                              value: bookController.topAuthors,
                                               decoration: InputDecoration(
                                                 contentPadding: EdgeInsets.only(
                                                   left: 10.h,
@@ -602,19 +657,50 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                     fontWeight: FontWeight.w400,
                                                     fontSize: 15),
                                               ),
-                                              items: authorController.authorList
-                                                  .map(
-                                                    (element) =>
-                                                        DropdownMenuItem(
-                                                      value: element,
-                                                      child: Text(
-                                                          element.firstname ??
+                                              items: isEdit
+                                                  ? [
+                                                      DropdownMenuItem(
+                                                        child: Text(
+                                                            bookController
+                                                                .topAuthors!
+                                                                .firstname!),
+                                                        value: bookController
+                                                            .topAuthors!,
+                                                      ),
+                                                      ...authorController
+                                                          .authorList
+                                                          .where(
+                                                            (element) =>
+                                                                element.sId !=
+                                                                bookController
+                                                                    .topAuthors!
+                                                                    .sId,
+                                                          )
+                                                          .map(
+                                                            (element) =>
+                                                                DropdownMenuItem(
+                                                              value: element,
+                                                              child: Text(element
+                                                                      .firstname ??
+                                                                  ""),
+                                                            ),
+                                                          )
+                                                          .toList()
+                                                    ]
+                                                  : authorController.authorList
+                                                      .map(
+                                                        (element) =>
+                                                            DropdownMenuItem(
+                                                          value: element,
+                                                          child: Text(element
+                                                                  .firstname ??
                                                               ""),
-                                                    ),
-                                                  )
-                                                  .toList(),
+                                                        ),
+                                                      )
+                                                      .toList(),
                                               onChanged: (value) {
-                                                bookController.topAuthors=value;
+                                                bookController.topAuthors =
+                                                    value;
                                               },
                                             ),
                                             /* getTextFiledWidget(
@@ -1033,44 +1119,24 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                                       .contain,
                                                                 ),
                                                         )
-                                                      : isEdit
+                                                      : bookController.mybook !=
+                                                              null
                                                           ? ClipRRect(
                                                               borderRadius: BorderRadius.circular(
                                                                   (getResizeRadius(
                                                                       context,
                                                                       35))), //add border radius
-                                                              child: (widget
-                                                                      .storyModel!
-                                                                      .avatar!
-                                                                      .url!
-                                                                      .split(
-                                                                          ".")
-                                                                      .last
-                                                                      .startsWith(
-                                                                          "svg"))
-                                                                  ? Image.asset(
-                                                                      Constants
-                                                                          .placeImage,
-                                                                      height:
-                                                                          100.h,
-                                                                      width:
-                                                                          100.h,
-                                                                      fit: BoxFit
-                                                                          .contain,
-                                                                    )
-                                                                  : Image
-                                                                      .network(
-                                                                      widget
-                                                                          .storyModel!
-                                                                          .avatar!
-                                                                          .url!,
-                                                                      height:
-                                                                          100.h,
-                                                                      width:
-                                                                          100.h,
-                                                                      fit: BoxFit
-                                                                          .contain,
-                                                                    ),
+                                                              child:
+                                                                  Image.network(
+                                                                bookController
+                                                                    .mybook!
+                                                                    .avatar!
+                                                                    .url!,
+                                                                height: 100.h,
+                                                                width: 100.h,
+                                                                fit: BoxFit
+                                                                    .contain,
+                                                              ),
                                                             )
                                                           : Container();
                                                 }),
@@ -1147,7 +1213,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                             options:
                                                                 const QuillToolbarToggleStyleButtonOptions(),
                                                             controller:
-                                                                  bookController
+                                                                bookController
                                                                     .descController,
                                                             attribute:
                                                                 Attribute.bold,
@@ -1163,7 +1229,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                           ),
                                                           QuillToolbarToggleStyleButton(
                                                             controller:
-                                                                  bookController
+                                                                bookController
                                                                     .descController,
                                                             attribute: Attribute
                                                                 .underline,
@@ -1177,7 +1243,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                           const VerticalDivider(),
                                                           QuillToolbarColorButton(
                                                             controller:
-                                                                 bookController
+                                                                bookController
                                                                     .descController,
                                                             isBackground: false,
                                                           ),
@@ -1191,12 +1257,12 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                           const VerticalDivider(),
                                                           QuillToolbarToggleCheckListButton(
                                                             controller:
-                                                                  bookController
+                                                                bookController
                                                                     .descController,
                                                           ),
                                                           QuillToolbarToggleStyleButton(
                                                             controller:
-                                                                  bookController
+                                                                bookController
                                                                     .descController,
                                                             attribute:
                                                                 Attribute.ol,
@@ -1210,14 +1276,14 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                           ),
                                                           QuillToolbarToggleStyleButton(
                                                             controller:
-                                                                 bookController
+                                                                bookController
                                                                     .descController,
                                                             attribute: Attribute
                                                                 .inlineCode,
                                                           ),
                                                           QuillToolbarToggleStyleButton(
                                                             controller:
-                                                               bookController
+                                                                bookController
                                                                     .descController,
                                                             attribute: Attribute
                                                                 .blockQuote,
@@ -1230,14 +1296,14 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                           ),
                                                           QuillToolbarIndentButton(
                                                             controller:
-                                                                  bookController
+                                                                bookController
                                                                     .descController,
                                                             isIncrease: false,
                                                           ),
                                                           const VerticalDivider(),
                                                           QuillToolbarLinkStyleButton(
                                                             controller:
-                                                                 bookController
+                                                                bookController
                                                                     .descController,
                                                           ),
                                                         ],
@@ -1253,8 +1319,8 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                       configurations:
                                                           QuillEditorConfigurations(
                                                         controller:
-                                                              bookController
-                                                                    .descController,
+                                                            bookController
+                                                                .descController,
                                                         scrollable: true,
                                                         autoFocus: true,
                                                         expands: false,
@@ -1353,32 +1419,30 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                       ),
                     ),
                     getVerticalSpace(context, 20),
-                    Container(
-                      width: Get.width / 3,
-                      child: Obx(() => getButtonWidget(
-                            context,
-                            isEdit ? 'Update' : 'Save',
-                            isProgress: bookController.isLoading.value,
-                            () {
-                              if (isEdit) {
-                                /*  bookController.editCategory(
-                                    homeController, context, () {
-                                  widget.function();
-                                }); */
-                              } else {
-                               bookController.addBook().then((value){
+                    Obx(() => getButtonWidget(
+                          context,
+                          isEdit ? 'Mettre a jour' : 'Enregistrer',
+                          isProgress: bookController.isLoading.value,
+                          () {
+                            if (isEdit) {
+                              bookController.updateBook().then((value) {
                                 setState(() {
-                                  
+                                  bookController.clearData();
                                 });
-                               });
-                              }
-                            },
-                            horPadding: 25.h,
-                            horizontalSpace: 0,
-                            verticalSpace: 0,
-                            btnHeight: 40.h,
-                          )),
-                    ),
+                              });
+                            } else {
+                              bookController.addBook().then((value) {
+                                setState(() {
+                                  bookController.clearData();
+                                });
+                              });
+                            }
+                          },
+                          horPadding: 25.h,
+                          horizontalSpace: 0,
+                          verticalSpace: 0,
+                          btnHeight: 60.h,
+                        )),
                     getVerticalSpace(context, 20),
                   ],
                 ),

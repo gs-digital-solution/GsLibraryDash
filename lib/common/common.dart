@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/theme/theme_controller.dart';
@@ -156,14 +155,14 @@ getCommonDialog(
         content: Text(title),
         actions: <Widget>[
           new TextButton(
-            child: new Text('No',
+            child: new Text('Non',
                 style: TextStyle(color: getPrimaryColor(context))),
             onPressed: () {
               Navigator.of(context).pop(false);
             },
           ),
           new TextButton(
-            child: new Text('Yes',
+            child: new Text('Oui',
                 style: TextStyle(color: getPrimaryColor(context))),
             onPressed: () {
               Navigator.of(context).pop(true);
@@ -1234,7 +1233,7 @@ getCommonChooseFileBtn(BuildContext context, Function function) {
           radius: getResizeRadius(context, 10)),
       child: getTextWidget(
         context,
-        'Choose file',
+        'Choississez un fichier',
         35,
         getSubFontColor(context),
         // primaryFontColor,
@@ -1244,3 +1243,5 @@ getCommonChooseFileBtn(BuildContext context, Function function) {
     ),
   );
 }
+
+

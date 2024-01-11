@@ -84,7 +84,7 @@ class AuthorController extends GetxController
     homeController.selectedItem!.value = AdminMenuItem(
       title: 'Ajouter un auteurs',
       icon: Icons.add,
-      route: '/HomePage/authors/add',
+      route: '/authors/add',
     );
     authorModel = topAuthors;
   }
@@ -175,6 +175,7 @@ class AuthorController extends GetxController
     isLoading.value = false;
     activeStatus.value = true;
     webImage = Uint8List(10);
+    authorModel=null;
   }
 
   String getFileExtension(String fileName) {
@@ -189,7 +190,7 @@ class AuthorController extends GetxController
     imageController.text = "";
   }
 
-  Uint8List webImage = Uint8List(10);
+  Uint8List webImage = Uint8List(0);
 
   RxBool isImageOffline = false.obs;
 
@@ -287,5 +288,7 @@ class AuthorController extends GetxController
           );
         });
   }
+
+  
 }
 

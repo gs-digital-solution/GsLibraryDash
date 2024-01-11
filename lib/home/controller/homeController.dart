@@ -17,8 +17,8 @@ class HomeController extends GetxController {
   final AuthController authController = Get.find();
   
   Rx<AdminMenuItem>? selectedItem = AdminMenuItem(
-    title: 'Liste des categories',
-    icon: Icons.list,
-    route: '/HomePage',
+    title: 'Dashboard',
+    icon: Icons.dashboard,
+    route: '/',
   ).obs;
 }

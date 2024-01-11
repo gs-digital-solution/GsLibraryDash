@@ -55,31 +55,34 @@ class CommandeWebWidget extends StatelessWidget {
                             child: Row(
                               children: [
                                 Expanded(
-                                    child: getHeaderCell(
-                                        '${mainList.indexOf(list[index]) + 1}',
-                                        context,
-                                        80)),
+                                  child: getHeaderCell(
+                                    '${mainList.indexOf(list[index]) + 1}',
+                                    context,
+                                    80,
+                                  ),
+                                ),
                                 Expanded(
-                                    child: SizedBox(
-                                  width: 100.h,
-                                  child: Container(
-                                    height: 50.h,
-                                    width: 75.h,
-                                    alignment: Alignment.centerLeft,
-                                    child: ClipRRect(
-                                      // borderRadius: BorderRadius
-                                      //     .circular(10.r),
-                                      child: Image(
-                                        image: NetworkImage(
-                                            list[index].book!.avatar!.url!),
+                                  child: SizedBox(
+                                    width: 100.h,
+                                    child: Container(
+                                      height: 50.h,
+                                      width: 75.h,
+                                      alignment: Alignment.centerLeft,
+                                      child: ClipRRect(
+                                        // borderRadius: BorderRadius
+                                        //     .circular(10.r),
+                                        child: Image(
+                                          image: NetworkImage(
+                                        list[index].book!=null?      list[index].book!.avatar!.url!:""),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                )),
+                                ),
                                 Expanded(
                                     flex: 1,
                                     child: getHeaderTitle(
-                                        context, '${list[index].book!.nom}')),
+                                        context,list[index].book!=null? '${list[index].book!.nom}':'')),
                                 Expanded(
                                     child: getHeaderCell(
                                         '${list[index].author!.firstname ?? ""} ',

@@ -83,12 +83,18 @@ class AuthorWebWidget extends StatelessWidget{
                                           ),
                                         ),
                                       ),
+                                      getHorSpace(10.h),
                                       getHeaderCell(
-                                          '${list[index].firstname??""}',
+                                          '${list[index].firstname??""} ${list[index].lastname??""} ',
                                           context,
                                           130),
                                       getHeaderCell(
                                           '${list[index].designation??""}',
+                                          context,
+                                          150),
+                                      getHorSpace(10.h),
+                                       getHeaderCell(
+                                          '${list[index].solde??""} XAF',
                                           context,
                                           150),
                                       getHorSpace(10.h),
@@ -104,12 +110,12 @@ class AuthorWebWidget extends StatelessWidget{
                                       ),
                                       getHorizontalSpace(context, 10),
 
-                                      SizedBox(
+                                     /*  SizedBox(
                                         width: 120.h,
                                         child: getActiveDeActiveCell(
                                             context,
                                             list[index].status??false, list[index]),
-                                      ),
+                                      ), */
                                       Stack(
                                         children: [
                                           getMaxLineFont(context, 'Action', 50,
@@ -198,9 +204,9 @@ class AuthorWebWidget extends StatelessWidget{
       child: Row(
         children: [
           // getHeaderCell('ID', context, 130),
-          getHeaderCell('Image', context, 100),
+          getHeaderCell('Avatar', context, 100),
           getHeaderCell(
-              'Name',
+              'Nom & Prenom',
               context,
               130),
           getHeaderCell(
@@ -208,12 +214,17 @@ class AuthorWebWidget extends StatelessWidget{
                   '',
               context,
               150),
+              getHeaderCell(
+              'Solde'
+                  '',
+              context,
+              150),
           getHorSpace(10.h),
           Expanded(child: getHeaderTitle(context, 'Description')),
-          getHeaderCell(
+          /* getHeaderCell(
               'Status',
               context,
-              120),
+              120), */
           getHeaderTitle(context, 'Action'),
         ],
       ),

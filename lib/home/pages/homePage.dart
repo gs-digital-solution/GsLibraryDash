@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/features/auth/auth/controller/authController.dart';
-import 'package:gslibrarydashboard/features/auth/auth/states/authState.dart';
 import 'package:gslibrarydashboard/features/author/controllers/authorController.dart';
 import 'package:gslibrarydashboard/features/author/screens/addAuthorPage.dart';
 import 'package:gslibrarydashboard/features/author/screens/authorPage.dart';
@@ -15,16 +14,15 @@ import 'package:gslibrarydashboard/features/categories/controller/categoryContro
 import 'package:gslibrarydashboard/features/categories/screens/addCategoryPage.dart';
 import 'package:gslibrarydashboard/features/categories/screens/categoryPage.dart';
 import 'package:gslibrarydashboard/features/commandes/pages/commandePage.dart';
+import 'package:gslibrarydashboard/features/dashboard/pages/dashboardPage.dart';
 import 'package:gslibrarydashboard/features/retraits/pages/addRetrait.dart';
 import 'package:gslibrarydashboard/features/retraits/pages/retraitPage.dart';
 import 'package:gslibrarydashboard/home/controller/homeController.dart';
-import 'package:gslibrarydashboard/home/services/baseService.dart';
 import 'package:gslibrarydashboard/main.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/theme/theme_controller.dart';
 import 'package:gslibrarydashboard/utils/constants.dart';
-import 'package:gslibrarydashboard/utils/responsive.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -50,230 +48,222 @@ class _HomePageState extends State<HomePage> {
     setScreenSize(context);
     return Theme(
       data: Theme.of(context),
-      child: AdminScaffold(
-        backgroundColor: getBackgroundColor(context),
-        appBar: AppBar(
-          backgroundColor: getCardColor(context),
-          title: getMaxLineFont(
-            context,
-            'GSLIBRARY',
-            85,
-            getPrimaryColor(context),
-            1,
-            customFont: Constants.headerFontsFamily,
-            fontWeight: FontWeight.w700,
-          ),
-          systemOverlayStyle: getBrightnessLight(),
-          elevation: 0,
-          toolbarHeight: 70.h,
-          // leadingWidth: Responsive.isDesktop(context) ? 0 : 100.w,
-          actions: [
-            Container(
-              decoration: getDefaultDecoration(
-                  borderColor: getBorderColor(context),
-                  borderWidth: 0.5,
-                  radius: getResizeRadius(context, 40)),
-              margin: EdgeInsets.symmetric(
-                vertical: 15.h,
+      child: Obx(
+        () => AdminScaffold(
+          backgroundColor: getBackgroundColor(context),
+          appBar: AppBar(
+            backgroundColor: getCardColor(context),
+            title: getMaxLineFont(
+              context,
+              'GSLIBRARY',
+              85,
+              getPrimaryColor(context),
+              1,
+              customFont: Constants.headerFontsFamily,
+              fontWeight: FontWeight.w700,
+            ),
+            systemOverlayStyle: getBrightnessLight(),
+            elevation: 0,
+            toolbarHeight: 70.h,
+            // leadingWidth: Responsive.isDesktop(context) ? 0 : 100.w,
+            actions: [
+              Container(
+                decoration: getDefaultDecoration(
+                    borderColor: getBorderColor(context),
+                    borderWidth: 0.5,
+                    radius: getResizeRadius(context, 40)),
+                margin: EdgeInsets.symmetric(
+                  vertical: 15.h,
+                ),
+                child: Row(
+                  children: [
+                    imageSvg('dark_mode.svg',
+                        height: 20.h,
+                        width: 20.h,
+                        color: themeController.checkDarkTheme()
+                            ? getPrimaryColor(context)
+                            : getSubFontColor(context), onTap: () {
+                      /* if (!themeController.checkDarkTheme()) {
+                        themeController.changeTheme(context);
+                      } */
+                    }),
+                    Container(
+                      height: 20.h,
+                      color: getBorderColor(context),
+                      width: 0.5,
+                      margin: EdgeInsets.symmetric(horizontal: 15.h),
+                    ),
+                    imageSvg('light_mode.svg',
+                        height: 20.h,
+                        width: 20.h,
+                        color: themeController.checkDarkTheme()
+                            ? getSubFontColor(context)
+                            : getPrimaryColor(context), onTap: () {
+                      if (themeController.checkDarkTheme()) {
+                        themeController.changeTheme(context);
+                      }
+                    }),
+                  ],
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 15.h),
               ),
-              child: Row(
+
+              // buildPopupMenuButton((value) {
+              //   handleClick(value);
+              // }).marginSymmetric(horizontal: 20.h),
+
+              GestureDetector(
+                onTap: () {
+                  _showPopupMenu();
+                },
+                child: Container(
+                        alignment: Alignment.center,
+                        child: imageAsset(
+                            themeController.checkDarkTheme()
+                                ? 'profile_dark.png'
+                                : 'profile.png',
+                            height: 40.h,
+                            width: 40.h))
+                    .marginSymmetric(horizontal: 20.h),
+              )
+            ],
+          ),
+          sideBar: SideBar(
+            backgroundColor: getCardColor(context),
+            iconColor: Theme.of(context).primaryColor,
+            activeBackgroundColor: themeController.checkDarkTheme()
+                ? darkSubCardColor
+                : alphaColor,
+            activeIconColor: Theme.of(context).primaryColor,
+            textStyle: TextStyle(
+              decoration: TextDecoration.none,
+              fontSize: getResizeFont(context, 50),
+              fontStyle: FontStyle.normal,
+              color: getSubFontColor(context),
+              fontFamily: Constants.fontsFamily,
+              fontWeight: FontWeight.w500,
+              height: 1,
+            ),
+            activeTextStyle: TextStyle(
+              decoration: TextDecoration.none,
+              fontSize: getResizeFont(context, 50),
+              fontStyle: FontStyle.normal,
+              color: getPrimaryColor(context),
+              fontFamily: Constants.fontsFamily,
+              fontWeight: FontWeight.w500,
+              height: 1,
+            ),
+            items: const [
+              AdminMenuItem(
+                title: 'Dashboard',
+                route: '/',
+                icon: Icons.dashboard,
+              ),
+              AdminMenuItem(
+                title: 'Categories',
+                icon: Icons.category,
                 children: [
-                  imageSvg('dark_mode.svg',
-                      height: 20.h,
-                      width: 20.h,
-                      color: themeController.checkDarkTheme()
-                          ? getPrimaryColor(context)
-                          : getSubFontColor(context), onTap: () {
-                    /* if (!themeController.checkDarkTheme()) {
-                      themeController.changeTheme(context);
-                    } */
-                  }),
-                  Container(
-                    height: 20.h,
-                    color: getBorderColor(context),
-                    width: 0.5,
-                    margin: EdgeInsets.symmetric(horizontal: 15.h),
+                  AdminMenuItem(
+                    title: 'Liste des categories',
+                    icon: Icons.list,
+                    route: '/categories',
                   ),
-                  imageSvg('light_mode.svg',
-                      height: 20.h,
-                      width: 20.h,
-                      color: themeController.checkDarkTheme()
-                          ? getSubFontColor(context)
-                          : getPrimaryColor(context), onTap: () {
-                    if (themeController.checkDarkTheme()) {
-                      themeController.changeTheme(context);
-                    }
-                  }),
+                  AdminMenuItem(
+                    title: 'Ajouter une categorie',
+                    icon: Icons.add,
+                    route: '/categories/add',
+                  ),
                 ],
               ),
-              padding: EdgeInsets.symmetric(horizontal: 15.h),
-            ),
-
-            // buildPopupMenuButton((value) {
-            //   handleClick(value);
-            // }).marginSymmetric(horizontal: 20.h),
-
-            GestureDetector(
-              onTap: () {
-                _showPopupMenu();
-              },
-              child: Container(
-                      alignment: Alignment.center,
-                      child: imageAsset(
-                          themeController.checkDarkTheme()
-                              ? 'profile_dark.png'
-                              : 'profile.png',
-                          height: 40.h,
-                          width: 40.h))
-                  .marginSymmetric(horizontal: 20.h),
-            )
-          ],
-        ),
-        sideBar: SideBar(
-          backgroundColor: getCardColor(context),
-          iconColor: Theme.of(context).primaryColor,
-          activeBackgroundColor:
-              themeController.checkDarkTheme() ? darkSubCardColor : alphaColor,
-          activeIconColor: Theme.of(context).primaryColor,
-          textStyle: TextStyle(
-            decoration: TextDecoration.none,
-            fontSize: getResizeFont(context, 50),
-            fontStyle: FontStyle.normal,
-            color: getSubFontColor(context),
-            fontFamily: Constants.fontsFamily,
-            fontWeight: FontWeight.w500,
-            height: 1,
-          ),
-          activeTextStyle: TextStyle(
-            decoration: TextDecoration.none,
-            fontSize: getResizeFont(context, 50),
-            fontStyle: FontStyle.normal,
-            color: getPrimaryColor(context),
-            fontFamily: Constants.fontsFamily,
-            fontWeight: FontWeight.w500,
-            height: 1,
-          ),
-          items: const [
-            AdminMenuItem(
-              title: 'Dashboard',
-              route: '/HomePage',
-              icon: Icons.dashboard,
-            ),
-            AdminMenuItem(
-              title: 'Categories',
-              icon: Icons.category,
-              route: '/HomePage',
-              children: [
-                AdminMenuItem(
-                  title: 'Liste des categories',
-                  icon: Icons.list,
-                  route: '/HomePage/categories',
-                ),
-                AdminMenuItem(
-                  title: 'Ajouter une categorie',
-                  icon: Icons.add,
-                  route: '/HomePage/categories/add',
-                ),
-              ],
-            ),
-            AdminMenuItem(
-              title: 'Auteurs',
-              icon: Icons.person,
-              children: [
-                AdminMenuItem(
-                  title: 'Listes des Auteurs',
-                  icon: Icons.list,
-                  route: '/HomePage/authors',
-                ),
-                AdminMenuItem(
-                  title: 'Ajouter un auteurs',
-                  icon: Icons.add,
-                  route: '/HomePage/authors/add',
-                ),
-              ],
-            ),
-            AdminMenuItem(
-              title: 'Books',
-              icon: Icons.person,
-              children: [
-                AdminMenuItem(
-                  title: 'Listes des livres',
-                  icon: Icons.list,
-                  route: '/HomePage/books',
-                ),
-                AdminMenuItem(
-                  title: 'ajouter un livre',
-                  icon: Icons.add,
-                  route: '/HomePage/books/add',
-                ),
-              ],
-            ),
-            AdminMenuItem(
-              title: 'Historique',
-              icon: Icons.history,
-              children: [
-                AdminMenuItem(
-                  title: 'Commandes',
-                  icon: Icons.list,
-                  route: '/HomePage/commandes',
-                ),
-                AdminMenuItem(
-                  title: 'Paiements',
-                  icon: Icons.list,
-                  route: '/HomePage/retraits',
-                ),
-                AdminMenuItem(
-                  title: 'Nouveau paiement',
-                  icon: Icons.add,
-                  route: '/HomePage/retraits/add',
-                ),
-              ],
-            ),
-          ],
-          selectedRoute: homeController.selectedItem!.value.route!,
-          onSelected: (item) {
-            homeController.selectedItem!.value = item;
-          },
-        ),
-        body: Obx(
-          () {
-            switch (homeController.selectedItem!.value.route) {
-              case '/HomePage':
-                return SingleChildScrollView(
-                  child: Container(
-                    alignment: Alignment.topLeft,
-                    padding: const EdgeInsets.all(10),
-                    child: const Text(
-                      'Dashboard',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 36,
-                      ),
-                    ),
+              AdminMenuItem(
+                title: 'Auteurs',
+                icon: Icons.person,
+                children: [
+                  AdminMenuItem(
+                    title: 'Liste des Auteur',
+                    icon: Icons.list,
+                    route: '/authors',
                   ),
-                );
-              case '/HomePage/categories':
-                return CategoryScreen();
-              case '/HomePage/categories/add':
-                return AddCategoryScreen();
-              case '/HomePage/authors':
-                return AuthorScreen();
-              case '/HomePage/authors/add':
-                return AddAuthorScreen();
-              case '/HomePage/books':
-                return StoryScreen();
-              case '/HomePage/books/add':
-                return AddStoryScreen();
-              case '/HomePage/commandes':
-                return CommandePage();
-              case '/HomePage/retraits':
-                return RetraitPage();
-               case '/HomePage/retraits/add':
-                return NewRetrait();
-              default:
-                return SizedBox();
-            }
-          },
+                  AdminMenuItem(
+                    title: 'Ajouter un auteur',
+                    icon: Icons.add,
+                    route: '/authors/add',
+                  ),
+                ],
+              ),
+              AdminMenuItem(
+                title: 'Livres',
+                icon: Icons.person,
+                children: [
+                  AdminMenuItem(
+                    title: 'Liste des livres',
+                    icon: Icons.list,
+                    route: '/books',
+                  ),
+                  AdminMenuItem(
+                    title: 'ajouter un livre',
+                    icon: Icons.add,
+                    route: '/books/add',
+                  ),
+                ],
+              ),
+              AdminMenuItem(
+                title: 'Transactions',
+                icon: Icons.history,
+                children: [
+                  AdminMenuItem(
+                    title: 'Commandes',
+                    icon: Icons.list,
+                    route: '/commandes',
+                  ),
+                  AdminMenuItem(
+                    title: 'Paiements',
+                    icon: Icons.list,
+                    route: '/retraits',
+                  ),
+                  AdminMenuItem(
+                    title: 'Nouveau paiement',
+                    icon: Icons.add,
+                    route: '/retraits/add',
+                  ),
+                ],
+              ),
+            ],
+            selectedRoute: homeController.selectedItem!.value.route!,
+            onSelected: (item) {
+              setState(() {
+                homeController.selectedItem!.value = item;
+              });
+            },
+          ),
+          body: Obx(
+            () {
+              switch (homeController.selectedItem!.value.route) {
+                case '/':
+                  return DashboardPage();
+                case '/categories':
+                  return CategoryScreen();
+                case '/categories/add':
+                  return AddCategoryScreen();
+                case '/authors':
+                  return AuthorScreen();
+                case '/authors/add':
+                  return AddAuthorScreen();
+                case '/books':
+                  return StoryScreen();
+                case '/books/add':
+                  return AddStoryScreen();
+                case '/commandes':
+                  return CommandePage();
+                case '/retraits':
+                  return RetraitPage();
+                case '/retraits/add':
+                  return NewRetrait();
+                default:
+                  return SizedBox();
+              }
+            },
+          ),
         ),
       ),
     );
@@ -342,7 +332,7 @@ class _HomePageState extends State<HomePage> {
             child: Container(
               width: width,
               child: DrawerListTile(
-                title: "Log Out",
+                title: "Se Deconnecter",
                 iconData: Icons.account_circle_sharp,
                 space: 0,
                 color: Colors.red,
@@ -365,20 +355,20 @@ class _HomePageState extends State<HomePage> {
                     builder: (BuildContext dialogContext) {
                       return AlertDialog(
                         title: getCustomFont(
-                            "Log Out",
+                            "Se Deconnecter",
                             getResizeFont(context, 70),
                             getFontColor(context),
                             1,
                             fontWeight: FontWeight.w600),
                         content: getCustomFont(
-                            "Are you sure want to Log out ?",
+                            "Voulez-vous vous deconnecter ?",
                             getResizeFont(context, 50),
                             getFontColor(context),
                             1),
                         actions: <Widget>[
                           TextButton(
                             child: getCustomFont(
-                                "YES",
+                                "OUI",
                                 getResizeFont(context, 50),
                                 getPrimaryColor(context),
                                 1,
@@ -391,7 +381,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           TextButton(
                             child: getCustomFont(
-                                "NO",
+                                "NON",
                                 getResizeFont(context, 50),
                                 getPrimaryColor(context),
                                 1,

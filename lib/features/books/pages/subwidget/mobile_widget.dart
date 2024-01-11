@@ -101,10 +101,10 @@ class MobileWidget extends StatelessWidget{
                                                             ),
                                                           ),
 
-                                                    
-                                                    getActiveDeActiveCell(
+                                                    Obx(() =>getActiveDeActiveCell(
                                                         context,
-                                                        list[index].status!, list[index]),
+                                                        list[index].status!.value, list[index]) )
+                                                    ,
 
                                                     Container(
                                                       width: 80.h,

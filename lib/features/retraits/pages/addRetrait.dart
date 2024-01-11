@@ -13,6 +13,7 @@ import 'package:gslibrarydashboard/features/books/model/book.dart';
 import 'package:gslibrarydashboard/features/books/pages/category_dropdown.dart';
 import 'package:gslibrarydashboard/features/books/pages/subwidget/status_drop_down.dart';
 import 'package:gslibrarydashboard/features/categories/controller/categoryController.dart';
+import 'package:gslibrarydashboard/features/dashboard/controllers/dashboardController.dart';
 import 'package:gslibrarydashboard/features/retraits/controller/retraitController.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
@@ -38,6 +39,7 @@ class _NewRetraitState extends State<NewRetrait> {
   Widget build(BuildContext context) {
     final AuthorController authorController = Get.put(AuthorController());
     final RetraitController retraitController = Get.put(RetraitController());
+    final DashboardController dashboardController = Get.find();
     final formKey = GlobalKey<FormState>();
 
     return SafeArea(
@@ -48,9 +50,71 @@ class _NewRetraitState extends State<NewRetrait> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            getTextWidget(
-                context, 'Nouveau Paiement', 75, getFontColor(context),
-                fontWeight: FontWeight.w700),
+            FutureBuilder(
+              future: dashboardController.getStatAdmin(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return getProgressDialog(context);
+                } else if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.data != null) {
+                  double iconSize =
+                      (MediaQuery.of(context).size.width < 1338) ? 25.h : 40.h;
+                  double fontSize =
+                      (MediaQuery.of(context).size.width < 1338) ? 15 : 17.sp;
+                  double fontSize1 =
+                      (MediaQuery.of(context).size.width < 1338) ? 35 : 40.h;
+                  return Container(
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              offset: Offset(0, 16),
+                              blurRadius: 31,
+                              color: Color(0XFFACBFC1).withOpacity(0.10))
+                        ],
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(16.h),
+                        ),
+                        color: getSubCardColor(context)),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 96.h,
+                          decoration: BoxDecoration(color: Color(0XFFD8F1E4)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              getSvgImage("dashboard_category_icon.svg",
+                                  height: iconSize, width: iconSize),
+                              getHorSpace(12.h),
+                              getMultilineCustomFont(
+                                "Restant a Payer",
+                                fontSize,
+                                Colors.black,
+                                fontWeight: FontWeight.w300,
+                                overflow: TextOverflow.visible,
+                              ),
+                            ],
+                          ).paddingSymmetric(horizontal: 15.h),
+                        ),
+                        getHorSpace(12.h),
+                        getCustomFont(
+                          '${snapshot.data!.montant} XAF',
+                          fontSize1,
+                          Colors.orangeAccent,
+                          1,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  return getNoData(context);
+                }
+              },
+            ),
             getVerticalSpace(context, 35),
             Expanded(
               child: getCommonContainer(
@@ -63,8 +127,6 @@ class _NewRetraitState extends State<NewRetrait> {
                       flex: 1,
                       child: ListView(
                         children: [
-                          getVerticalSpace(context, 30),
-                          getCommonBackIcon(context, onTap: () {}),
                           getVerticalSpace(context, 30),
                           Responsive.isMobile(context)
                               ? Form(
@@ -237,23 +299,26 @@ class _NewRetraitState extends State<NewRetrait> {
                     getVerticalSpace(context, 20),
                     Container(
                       width: Get.width / 3,
-                      child: Obx(() => getButtonWidget(
-                            context,
-                            'Enregister',
-                            isProgress: retraitController.loading.value,
-                            () {
-                              if (formKey.currentState!.validate()) {
-                                retraitController.createRetrait(context: context).then((value) {
-                                  setState(() {});
-                                });
-                              }
-                            },
-                            horPadding: 25.h,
-                            horizontalSpace: 0,
-                            verticalSpace: 0,
-                            btnHeight: 60.h,
-                            
-                          )),
+                      child: Obx(
+                        () => getButtonWidget(
+                          context,
+                          'Enregister',
+                          isProgress: retraitController.loading.value,
+                          () {
+                            if (formKey.currentState!.validate()) {
+                              retraitController
+                                  .createRetrait(context: context)
+                                  .then((value) {
+                                setState(() {});
+                              });
+                            }
+                          },
+                          horPadding: 25.h,
+                          horizontalSpace: 0,
+                          verticalSpace: 0,
+                          btnHeight: 60.h,
+                        ),
+                      ),
                     ),
                     getVerticalSpace(context, 20),
                   ],

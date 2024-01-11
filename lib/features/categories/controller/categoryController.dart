@@ -62,6 +62,7 @@ class CategoryController extends GetxController
     nameController.clear();
     imageController.clear();
     webImage = Uint8List(10);
+    categoryModel=null;
 
     isImageOffline.value = false;
     categoryModel = null;
@@ -158,7 +159,7 @@ class CategoryController extends GetxController
       categoryList.removeAt(index);
 
       Fluttertoast.showToast(
-          msg: "categorie Supprimer", backgroundColor: Colors.green);
+          msg: "categorie Supprime", backgroundColor: Colors.green);
       isLoading.value = false;
     } on AppException catch (e) {
       isLoading.value = false;

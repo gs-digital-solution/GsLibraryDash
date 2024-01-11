@@ -8,6 +8,7 @@ import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/features/author/controllers/authorController.dart';
 import 'package:gslibrarydashboard/features/author/models/author.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
+import 'package:gslibrarydashboard/utils/constants.dart';
 import 'package:gslibrarydashboard/utils/responsive.dart';
 
 class AddAuthorScreen extends StatefulWidget {
@@ -32,9 +33,35 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              getTextWidget(context, isEdit ? 'Edit Author' : 'Add Author', 75,
-                  getFontColor(context),
-                  fontWeight: FontWeight.w700),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  getTextWidget(
+                      context,
+                      isEdit ? 'Mettre a jour' : 'Ajouter un auteur',
+                      75,
+                      getFontColor(context),
+                      fontWeight: FontWeight.w700),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        authorController.clearAuthData();
+                      });
+                    },
+                    child: Text(
+                      'Supprimer le formulaire',
+                      style: TextStyle(
+                        fontFamily: Constants.fontsFamily,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               getVerticalSpace(context, 35),
               Expanded(
                 child: getCommonContainer(
@@ -51,12 +78,6 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                       Expanded(
                         child: ListView(
                           children: [
-                            getVerticalSpace(context, 30),
-                            getCommonBackIcon(
-                              context,
-                              onTap: () {},
-                            ),
-
                             getVerticalSpace(context, 30),
                             Responsive.isMobile(context)
                                 ? Column(
@@ -625,27 +646,24 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                         ),
                       ),
                       getVerticalSpace(context, 20),
-                      Container(
-                        width: Get.width / 3,
-                        child: Obx(() => getButtonWidget(
-                              context,
-                              isEdit ? 'Mettre a jour' : 'Enregistrer',
-                              isProgress: authorController.isLoading.value,
-                              () {
-                                if (isEdit) {
-                                  authorController.updateCategory(
-                                    model: authorController.authorModel,
-                                  );
-                                } else {
-                                  authorController.addCategory();
-                                }
-                              },
-                              horPadding: 25.h,
-                              horizontalSpace: 0,
-                              verticalSpace: 0,
-                              btnHeight: 50.h,
-                            )),
-                      ),
+                      Obx(() => getButtonWidget(
+                            context,
+                            isEdit ? 'Mettre a jour' : 'Enregistrer',
+                            isProgress: authorController.isLoading.value,
+                            () {
+                              if (isEdit) {
+                                authorController.updateCategory(
+                                  model: authorController.authorModel,
+                                );
+                              } else {
+                                authorController.addCategory();
+                              }
+                            },
+                            horPadding: 25.h,
+                            horizontalSpace: 0,
+                            verticalSpace: 0,
+                            btnHeight: 50.h,
+                          )),
                       getVerticalSpace(context, 20),
                     ],
                   ),

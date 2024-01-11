@@ -47,6 +47,8 @@ class BookService extends getX.GetxService {
     CategoryModel? categoryModel,
     String? description,
     bool? status,
+    bool? popular,
+    bool? featured,
   }) async {
     FormData formData = FormData.fromMap({});
 
@@ -80,7 +82,10 @@ class BookService extends getX.GetxService {
     formData.fields.add(MapEntry("prix", prix!));
     formData.fields.add(MapEntry("pourcentage", pourcentage!));
     formData.fields.add(MapEntry("description", description!));
+    formData.fields.add(MapEntry("popular", '$popular'));
+    formData.fields.add(MapEntry("featured", '$featured'));
     //  formData.fields.add(MapEntry("status", '${true}'));
+    print(formData.fields);
 
     try {
       final response = await BaseService.dio.post("books", data: formData);
@@ -100,24 +105,28 @@ class BookService extends getX.GetxService {
     }
   }
 
-  Future<Book> updateBook(
-      {List<int>? avatar,
-      String? filename,
-      List<int>? payante,
-      String? payanteFilename,
-      List<int>? gratuite,
-      String? gratuiteFilename,
-      String? nom,
-      String? prix,
-      String? pourcentage,
-      TopAuthors? topAuthors,
-      CategoryModel? categoryModel,
-      String? description,
-      bool? status,
-      Book? book}) async {
+  Future<Book> updateBook({
+    List<int>? avatar,
+    String? filename,
+    List<int>? payante,
+    String? payanteFilename,
+    List<int>? gratuite,
+    String? gratuiteFilename,
+    String? nom,
+    String? prix,
+    String? pourcentage,
+    TopAuthors? topAuthors,
+    CategoryModel? categoryModel,
+    String? description,
+    bool? status,
+    Book? book,
+    bool? popular,
+    bool? featured,
+  }) async {
     FormData formData = FormData.fromMap({});
 
     if (avatar!.isNotEmpty) {
+      print("avatar");
       formData.files.add(MapEntry(
         'avatar',
         await MultipartFile.fromBytes(
@@ -128,6 +137,7 @@ class BookService extends getX.GetxService {
     }
 
     if (gratuite!.isNotEmpty) {
+      print("gratuite");
       formData.files.add(MapEntry(
         'gratuite',
         await MultipartFile.fromBytes(
@@ -137,12 +147,13 @@ class BookService extends getX.GetxService {
       ));
     }
 
-    if (gratuite.isNotEmpty) {
+    if (payante!.isNotEmpty) {
+      print("payante");
       formData.files.add(
         MapEntry(
           'payante',
           await MultipartFile.fromBytes(
-            payante!,
+            payante,
             filename: payanteFilename,
           ),
         ),
@@ -155,11 +166,10 @@ class BookService extends getX.GetxService {
     formData.fields.add(MapEntry("prix", prix!));
     formData.fields.add(MapEntry("pourcentage", pourcentage!));
     formData.fields.add(MapEntry("description", description!));
-    //  formData.fields.add(MapEntry("status", '${true}'));
-    print(filename);
-    print(gratuiteFilename);
-    print(payanteFilename);
-    print(formData.files);
+    formData.fields.add(MapEntry("popular", '$popular'));
+    formData.fields.add(MapEntry("featured", '$featured'));
+    print(formData.fields);
+   
 
     try {
       final response =
@@ -171,6 +181,33 @@ class BookService extends getX.GetxService {
         throw AppException(message: "Une erreur est survenue");
       }
     } on DioException catch (e) {
+      print(e.error);
+      if (e.type == DioExceptionType.badResponse) {
+        throw AppException(message: e.response!.data['msg']);
+      } else {
+        throw AppException(
+            message: "Verifier votre connexion internet et ressayez");
+      }
+    }
+  }
+
+  Future<Book> updateBookStatus({
+    bool? status,
+    Book? book,
+  }) async {
+    FormData formData = FormData.fromMap({});
+    formData.fields.add(MapEntry("status", '$status'));
+    try {
+      final response =
+          await BaseService.dio.post("books/${book!.sId}", data: formData);
+      print(response.data);
+      if (response.statusCode == 201) {
+        return Book.fromJson(response.data['book']);
+      } else {
+        throw AppException(message: "Une erreur est survenue");
+      }
+    } on DioException catch (e) {
+      print(e.error);
       if (e.type == DioExceptionType.badResponse) {
         throw AppException(message: e.response!.data['msg']);
       } else {

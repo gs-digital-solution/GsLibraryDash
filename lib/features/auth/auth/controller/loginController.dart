@@ -39,6 +39,8 @@ class LoginController extends GetxController {
     try {
       await _authController.login(email: email!.text, password: password!.text);
       _loginStateStream.value = LoginSuccess();
+      email!.clear();
+      password!.clear();
       return true;
     } on AuthException catch (e) {
       _loginStateStream.value = LoginFailure(error: e.message!);
