@@ -5,7 +5,7 @@ class BaseService {
     BaseOptions(
       connectTimeout: Duration(seconds: 30),
       receiveTimeout: Duration(seconds: 30),
-      baseUrl: "https://arcane-cove-19506-d9cc2939854a.herokuapp.com/api/v1/",
+      baseUrl: "https://api.gslibrary2024.com/api/v1/",
       headers: {
         'Content-Type': 'application/json',
       },
