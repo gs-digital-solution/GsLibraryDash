@@ -1,17 +1,16 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/features/auth/auth/controller/loginController.dart';
+import 'package:gslibrarydashboard/home/pages/privacy.dart';
 import 'package:gslibrarydashboard/main.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/utils/app_routes.dart';
 import 'package:gslibrarydashboard/utils/constants.dart';
 import 'package:gslibrarydashboard/utils/responsive.dart';
-
 
 class LoginPage extends StatefulWidget {
   @override
@@ -124,7 +123,7 @@ class _LoginPage extends State<LoginPage> {
                 if (await loginController.login()) {
                   print("true");
                   Get.offAllNamed('/');
-                 // Constants.pushPage(KeyUtil.homePage, function: (value) {});
+                  // Constants.pushPage(KeyUtil.homePage, function: (value) {});
                 } else {
                   Fluttertoast.showToast(
                     msg: (loginController.state as LoginFailure).error,
@@ -136,8 +135,7 @@ class _LoginPage extends State<LoginPage> {
               Obx(() {
                 return getButtonWidget(context, 'Se connecter', () async {
                   if (await loginController.login()) {
-                    
-                   Get.offAllNamed('/');
+                    Get.offAllNamed('/');
                   } else {
                     Fluttertoast.showToast(
                       msg: (loginController.state as LoginFailure).error,
@@ -145,13 +143,23 @@ class _LoginPage extends State<LoginPage> {
                     );
                   }
                 },
-                    isProgress:loginController.state is LoginLoading?true:false,
+                    isProgress:
+                        loginController.state is LoginLoading ? true : false,
                     horizontalSpace: 0,
                     bgColor: primaryColor,
                     textColor: Colors.white,
                     verticalSpace: 0);
               }),
               getVerticalSpace(context, 15),
+              
+              /* getButtonWidget(context, 'Politique', () async {
+                  Get.toNamed('/privacy');
+                },
+                    
+                    horizontalSpace: 0,
+                    bgColor: primaryColor,
+                    textColor: Colors.white,
+                    verticalSpace: 0), */
               /*   Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -391,8 +399,6 @@ class _LoginPage extends State<LoginPage> {
           )
         : Container().marginSymmetric(horizontal: 15.h);
   }
-
-
 
   bool checkValidation() {
     if (isNotEmpty(emailController.text) &&

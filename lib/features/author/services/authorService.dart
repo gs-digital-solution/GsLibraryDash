@@ -61,7 +61,10 @@ class AuthorService extends getX.GetxService {
 
     try {
       final response =
-          await BaseService.dio.post("auth/partner/", data: formData);
+          await BaseService.dio.post("auth/partner/", data: formData,options: Options(
+          sendTimeout: Duration(minutes: 2),
+          receiveTimeout: Duration(minutes: 2),
+        ),);
       if (response.statusCode == 201) {
         return TopAuthors.fromJson(response.data['author']);
       } else {
@@ -125,7 +128,10 @@ class AuthorService extends getX.GetxService {
 
     try {
       final response = await BaseService.dio
-          .patch("users/updateUser/${topAuthors.sId}", data: formData);
+          .patch("users/updateUser/${topAuthors.sId}", data: formData,options: Options(
+          sendTimeout: Duration(minutes: 2),
+          receiveTimeout: Duration(minutes: 2),
+        ),);
       print(response.data);
       if (response.statusCode == 200) {
         return TopAuthors.fromJson(response.data['user']);

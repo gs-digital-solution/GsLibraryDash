@@ -18,6 +18,7 @@ import 'package:gslibrarydashboard/features/commandes/pages/commandePage.dart';
 import 'package:gslibrarydashboard/features/retraits/pages/addRetrait.dart';
 import 'package:gslibrarydashboard/features/retraits/pages/retraitPage.dart';
 import 'package:gslibrarydashboard/home/pages/homePage.dart';
+import 'package:gslibrarydashboard/home/pages/privacy.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/theme_controller.dart';
 import 'package:gslibrarydashboard/utils/app_routes.dart';
@@ -78,30 +79,54 @@ class MyApp extends GetWidget<AuthController> {
             '/': (_) => Get.find<AuthController>().state is Authenticated
                 ? HomePage()
                 : LoginPage(),
-            '/categories': (_) => CategoryScreen(),
+          /*   '/categories': (_) => CategoryScreen(),
             '/categories/add': (_) => AddCategoryScreen(),
             '/authors': (_) => AuthorScreen(),
             '/authors/add': (_) => AddAuthorScreen(),
             '/books': (_) => StoryScreen(),
             '/books/add': (_) => AddStoryScreen(),
-             '/transactions/commandes': (_) => CommandePage(),
-             '/transactions/paiements': (_) => RetraitPage(),
-             '/transactions/add': (_) => NewRetrait(),
+            '/transactions/commandes': (_) => CommandePage(),
+            '/transactions/paiements': (_) => RetraitPage(),
+            '/transactions/add': (_) => NewRetrait(), */
+            '/privacy': (_) => TermsAndConditionScreen(),
           },
-          
+           /* onGenerateRoute: (settings) {
+            switch (settings.name) {
+              case 'privacy':
+              return PageRouteBuilder(
+              settings: settings,
+              pageBuilder: (_, __, ___) => TermsAndConditionScreen(),
+              transitionsBuilder: (_, anim, __, child) {
+                return FadeTransition(
+                  opacity: anim,
+                  child: child,
+                );
+              });
+                
+                
+              default:
+               return PageRouteBuilder(
+              settings: settings,
+              pageBuilder: (_, __, ___) => Get.find<AuthController>().state is Authenticated
+                ? HomePage()
+                : LoginPage(),
+              transitionsBuilder: (_, anim, __, child) {
+                return FadeTransition(
+                  opacity: anim,
+                  child: child,
+                );
+              });
+            }
+          },  */
+          // initialRoute: '/',
 
           /* getPages: [
-            GetPage(name: '/LoginPage', page: () => LoginPage()),
-            GetPage(name: '/HomePage', page: () => HomePage()),
-            GetPage(name: '/HomePage/categories', page: () => CategoryScreen()),
             GetPage(
-                name: '/HomePage/categories/add',
-                page: () => AddCategoryScreen()),
-            GetPage(name: '/HomePage/authors', page: () => AuthorScreen()),
-            GetPage(
-                name: '/HomePage/authors/add', page: () => AddAuthorScreen()),
-            GetPage(name: '/HomePage/books', page: () => StoryScreen()),
-            GetPage(name: '/HomePage/books/add', page: () => AddStoryScreen()),
+                name: '/',
+                page: () => Get.find<AuthController>().state is Authenticated
+                    ? HomePage()
+                    : LoginPage()),
+            GetPage(name: '/privacy', page: () => TermsAndConditionScreen()),
           ], */
 
           themeMode: provider.themeMode,

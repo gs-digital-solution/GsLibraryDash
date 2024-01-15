@@ -88,7 +88,14 @@ class BookService extends getX.GetxService {
     print(formData.fields);
 
     try {
-      final response = await BaseService.dio.post("books", data: formData);
+      final response = await BaseService.dio.post(
+        "books",
+        data: formData,
+        options: Options(
+          sendTimeout: Duration(minutes: 2),
+          receiveTimeout: Duration(minutes: 2),
+        ),
+      );
       print(response.data);
       if (response.statusCode == 201) {
         return Book.fromJson(response.data['book']);
@@ -169,11 +176,16 @@ class BookService extends getX.GetxService {
     formData.fields.add(MapEntry("popular", '$popular'));
     formData.fields.add(MapEntry("featured", '$featured'));
     print(formData.fields);
-   
 
     try {
-      final response =
-          await BaseService.dio.post("books/${book!.sId}", data: formData);
+      final response = await BaseService.dio.post(
+        "books/${book!.sId}",
+        data: formData,
+        options: Options(
+          sendTimeout: Duration(minutes: 2),
+          receiveTimeout: Duration(minutes: 2),
+        ),
+      );
       print(response.data);
       if (response.statusCode == 201) {
         return Book.fromJson(response.data['book']);

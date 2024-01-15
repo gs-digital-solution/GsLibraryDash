@@ -14,7 +14,10 @@ class CategoryService extends getX.GetxService {
 
     try {
       final response =
-          await BaseService.dio.post("categories/", data: formData);
+          await BaseService.dio.post("categories/", data: formData,options: Options(
+          sendTimeout: Duration(minutes: 2),
+          receiveTimeout: Duration(minutes: 2),
+        ),);
       if (response.statusCode == 201) {
         return CategoryModel.fromJson(response.data['category']);
       } else {
@@ -50,7 +53,10 @@ class CategoryService extends getX.GetxService {
     print(formData.fields);
     try {
       final response =
-          await BaseService.dio.put("categories/${model!.sId}", data: formData);
+          await BaseService.dio.put("categories/${model!.sId}", data: formData,options: Options(
+          sendTimeout: Duration(minutes: 2),
+          receiveTimeout: Duration(minutes: 2),
+        ),);
       if (response.statusCode == 200) {
         return CategoryModel.fromJson(response.data['category']);
       } else {
