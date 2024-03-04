@@ -111,17 +111,17 @@ class AuthorService extends getX.GetxService {
     }
 
     formData.fields
-        .add(MapEntry("fisrtname", firstname ?? topAuthors!.firstname!));
+        .add(MapEntry("firstname", firstname!));
     formData.fields.add(MapEntry("status", '${topAuthors!.status!}'));
-    formData.fields.add(MapEntry("lastname", lastname ?? topAuthors.lastname!));
-    formData.fields.add(MapEntry("email", email ?? topAuthors.email!));
+    formData.fields.add(MapEntry("lastname", lastname!));
+    formData.fields.add(MapEntry("email", email!));
 
     formData.fields
-        .add(MapEntry("phonenumber", phonenumber ?? topAuthors.phonenumber!));
+        .add(MapEntry("phonenumber", phonenumber !));
     formData.fields
-        .add(MapEntry("description", description ?? topAuthors.description!));
+        .add(MapEntry("description", description !));
     formData.fields
-        .add(MapEntry("designation", designation ?? topAuthors.designation!));
+        .add(MapEntry("designation", designation !));
 
     print(formData.fields);
     print(formData.files);

@@ -68,7 +68,7 @@ class AuthorController extends GetxController
   }
 
   void setAuthor(TopAuthors topAuthors) {
-    print("tap");
+    print(topAuthors);
     //final json = jsonDecode(topAuthors.description!);
     lastname.text = topAuthors.lastname!;
     firstname.text = topAuthors.firstname!;
@@ -119,6 +119,7 @@ class AuthorController extends GetxController
 
   Future<void> updateCategory({TopAuthors? model}) async {
     isLoading.value = true;
+    print(model);
     try {
       TopAuthors categoryModel = await homeService.updateAuthor(
         avatar: webImage,
@@ -147,7 +148,7 @@ class AuthorController extends GetxController
 
   Future<void> deleteCategory({TopAuthors? model}) async {
     try {
-      print(webImage);
+     
       await homeService.deleteCategory(
         model: model,
       );
@@ -169,6 +170,7 @@ class AuthorController extends GetxController
     description.clear();
     designation.clear();
     phonenumber.clear();
+   
     controller = QuillController.basic();
     password.clear();
     email.clear();

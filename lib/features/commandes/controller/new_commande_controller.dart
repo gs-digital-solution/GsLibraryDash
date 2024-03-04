@@ -3,15 +3,20 @@ import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/exceptions/appException.dart';
 import 'package:gslibrarydashboard/features/books/model/book.dart';
-import 'package:gslibrarydashboard/features/commandes/model/commande.dart';
+import 'package:gslibrarydashboard/features/books/services/bookService.dart';
 import 'package:gslibrarydashboard/features/commandes/model/user.dart';
 import 'package:gslibrarydashboard/features/commandes/services/commandeService.dart';
 
-class CommandeController extends GetxController
-    with StateMixin<List<Commande>> {
-  RxList<Commande> categoryList = <Commande>[].obs;
+class NewCommandeController extends GetxController
+    with StateMixin<List<User>> {
+  RxList<User> categoryList = <User>[].obs;
   final CommandeService homeService = Get.put(CommandeService());
+   final BookService bookService = Get.put(BookService());
   RxBool loadingPurchase = false.obs;
+  User?searchUser;
+  Book?searchBook;
+  TextEditingController searchUserController = TextEditingController();
+  TextEditingController searchBookController = TextEditingController();
 
   String oldCategory = '';
 
@@ -24,7 +29,7 @@ class CommandeController extends GetxController
   Future<void> fetchCategoryData() async {
     change(null, status: RxStatus.loading());
     try {
-      categoryList.value = await homeService.getCommandes(page: 0, pageSize: 0);
+      categoryList.value = await homeService.getUsers(page: 0, pageSize: 0);
       print(categoryList.length);
       if (categoryList.isEmpty) {
         change(null, status: RxStatus.empty());
@@ -36,6 +41,10 @@ class CommandeController extends GetxController
     }
   }
 
+  Future<List<Book>> getBooks() async{
+    return await bookService.getCategories();
+  }
+
   Future<bool> createCommande(
       {Book? book, User? user, BuildContext? context}) async {
     double amount = book!.prix! - (book.prix! * book.pourcentage!) / 100;
@@ -44,7 +53,8 @@ class CommandeController extends GetxController
       "author": "${book.author!.sId}",
       "book": "${book.sId}",
       "montant": amount.toInt(),
-      "deviceId": user!.deviceId,
+      "user":user!.sId,
+      "deviceId": user.deviceId,
     };
     loadingPurchase.value = true;
 
@@ -52,6 +62,8 @@ class CommandeController extends GetxController
       await homeService.createCommande(
         paymentData: paymentData,
       );
+      searchBookController.clear();
+      searchUserController.clear();
 
       loadingPurchase.value = false;
       return true;

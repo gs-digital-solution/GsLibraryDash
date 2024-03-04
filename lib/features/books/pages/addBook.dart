@@ -445,7 +445,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                 bookController.nameController),
                                           ],
                                         )),
-                                        getHorizontalSpace(context, 10),
+                                        getHorizontalSpace(context, 5),
                                         Expanded(
                                             child: Column(
                                           crossAxisAlignment:
@@ -455,11 +455,13 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                 'Select Category', context),
                                             getVerticalSpace(context, 10),
                                             DropdownButtonFormField(
+                                              
                                               decoration: InputDecoration(
                                                 contentPadding: EdgeInsets.only(
                                                   left: 10.h,
                                                 ),
                                                 border: InputBorder.none,
+                                                
                                                 focusedBorder:
                                                     OutlineInputBorder(
                                                         borderRadius:
@@ -490,7 +492,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                         borderSide: BorderSide(
                                                           color: borderColor,
                                                         )),
-
+                                            
                                                 filled: true,
                                                 fillColor:
                                                     getCardColor(context),
@@ -507,8 +509,10 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                     fontWeight: FontWeight.w400,
                                                     fontSize: 15),
                                               ),
-                                              items: isEdit && bookController
-                                                            .categoryModel!=null
+                                              items: isEdit &&
+                                                      bookController
+                                                              .categoryModel !=
+                                                          null
                                                   ? [
                                                       DropdownMenuItem(
                                                         child: Text(
@@ -594,7 +598,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                             }) */
                                           ],
                                         )),
-                                        getHorizontalSpace(context, 10),
+                                        getHorizontalSpace(context, 5),
                                         Expanded(
                                             child: Column(
                                           crossAxisAlignment:
@@ -1419,30 +1423,55 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                       ),
                     ),
                     getVerticalSpace(context, 20),
-                    Obx(() => getButtonWidget(
-                          context,
-                          isEdit ? 'Mettre a jour' : 'Enregistrer',
-                          isProgress: bookController.isLoading.value,
-                          () {
-                            if (isEdit) {
-                              bookController.updateBook().then((value) {
-                                setState(() {
-                                  bookController.clearData();
-                                });
-                              });
-                            } else {
-                              bookController.addBook().then((value) {
-                                setState(() {
-                                  bookController.clearData();
-                                });
-                              });
-                            }
-                          },
-                          horPadding: 25.h,
-                          horizontalSpace: 0,
-                          verticalSpace: 0,
-                          btnHeight: 60.h,
-                        )),
+                    Row(
+                      children: [
+                        Obx(
+                          () => Expanded(
+                            child: getButtonWidget(
+                              context,
+                              isEdit ? 'Mettre a jour' : 'Enregistrer',
+                              isProgress: bookController.isLoading.value,
+                              () async{
+                                if (isEdit) {
+                                  Future.delayed(Duration(seconds: 2));
+                                  await bookController.updateBook();
+                                
+                                } else {
+                                   Future.delayed(Duration(seconds: 2));
+                                   await  bookController.addBook();
+                                  bookController.addBook().then((value) {
+                                    setState(() {
+                                      bookController.clearData();
+                                    });
+                                  });
+                                }
+                              },
+                              horPadding: 25.h,
+                              horizontalSpace: 0,
+                              verticalSpace: 0,
+                              btnHeight: 60.h,
+                            ),
+                          ),
+                        ),
+                        getHorSpace(10.h),
+                         Expanded(
+                            child: getButtonWidget(
+                              context,
+                              'Annuler',
+                              isProgress: false,
+                              () {
+                                bookController.isLoading.value = false;
+                              },
+                              horPadding: 25.h,
+                              bgColor: Colors.red,
+                              horizontalSpace: 0,
+                              verticalSpace: 0,
+                              btnHeight: 60.h,
+                            ),
+                          
+                        ),
+                      ],
+                    ),
                     getVerticalSpace(context, 20),
                   ],
                 ),

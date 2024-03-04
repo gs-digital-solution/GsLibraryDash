@@ -14,6 +14,7 @@ import 'package:gslibrarydashboard/features/categories/controller/categoryContro
 import 'package:gslibrarydashboard/features/categories/screens/addCategoryPage.dart';
 import 'package:gslibrarydashboard/features/categories/screens/categoryPage.dart';
 import 'package:gslibrarydashboard/features/commandes/pages/commandePage.dart';
+import 'package:gslibrarydashboard/features/commandes/pages/new_commande.dart';
 import 'package:gslibrarydashboard/features/dashboard/pages/dashboardPage.dart';
 import 'package:gslibrarydashboard/features/retraits/pages/addRetrait.dart';
 import 'package:gslibrarydashboard/features/retraits/pages/retraitPage.dart';
@@ -218,6 +219,11 @@ class _HomePageState extends State<HomePage> {
                     route: '/transactions/commandes',
                   ),
                   AdminMenuItem(
+                    title: 'Nouvelle commande',
+                    icon: Icons.add,
+                    route: '/transactions/commandes/add',
+                  ),
+                  AdminMenuItem(
                     title: 'Paiements',
                     icon: Icons.list,
                     route: '/transactions/retraits',
@@ -260,6 +266,8 @@ class _HomePageState extends State<HomePage> {
                   return RetraitPage();
                 case '/transactions/add':
                   return NewRetrait();
+                  case '/transactions/commandes/add':
+                  return NewCommande();
                 default:
                   return SizedBox();
               }

@@ -50,9 +50,14 @@ class BookService extends getX.GetxService {
     bool? popular,
     bool? featured,
   }) async {
-    FormData formData = FormData.fromMap({});
+    FormData formData = FormData.fromMap({
+      'files':[
 
-    print(description);
+      ]
+    });
+    
+
+    //print(description);
 
     formData.files.add(MapEntry(
       'gratuite',
@@ -61,13 +66,15 @@ class BookService extends getX.GetxService {
         filename: gratuiteFilename,
       ),
     ));
-    formData.files.add(MapEntry(
-      'payante',
-      await MultipartFile.fromBytes(
-        payante!,
-        filename: payanteFilename,
-      ),
-    ));
+    if (payante!.isNotEmpty) {
+      formData.files.add(MapEntry(
+        'payante',
+        await MultipartFile.fromBytes(
+          payante,
+          filename: payanteFilename,
+        ),
+      ));
+    }
     formData.files.add(MapEntry(
       'avatar',
       await MultipartFile.fromBytes(
@@ -85,15 +92,16 @@ class BookService extends getX.GetxService {
     formData.fields.add(MapEntry("popular", '$popular'));
     formData.fields.add(MapEntry("featured", '$featured'));
     //  formData.fields.add(MapEntry("status", '${true}'));
-    print(formData.fields);
+    //print(formData.fields);
+
+  
 
     try {
       final response = await BaseService.dio.post(
         "books",
         data: formData,
         options: Options(
-          sendTimeout: Duration(minutes: 2),
-          receiveTimeout: Duration(minutes: 2),
+          contentType: 'multipart/form-data',
         ),
       );
       print(response.data);
@@ -221,10 +229,10 @@ class BookService extends getX.GetxService {
     } on DioException catch (e) {
       print(e.error);
       if (e.type == DioExceptionType.badResponse) {
-        throw AppException(message: e.response!.data['msg']);
+        throw AppException(message: e.response!.data['msg'],);
       } else {
         throw AppException(
-            message: "Verifier votre connexion internet et ressayez");
+            message: "Verifier votre connexion internet et ressayez",);
       }
     }
   }

@@ -70,7 +70,7 @@ class PDFDropDown extends StatelessWidget {
 
         items: homeController.pdfOptionList.map((element){
 
-          print("listLen----${homeController.pdfOptionList.length}------${element}");
+         // print("listLen----${homeController.pdfOptionList.length}------${element}");
           return DropdownMenuItem<String>(
             value: element,
             child: getTextWidget(context,element,fontSize,getFontColor(context),fontWeight: FontWeight.w400),
