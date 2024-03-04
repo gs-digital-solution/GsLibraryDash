@@ -163,7 +163,7 @@ class BookService extends getX.GetxService {
     }
 
     if (payante!.isNotEmpty) {
-      print("payante");
+      
       formData.files.add(
         MapEntry(
           'payante',
@@ -183,16 +183,16 @@ class BookService extends getX.GetxService {
     formData.fields.add(MapEntry("description", description!));
     formData.fields.add(MapEntry("popular", '$popular'));
     formData.fields.add(MapEntry("featured", '$featured'));
-    print(formData.fields);
+    print(formData.files);
 
     try {
       final response = await BaseService.dio.post(
         "books/${book!.sId}",
         data: formData,
-        options: Options(
+        /* options: Options(
           sendTimeout: Duration(minutes: 2),
           receiveTimeout: Duration(minutes: 2),
-        ),
+        ), */
       );
       print(response.data);
       if (response.statusCode == 201) {
@@ -201,6 +201,7 @@ class BookService extends getX.GetxService {
         throw AppException(message: "Une erreur est survenue");
       }
     } on DioException catch (e) {
+      print(e.error);
       print(e.error);
       if (e.type == DioExceptionType.badResponse) {
         throw AppException(message: e.response!.data['msg']);

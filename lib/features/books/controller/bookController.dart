@@ -168,7 +168,7 @@ class BookController extends GetxController with StateMixin<List<Book>> {
 
       print("Size-------_${size}");
     } else {
-      pdfUrl.value = '';
+      pdfUrlPayante.value = '';
     }
   }
 
@@ -237,6 +237,9 @@ class BookController extends GetxController with StateMixin<List<Book>> {
 
   Future<void> updateBook() async {
     isLoading.value = true;
+     String descript = deltaToHtml(descController.document
+            .toDelta()
+            .toJson());
     try {
       Book book = await homeService.updateBook(
         avatar: webImage,
@@ -248,9 +251,7 @@ class BookController extends GetxController with StateMixin<List<Book>> {
         nom: nameController.text,
         prix: price.text,
         pourcentage: pourcentage.text,
-        description: deltaToHtml(descController.document
-            .toDelta()
-            .toJson()), // descController.document.toPlainText(),
+        description: descript, // descController.document.toPlainText(),
         topAuthors: topAuthors,
         categoryModel: categoryModel!,
         book: mybook,

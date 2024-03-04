@@ -256,7 +256,7 @@ class _NewRetraitState extends State<NewRetrait> {
                                               (element) => DropdownMenuItem(
                                                 value: element,
                                                 child: Text(
-                                                    "${element.firstname ?? ""} ${element.firstname ?? ""} (${element.solde} FCFA)"),
+                                                    "${element.firstname ?? ""} ${element.lastname ?? ""} (${element.solde} FCFA)"),
                                               ),
                                             )
                                             .toList(),
