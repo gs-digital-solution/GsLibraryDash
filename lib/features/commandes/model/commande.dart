@@ -11,6 +11,7 @@ class Commande {
   String? createdAt;
   String? updatedAt;
   int? iV;
+  bool?status;
 
   Commande(
       {this.sId,
@@ -20,6 +21,7 @@ class Commande {
       this.book,
       this.createdAt,
       this.updatedAt,
+      this.status,
       this.iV});
 
   Commande.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class Commande {
     book = json['book'] != null ? new Book.fromJsonCommande(json['book']) : null;
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    status=json['status'];
     iV = json['__v'];
   }
 

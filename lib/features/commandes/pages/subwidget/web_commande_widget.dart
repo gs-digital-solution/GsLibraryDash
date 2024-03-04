@@ -94,15 +94,31 @@ class CommandeWebWidget extends StatelessWidget {
                                         context,
                                         130)),
                                 Expanded(
+                                  flex: 1,
                                     child: getHeaderCell(
                                         '${list[index].montant} FCFA',
                                         context,
-                                        130)),
+                                        150)),
+                                Expanded(
+                                     flex: 1,
+                                    child:list[index].book==null?SizedBox(): getHeaderCell(
+                                        '${list[index].book!.prix??0} ',
+                                        context,
+                                        150)),
+                                Expanded(
+                                     flex: 1,
+                                    child:list[index].book==null?SizedBox(): getHeaderCell(
+                                        '${list[index].book!.pourcentage??0} ',
+                                        context,
+                                        150)),
+                                      
                                 Expanded(
                                     child: getHeaderCell(
                                         '${list[index].createdAt!.split('T').first}',
                                         context,
                                         130)),
+                                Expanded(
+                                    child: getActiveDeActiveCell(context,list[index].status!)),
                                 Expanded(
                                     child: getHeaderCell(
                                         '${list[index].createdAt!.split('T').last.split('.').first}',
@@ -156,20 +172,15 @@ class CommandeWebWidget extends StatelessWidget {
     _tapPosition = details.globalPosition;
   }
 
-  getActiveDeActiveCell(BuildContext context, bool isActive, Book storyModel) {
-    return InkWell(
-      child: Container(
-          width: 120.h,
-          alignment: Alignment.centerLeft,
-          child: getButton(
-              context,
-              isActive ? 'Active' : 'Deactive',
-              isActive ? "#00A010".toColor() : "#FD3E3E".toColor(),
-              isActive ? "#E7FFE8".toColor() : "#FFF2F2".toColor())),
-      onTap: () {
-        onTapStatus(storyModel);
-      },
-    );
+  getActiveDeActiveCell(BuildContext context, bool isActive) {
+    return Container(
+        width: 120.h,
+        alignment: Alignment.centerLeft,
+        child: getButton(
+            context,
+            isActive ? 'Payée' : 'Non Payée',
+            isActive ? "#00A010".toColor() : "#FD3E3E".toColor(),
+            isActive ? "#E7FFE8".toColor() : "#FFF2F2".toColor()));
   }
 
   getButton(BuildContext context, String string, Color color, Color bgColor) {
@@ -202,11 +213,25 @@ class CommandeWebWidget extends StatelessWidget {
           Expanded(flex: 1, child: getHeaderTitle(context, 'client')),
           Expanded(
             flex: 1,
-            child: getHeaderCell('Price', context, 100),
+            child: getHeaderCell('Montant', context, 150),
+          ),
+           Expanded(
+            flex: 1,
+            child: getHeaderCell('Prix du livre', context, 150),
+          ),
+          Expanded(
+            flex: 1,
+            child: getHeaderCell('Pourcentage', context, 150),
           ),
           Expanded(
               child: getHeaderCell(
                   'Date'
+                  '',
+                  context,
+                  120)),
+          Expanded(
+              child: getHeaderCell(
+                  'Status'
                   '',
                   context,
                   120)),

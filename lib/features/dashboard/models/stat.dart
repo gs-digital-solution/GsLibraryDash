@@ -1,7 +1,7 @@
 class Stat {
-  int? montant;
-  int? commande;
-  int? retrait;
+  double? montant;
+  double? commande;
+  double? retrait;
 
   Stat({this.montant, this.commande, this.retrait});
 

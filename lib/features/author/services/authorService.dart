@@ -16,7 +16,7 @@ class AuthorService extends getX.GetxService {
         "pageSize": pageSize,
       } */
       );
-
+      print(response.data);
       if (response.statusCode == 200) {
         List<TopAuthors> list = (response.data['allusers'] as List)
             .map((e) => TopAuthors.fromJson(e))
@@ -60,11 +60,14 @@ class AuthorService extends getX.GetxService {
     print(formData.fields);
 
     try {
-      final response =
-          await BaseService.dio.post("auth/partner/", data: formData,options: Options(
+      final response = await BaseService.dio.post(
+        "auth/partner/",
+        data: formData,
+        options: Options(
           sendTimeout: Duration(minutes: 2),
           receiveTimeout: Duration(minutes: 2),
-        ),);
+        ),
+      );
       if (response.statusCode == 201) {
         return TopAuthors.fromJson(response.data['author']);
       } else {
@@ -96,7 +99,6 @@ class AuthorService extends getX.GetxService {
     FormData formData = FormData.fromMap({});
 
     if (avatar!.isNotEmpty) {
-      
       formData.files.add(MapEntry(
         'avatar',
         await MultipartFile.fromBytes(
@@ -110,28 +112,27 @@ class AuthorService extends getX.GetxService {
       formData.fields.add(MapEntry("password", password));
     }
 
-    formData.fields
-        .add(MapEntry("firstname", firstname!));
+    formData.fields.add(MapEntry("firstname", firstname!));
     formData.fields.add(MapEntry("status", '${topAuthors!.status!}'));
     formData.fields.add(MapEntry("lastname", lastname!));
     formData.fields.add(MapEntry("email", email!));
 
-    formData.fields
-        .add(MapEntry("phonenumber", phonenumber !));
-    formData.fields
-        .add(MapEntry("description", description !));
-    formData.fields
-        .add(MapEntry("designation", designation !));
+    formData.fields.add(MapEntry("phonenumber", phonenumber!));
+    formData.fields.add(MapEntry("description", description!));
+    formData.fields.add(MapEntry("designation", designation!));
 
     print(formData.fields);
     print(formData.files);
 
     try {
-      final response = await BaseService.dio
-          .patch("users/updateUser/${topAuthors.sId}", data: formData,options: Options(
+      final response = await BaseService.dio.patch(
+        "users/updateUser/${topAuthors.sId}",
+        data: formData,
+        options: Options(
           sendTimeout: Duration(minutes: 2),
           receiveTimeout: Duration(minutes: 2),
-        ),);
+        ),
+      );
       print(response.data);
       if (response.statusCode == 200) {
         return TopAuthors.fromJson(response.data['user']);

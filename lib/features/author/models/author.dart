@@ -11,7 +11,7 @@ class TopAuthors {
   bool? status;
   String? description;
   String? designation;
-  int? solde;
+  double? solde;
   String? createdAt;
   String? updatedAt;
   int? iV;
@@ -46,7 +46,7 @@ class TopAuthors {
     status = json['status'];
     description = json['description'];
     designation = json['designation'];
-    solde = json['solde'];
+    solde =  json['solde'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     iV = json['__v'];
