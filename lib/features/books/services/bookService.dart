@@ -28,7 +28,7 @@ class BookService extends getX.GetxService {
         throw AppException(message: response.data['msg']);
       }
     } on DioException catch (e) {
-      print(e.message);
+      
       throw AppException(message: e.response!.data['msg']);
     }
   }
@@ -221,7 +221,7 @@ class BookService extends getX.GetxService {
     try {
       final response =
           await BaseService.dio.post("books/${book!.sId}", data: formData);
-      print(response.data);
+      
       if (response.statusCode == 201) {
         return Book.fromJson(response.data['book']);
       } else {
