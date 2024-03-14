@@ -18,6 +18,7 @@ import 'package:gslibrarydashboard/features/commandes/pages/new_commande.dart';
 import 'package:gslibrarydashboard/features/dashboard/pages/dashboardPage.dart';
 import 'package:gslibrarydashboard/features/retraits/pages/addRetrait.dart';
 import 'package:gslibrarydashboard/features/retraits/pages/retraitPage.dart';
+import 'package:gslibrarydashboard/features/users/pages/userpage.dart';
 import 'package:gslibrarydashboard/home/controller/homeController.dart';
 import 'package:gslibrarydashboard/main.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';
@@ -161,6 +162,11 @@ class _HomePageState extends State<HomePage> {
                 icon: Icons.dashboard,
               ),
               AdminMenuItem(
+                title: 'Utilisateurs',
+                route: '/users',
+                icon: Icons.dashboard,
+              ),
+              AdminMenuItem(
                 title: 'Categories',
                 icon: Icons.category,
                 children: [
@@ -248,6 +254,8 @@ class _HomePageState extends State<HomePage> {
               switch (homeController.selectedItem!.value.route) {
                 case '/':
                   return DashboardPage();
+                case '/users':
+                  return UserPage();
                 case '/categories':
                   return CategoryScreen();
                 case '/categories/add':

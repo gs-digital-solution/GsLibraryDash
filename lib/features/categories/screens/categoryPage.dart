@@ -30,7 +30,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   RxInt position = 0.obs;
 
-  RxInt totalItem = 10.obs;
+  RxInt totalItem = 30.obs;
 
   RxInt ind = 0.obs;
 

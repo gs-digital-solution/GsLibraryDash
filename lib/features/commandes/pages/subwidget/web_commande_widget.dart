@@ -41,8 +41,8 @@ class CommandeWebWidget extends StatelessWidget {
 
                 if (queryText.value.isNotEmpty &&
                     !list[index]
-                        .book!
-                        .nom!
+                        .user!
+                        .phonenumber!
                         .toLowerCase()
                         .contains(queryText.value)) {
                   cell = false;
