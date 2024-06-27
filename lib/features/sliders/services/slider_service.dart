@@ -1,28 +1,24 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getX;
 import 'package:gslibrarydashboard/exceptions/appException.dart';
-import 'package:gslibrarydashboard/features/categories/models/categoryModel.dart';
+import 'package:gslibrarydashboard/features/sliders/models/slider.dart';
 import 'package:gslibrarydashboard/home/services/baseService.dart';
 
-class CategoryService extends getX.GetxService {
-  Future<CategoryModel> addCategory(
+class SliderService extends getX.GetxService {
+  Future<SliderModel> addCategory(
       {List<int>? avatar, String? filename, String? name}) async {
     FormData formData = FormData.fromMap({
       'avatar': await MultipartFile.fromBytes(avatar!, filename: filename),
     });
-    formData.fields.add(MapEntry("name", name!));
 
     try {
-      final response = await BaseService.dio.post(
-        "categories/",
-        data: formData,
-        options: Options(
+      final response =
+          await BaseService.dio.post("sliders/", data: formData,options: Options(
           sendTimeout: Duration(minutes: 2),
           receiveTimeout: Duration(minutes: 2),
-        ),
-      );
+        ),);
       if (response.statusCode == 201) {
-        return CategoryModel.fromJson(response.data['category']);
+        return SliderModel.fromJson(response.data['slider']);
       } else {
         throw AppException(message: "Une erreur est survenue");
       }
@@ -36,14 +32,13 @@ class CategoryService extends getX.GetxService {
     }
   }
 
-  Future<CategoryModel> updateCategory({
+  Future<SliderModel> updateCategory({
     List<int>? avatar,
     String? filename,
-    String? name,
-    CategoryModel? model,
+    SliderModel? model,
   }) async {
     FormData formData = FormData.fromMap({});
-    if (avatar != null) {
+    if (avatar!=null) {
       formData.files.add(MapEntry(
         'avatar',
         await MultipartFile.fromBytes(
@@ -52,47 +47,14 @@ class CategoryService extends getX.GetxService {
         ),
       ));
     }
-    formData.fields.add(MapEntry("name", name ?? model!.name!));
-    print(formData.fields);
     try {
-      final response = await BaseService.dio.put(
-        "categories/${model!.sId}",
-        data: formData,
-        options: Options(
+      final response =
+          await BaseService.dio.put("sliders/${model!.sId}", data: formData,options: Options(
           sendTimeout: Duration(minutes: 2),
           receiveTimeout: Duration(minutes: 2),
-        ),
-      );
+        ),);
       if (response.statusCode == 200) {
-        return CategoryModel.fromJson(response.data['category']);
-      } else {
-        throw AppException(message: "Une erreur est survenue");
-      }
-    } on DioException catch (e) {
-      if (e.type == DioExceptionType.badResponse) {
-        throw AppException(message: e.response!.data['msg']);
-      } else {
-        throw AppException(
-            message: "Verifier votre connexion internet et ressayez");
-      }
-    }
-  }
-
-//Definir la premiere categorie
-  Future<CategoryModel> mettreEnAvantCategory({
-  
-    CategoryModel? model,
-  }) async {
-    try {
-      final response = await BaseService.dio.patch(
-        "categories/${model!.sId}",
-        options: Options(
-          sendTimeout: Duration(minutes: 2),
-          receiveTimeout: Duration(minutes: 2),
-        ),
-      );
-      if (response.statusCode == 200) {
-        return CategoryModel.fromJson(response.data['category']);
+        return SliderModel.fromJson(response.data['slider']);
       } else {
         throw AppException(message: "Une erreur est survenue");
       }
@@ -108,11 +70,11 @@ class CategoryService extends getX.GetxService {
 
   /// Fonction pour supprimer une category
   Future<bool> deleteCategory({
-    CategoryModel? model,
+    SliderModel? model,
   }) async {
     try {
       final response = await BaseService.dio.delete(
-        "categories/${model!.sId}",
+        "sliders/${model!.sId}",
       );
       if (response.statusCode == 200) {
         return true;
@@ -129,21 +91,21 @@ class CategoryService extends getX.GetxService {
     }
   }
 
-  Future<List<CategoryModel>> getCategories({
+  Future<List<SliderModel>> getCategories({
     int? page,
     int? pageSize,
   }) async {
     try {
       final response = await BaseService.dio.get(
-        'categories/', /* queryParameters: {
+        'sliders/', /* queryParameters: {
         "page": page,
         "pageSize": pageSize,
       } */
       );
 
       if (response.statusCode == 200) {
-        List<CategoryModel> list = (response.data['categories'] as List)
-            .map((e) => CategoryModel.fromJson(e))
+        List<SliderModel> list = (response.data['sliders'] as List)
+            .map((e) => SliderModel.fromJson(e))
             .toList();
         return list;
       } else {

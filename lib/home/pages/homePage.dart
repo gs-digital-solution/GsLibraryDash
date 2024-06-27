@@ -18,6 +18,8 @@ import 'package:gslibrarydashboard/features/commandes/pages/new_commande.dart';
 import 'package:gslibrarydashboard/features/dashboard/pages/dashboardPage.dart';
 import 'package:gslibrarydashboard/features/retraits/pages/addRetrait.dart';
 import 'package:gslibrarydashboard/features/retraits/pages/retraitPage.dart';
+import 'package:gslibrarydashboard/features/sliders/screens/add_slider_page.dart';
+import 'package:gslibrarydashboard/features/sliders/screens/slider_page.dart';
 import 'package:gslibrarydashboard/features/users/pages/userpage.dart';
 import 'package:gslibrarydashboard/home/controller/homeController.dart';
 import 'package:gslibrarydashboard/main.dart';
@@ -215,6 +217,22 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               AdminMenuItem(
+                title: 'Sliders',
+                icon: Icons.category,
+                children: [
+                  AdminMenuItem(
+                    title: 'Sliders',
+                    icon: Icons.list,
+                    route: '/sliders',
+                  ),
+                  AdminMenuItem(
+                    title: 'Ajouter un slider',
+                    icon: Icons.add,
+                    route: '/sliders/add',
+                  ),
+                ],
+              ),
+              AdminMenuItem(
                 title: 'Transactions',
                 icon: Icons.history,
                 route: '/transactions',
@@ -274,8 +292,12 @@ class _HomePageState extends State<HomePage> {
                   return RetraitPage();
                 case '/transactions/add':
                   return NewRetrait();
-                  case '/transactions/commandes/add':
+                case '/transactions/commandes/add':
                   return NewCommande();
+                case '/sliders/add':
+                  return AddSliderScreen();
+                case '/sliders':
+                  return SliderScreen();
                 default:
                   return SizedBox();
               }

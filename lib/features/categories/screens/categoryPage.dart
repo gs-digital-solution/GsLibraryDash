@@ -30,7 +30,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   RxInt position = 0.obs;
 
-  RxInt totalItem = 30.obs;
+  RxInt totalItem = 10.obs;
 
   RxInt ind = 0.obs;
 
@@ -290,7 +290,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                           10,
                                                         ),
                                                         Expanded(
-                                                            child: getMaxLineFont(
+                                                            child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            getMaxLineFont(
                                                                 context,
                                                                 paginationList[
                                                                         index]
@@ -304,7 +309,20 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                                         .w600,
                                                                 textAlign:
                                                                     TextAlign
-                                                                        .start)),
+                                                                        .start),
+                                                            getVerSpace(10.h),
+                                                            ElevatedButton(
+                                                              onPressed: () {
+                                                                categoryController
+                                                                    .mettreEnAvantCategory(
+                                                                        model: paginationList[
+                                                                            index]);
+                                                              },
+                                                              child: Text(
+                                                                  'Mettre en avant'),
+                                                            ),
+                                                          ],
+                                                        )),
                                                       ],
                                                     )),
                                                     Stack(

@@ -6,27 +6,29 @@ import 'package:get/get.dart';
 import 'package:gslibrarydashboard/exceptions/appException.dart';
 import 'package:gslibrarydashboard/features/categories/models/categoryModel.dart';
 import 'package:gslibrarydashboard/features/categories/services/categoryService.dart';
+import 'package:gslibrarydashboard/features/sliders/models/slider.dart';
+import 'package:gslibrarydashboard/features/sliders/services/slider_service.dart';
 import 'package:image_picker/image_picker.dart';
 
-class CategoryController extends GetxController
-    with StateMixin<List<CategoryModel>> {
-  TextEditingController nameController = TextEditingController();
+class SliderController extends GetxController
+    with StateMixin<List<SliderModel>> {
+
   TextEditingController imageController = TextEditingController();
   Uint8List webImage = Uint8List(10);
 
   RxBool isImageOffline = false.obs;
 
-  CategoryModel? categoryModel;
+  SliderModel? categoryModel;
   RxBool isLoading = false.obs;
-  RxList<CategoryModel> categoryList = <CategoryModel>[].obs;
-  final CategoryService homeService = Get.put(CategoryService());
+  RxList<SliderModel> categoryList = <SliderModel>[].obs;
+  final SliderService homeService = Get.put(SliderService());
 
   String oldCategory = '';
   RxString category = 'text'.obs;
   RxString slider = ''.obs;
   RxString author = ''.obs;
 
-  CategoryController({this.categoryModel});
+  SliderController({this.categoryModel});
 
   List<int>? avatar;
   RxString? filename = ''.obs;
@@ -37,7 +39,7 @@ class CategoryController extends GetxController
     fetchCategoryData();
   }
 
-  setAllCategoryDate(CategoryModel? category) {
+  setAllCategoryDate(SliderModel? category) {
     if (category != null) {
       categoryModel = category;
     }
@@ -59,10 +61,9 @@ class CategoryController extends GetxController
   }
 
   clearData() {
-    nameController.clear();
     imageController.clear();
     webImage = Uint8List(10);
-    categoryModel = null;
+    categoryModel=null;
 
     isImageOffline.value = false;
     categoryModel = null;
@@ -107,10 +108,9 @@ class CategoryController extends GetxController
   Future<void> addCategory() async {
     isLoading.value = true;
     try {
-      CategoryModel categoryModel = await homeService.addCategory(
+      SliderModel categoryModel = await homeService.addCategory(
         avatar: webImage,
         filename: imageController.text,
-        name: nameController.text,
       );
       categoryList.add(categoryModel);
       Fluttertoast.showToast(
@@ -123,14 +123,13 @@ class CategoryController extends GetxController
     }
   }
 
-  Future<void> updateCategory({CategoryModel? model}) async {
+  Future<void> updateCategory({SliderModel? model}) async {
     isLoading.value = true;
     try {
       print(webImage);
-      CategoryModel categoryModel = await homeService.updateCategory(
+      SliderModel categoryModel = await homeService.updateCategory(
         avatar: webImage,
         filename: imageController.text,
-        name: nameController.text,
         model: model,
       );
       int index =
@@ -147,26 +146,8 @@ class CategoryController extends GetxController
     }
   }
 
-  ///Definir la premiere categorie
-  Future<void> mettreEnAvantCategory({CategoryModel? model}) async {
-    isLoading.value = true;
-    try {
-      print(webImage);
-      CategoryModel categoryModel = await homeService.mettreEnAvantCategory(
-        model: model,
-      );
+  Future<void> deleteCategory({SliderModel? model}) async {
 
-      Fluttertoast.showToast(
-          msg: "Cette categorie est desormais la premiere",
-          backgroundColor: Colors.green);
-      isLoading.value = false;
-    } on AppException catch (e) {
-      Fluttertoast.showToast(msg: e.message!, backgroundColor: Colors.red);
-      isLoading.value = false;
-    }
-  }
-
-  Future<void> deleteCategory({CategoryModel? model}) async {
     try {
       print(webImage);
       await homeService.deleteCategory(
