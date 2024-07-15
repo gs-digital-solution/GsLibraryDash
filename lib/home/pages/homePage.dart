@@ -16,6 +16,9 @@ import 'package:gslibrarydashboard/features/categories/screens/categoryPage.dart
 import 'package:gslibrarydashboard/features/commandes/pages/commandePage.dart';
 import 'package:gslibrarydashboard/features/commandes/pages/new_commande.dart';
 import 'package:gslibrarydashboard/features/dashboard/pages/dashboardPage.dart';
+import 'package:gslibrarydashboard/features/investors/controllers/investor_controller.dart';
+import 'package:gslibrarydashboard/features/investors/screens/add_investor_page.dart';
+import 'package:gslibrarydashboard/features/investors/screens/investor_page.dart';
 import 'package:gslibrarydashboard/features/retraits/pages/addRetrait.dart';
 import 'package:gslibrarydashboard/features/retraits/pages/retraitPage.dart';
 import 'package:gslibrarydashboard/features/sliders/screens/add_slider_page.dart';
@@ -38,6 +41,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final HomeController homeController = Get.put(HomeController());
   final AuthorController authorController = Get.put(AuthorController());
+    final InvestorController investorController = Get.put(InvestorController());
   final CategoryController categoryController = Get.put(CategoryController());
 
   final ThemeController themeController = Get.find();
@@ -169,6 +173,22 @@ class _HomePageState extends State<HomePage> {
                 icon: Icons.dashboard,
               ),
               AdminMenuItem(
+                title: 'Investisseurs',
+                icon: Icons.person,
+                children: [
+                  AdminMenuItem(
+                    title: 'Liste des investisseurs',
+                    icon: Icons.list,
+                    route: '/investors',
+                  ),
+                  AdminMenuItem(
+                    title: 'ajouter un investisseur',
+                    icon: Icons.add,
+                    route: '/investors/add',
+                  ),
+                ],
+              ),
+              AdminMenuItem(
                 title: 'Categories',
                 icon: Icons.category,
                 children: [
@@ -298,6 +318,10 @@ class _HomePageState extends State<HomePage> {
                   return AddSliderScreen();
                 case '/sliders':
                   return SliderScreen();
+                case '/investors/add':
+                  return AddInvestorPage();
+                case '/investors':
+                  return InvestorPage();
                 default:
                   return SizedBox();
               }

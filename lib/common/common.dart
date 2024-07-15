@@ -273,6 +273,7 @@ Widget getTextFiledWidget(
     var onChanged,
     dynamic validator,
     Function? function,
+    Widget?suffixIcon,
     Widget? child}) {
   double height = 45.h;
 
@@ -301,6 +302,7 @@ Widget getTextFiledWidget(
         fontWeight: FontWeight.w400,
         fontSize: fontSize),
     decoration: InputDecoration(
+      suffixIcon:suffixIcon,
       contentPadding: EdgeInsets.only(
         left: 10.h,
       ),
