@@ -19,6 +19,7 @@ class Book {
   Avatar? avatar;
   RxBool? popular;
   RxBool? featured;
+  RxBool? hasPromo;
 
   Book(
       {this.gratuite,
@@ -36,6 +37,7 @@ class Book {
       this.avatar,
       this.popular,
       this.featured,
+      this.hasPromo,
       this.iV});
 
   Book.fromJson(Map<String, dynamic> json) {
@@ -62,6 +64,7 @@ class Book {
     status = RxBool(json['status']);
     popular = RxBool(json['popular']);
     featured = RxBool(json['featured']);
+    hasPromo = RxBool(json['hasPromo']);
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
@@ -83,6 +86,7 @@ class Book {
     status = RxBool(json['status']);
     popular = RxBool(json['popular']);
     featured = RxBool(json['featured']);
+    hasPromo = RxBool(json['hasPromo']);
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];

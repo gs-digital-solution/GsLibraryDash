@@ -306,7 +306,11 @@ Widget getTextFiledWidget(
       contentPadding: EdgeInsets.only(
         left: 10.h,
       ),
-      border: InputBorder.none,
+      border:OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(radius)),
+          borderSide: BorderSide(
+            color: borderColor,
+          )),
       focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(radius)),
           borderSide: BorderSide(
@@ -317,7 +321,11 @@ Widget getTextFiledWidget(
           borderSide: BorderSide(
             color: borderColor,
           )),
-      errorBorder: InputBorder.none,
+      errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(radius)),
+          borderSide: BorderSide(
+            color: Colors.red,
+          )),
       disabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(radius)),
         borderSide: BorderSide(

@@ -115,7 +115,7 @@ class InvestorController extends GetxController
       print(categoryModel);
       // authorList.add(categoryModel);
       Fluttertoast.showToast(
-          msg: "Auteur ajoutee", backgroundColor: Colors.green);
+          msg: "Investisseur ajoutee", backgroundColor: Colors.green);
       isLoading.value = false;
       clearAuthData();
     } on AppException catch (e) {

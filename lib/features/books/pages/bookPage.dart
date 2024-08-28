@@ -141,7 +141,12 @@ class _StoryScreenState extends State<StoryScreen> {
                                                     onTapStatus: (model) {
                                                       updateStatus(
                                                           context, model);
-                                                    })
+                                                    },
+                                                    onPromotion: (model) {
+                                                      updateStatusPromotion(
+                                                          context, model);
+                                                    },
+                                                  )
                                                 : MobileWidget(
                                                     mainList: state,
                                                     list: paginationList,
@@ -188,52 +193,48 @@ class _StoryScreenState extends State<StoryScreen> {
                                                     ),
                                                     getHorizontalSpace(
                                                         context, 10),
-                                                    Align(
-                                                      alignment:
-                                                          Alignment.centerLeft,
-                                                      child:
-                                                          SingleChildScrollView(
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .end,
-                                                          children:
-                                                              List.generate(
-                                                                  i.toInt(),
-                                                                  (index) =>
-                                                                      InkWell(
-                                                                        child:
-                                                                            Container(
-                                                                          margin:
-                                                                              EdgeInsets.symmetric(horizontal: 5.h),
-                                                                          height:
-                                                                              35.h,
-                                                                          width:
-                                                                              35.h,
-                                                                          decoration: getDefaultDecoration(
-                                                                              bgColor: position.value == index ? getPrimaryColor(context) : Colors.transparent,
-                                                                              radius: getResizeRadius(context, 15)),
-                                                                          child:
-                                                                              Center(
-                                                                            child: getTextWidget(
-                                                                                context,
-                                                                                '${index + 1}',
-                                                                                50,
-                                                                                position.value == index ? Colors.white : subPrimaryColor(context)),
-                                                                          ),
-                                                                        ),
-                                                                        onTap:
-                                                                            () {
-                                                                          position.value =
-                                                                              index;
-                                                                          _controller
-                                                                              .jumpTo(0);
-                                                                        },
-                                                                      )),
-                                                        ),
+                                                    Expanded(
+                                                      child: Wrap(
+                                                        children: List.generate(
+                                                            i.toInt(),
+                                                            (index) => InkWell(
+                                                                  child:
+                                                                      Container(
+                                                                    margin: EdgeInsets.symmetric(
+                                                                        horizontal:
+                                                                            5.h),
+                                                                    height:
+                                                                        35.h,
+                                                                    width: 35.h,
+                                                                    decoration: getDefaultDecoration(
+                                                                        bgColor: position.value ==
+                                                                                index
+                                                                            ? getPrimaryColor(
+                                                                                context)
+                                                                            : Colors
+                                                                                .transparent,
+                                                                        radius: getResizeRadius(
+                                                                            context,
+                                                                            15)),
+                                                                    child:
+                                                                        Center(
+                                                                      child: getTextWidget(
+                                                                          context,
+                                                                          '${index + 1}',
+                                                                          50,
+                                                                          position.value == index
+                                                                              ? Colors.white
+                                                                              : subPrimaryColor(context)),
+                                                                    ),
+                                                                  ),
+                                                                  onTap: () {
+                                                                    position.value =
+                                                                        index;
+                                                                    _controller
+                                                                        .jumpTo(
+                                                                            0);
+                                                                  },
+                                                                )),
                                                       ),
                                                     ),
                                                     getHorizontalSpace(
@@ -255,9 +256,6 @@ class _StoryScreenState extends State<StoryScreen> {
                                                         width: 18.h,
                                                       ),
                                                     ),
-                                                    getHorizontalSpace(
-                                                        context, 25),
-                                                    Expanded(child: Container())
                                                   ],
                                                 ).marginOnly(
                                                     right: getCommonPadding(
@@ -293,6 +291,19 @@ class _StoryScreenState extends State<StoryScreen> {
           bookController.updateBookStatus(book: storyModel);
         },
         subTitle: 'Livre');
+  }
+
+    updateStatusPromotion(BuildContext context, Book storyModel) {
+    getCommonDialog(
+        context: context,
+        title: storyModel.status!.value
+            ? 'Voulez-vous retirer ce livre en promotion ?'
+            : 'Voulez-vous mettre ce livre en promotion?',
+        function: () {
+          storyModel.status!.value = !storyModel.status!.value;
+          bookController.updateBookPromotion(book: storyModel);
+        },
+        subTitle: 'Promotion Livre');
   }
 
   _showPopupMenu(BuildContext context, var detail, Book storyModel) async {

@@ -238,6 +238,32 @@ class BookService extends getX.GetxService {
     }
   }
 
+    Future<Book> updateBookPromotion({
+    bool? hasPromo,
+    Book? book,
+  }) async {
+    FormData formData = FormData.fromMap({});
+    formData.fields.add(MapEntry("", '$hasPromo'));
+    try {
+      final response =
+          await BaseService.dio.post("books/${book!.sId}", data: formData);
+      
+      if (response.statusCode == 201) {
+        return Book.fromJson(response.data['book']);
+      } else {
+        throw AppException(message: "Une erreur est survenue");
+      }
+    } on DioException catch (e) {
+      print(e.error);
+      if (e.type == DioExceptionType.badResponse) {
+        throw AppException(message: e.response!.data['msg'],);
+      } else {
+        throw AppException(
+            message: "Verifier votre connexion internet et ressayez",);
+      }
+    }
+  }
+
   Future<bool> deleteBook({
     Book? model,
   }) async {

@@ -19,6 +19,9 @@ import 'package:gslibrarydashboard/features/dashboard/pages/dashboardPage.dart';
 import 'package:gslibrarydashboard/features/investors/controllers/investor_controller.dart';
 import 'package:gslibrarydashboard/features/investors/screens/add_investor_page.dart';
 import 'package:gslibrarydashboard/features/investors/screens/investor_page.dart';
+import 'package:gslibrarydashboard/features/promos/controller/promocontroller.dart';
+import 'package:gslibrarydashboard/features/promos/screens/addpromopage.dart';
+import 'package:gslibrarydashboard/features/promos/screens/promoPage.dart';
 import 'package:gslibrarydashboard/features/retraits/pages/addRetrait.dart';
 import 'package:gslibrarydashboard/features/retraits/pages/retraitPage.dart';
 import 'package:gslibrarydashboard/features/sliders/screens/add_slider_page.dart';
@@ -43,6 +46,7 @@ class _HomePageState extends State<HomePage> {
   final AuthorController authorController = Get.put(AuthorController());
     final InvestorController investorController = Get.put(InvestorController());
   final CategoryController categoryController = Get.put(CategoryController());
+   final PromoController promoController = Get.put(PromoController());
 
   final ThemeController themeController = Get.find();
 
@@ -166,6 +170,22 @@ class _HomePageState extends State<HomePage> {
                 title: 'Dashboard',
                 route: '/',
                 icon: Icons.dashboard,
+              ),
+              AdminMenuItem(
+                title: 'Code Promos',
+                icon: Icons.padding,
+                children: [
+                  AdminMenuItem(
+                    title: 'Liste des codes promos',
+                    icon: Icons.list,
+                    route: '/promos',
+                  ),
+                  AdminMenuItem(
+                    title: 'ajouter un code',
+                    icon: Icons.add,
+                    route: '/promos/add',
+                  ),
+                ]
               ),
               AdminMenuItem(
                 title: 'Utilisateurs',
@@ -322,6 +342,10 @@ class _HomePageState extends State<HomePage> {
                   return AddInvestorPage();
                 case '/investors':
                   return InvestorPage();
+                case '/promos':
+                  return PromoScreen();
+                   case '/promos/add':
+                  return AddPromoScreen();
                 default:
                   return SizedBox();
               }

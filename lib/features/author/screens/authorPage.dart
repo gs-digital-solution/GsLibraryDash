@@ -175,58 +175,49 @@ class _AuthorScreenState extends State<AuthorScreen> {
                                                   ),
                                                 ),
                                                 getHorizontalSpace(context, 10),
-                                                Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: SingleChildScrollView(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      children: List.generate(
-                                                          i.toInt(),
-                                                          (index) => InkWell(
-                                                                child:
-                                                                    Container(
-                                                                  margin: EdgeInsets
-                                                                      .symmetric(
-                                                                          horizontal:
-                                                                              5.h),
-                                                                  height: 35.h,
-                                                                  width: 35.h,
-                                                                  decoration: getDefaultDecoration(
-                                                                      bgColor: position.value ==
-                                                                              index
-                                                                          ? getPrimaryColor(
-                                                                              context)
-                                                                          : Colors
-                                                                              .transparent,
-                                                                      radius: getResizeRadius(
-                                                                          context,
-                                                                          15)),
-                                                                  child: Center(
-                                                                    child: getTextWidget(
+                                                Expanded(
+                                                  child: Wrap(
+                                                    
+                                                    children: List.generate(
+                                                        i.toInt(),
+                                                        (index) => InkWell(
+                                                              child:
+                                                                  Container(
+                                                                margin: EdgeInsets
+                                                                    .symmetric(
+                                                                        horizontal:
+                                                                            5.h),
+                                                                height: 35.h,
+                                                                width: 35.h,
+                                                                decoration: getDefaultDecoration(
+                                                                    bgColor: position.value ==
+                                                                            index
+                                                                        ? getPrimaryColor(
+                                                                            context)
+                                                                        : Colors
+                                                                            .transparent,
+                                                                    radius: getResizeRadius(
                                                                         context,
-                                                                        '${index + 1}',
-                                                                        50,
-                                                                        position.value ==
-                                                                                index
-                                                                            ? Colors.white
-                                                                            : subPrimaryColor(context)),
-                                                                  ),
+                                                                        15)),
+                                                                child: Center(
+                                                                  child: getTextWidget(
+                                                                      context,
+                                                                      '${index + 1}',
+                                                                      50,
+                                                                      position.value ==
+                                                                              index
+                                                                          ? Colors.white
+                                                                          : subPrimaryColor(context)),
                                                                 ),
-                                                                onTap: () {
-                                                                  position.value =
-                                                                      index;
-                                                                  _controller
-                                                                      .jumpTo(
-                                                                          0);
-                                                                },
-                                                              )),
-                                                    ),
+                                                              ),
+                                                              onTap: () {
+                                                                position.value =
+                                                                    index;
+                                                                _controller
+                                                                    .jumpTo(
+                                                                        0);
+                                                              },
+                                                            )),
                                                   ),
                                                 ),
                                                 getHorizontalSpace(context, 10),
@@ -246,8 +237,7 @@ class _AuthorScreenState extends State<AuthorScreen> {
                                                     width: 18.h,
                                                   ),
                                                 ),
-                                                getHorizontalSpace(context, 25),
-                                                Expanded(child: Container())
+                                               
                                               ],
                                             ).marginOnly(
                                                 right:

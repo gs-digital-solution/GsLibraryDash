@@ -15,12 +15,13 @@ class WebWidget extends StatelessWidget {
       required this.queryText,
       required this.function,
       required this.onTapStatus,
-      required this.mainList});
+      required this.mainList,required this.onPromotion});
   final List<Book> list;
   final List<Book> mainList;
   final RxString queryText;
   final Function(Offset, Book) function;
   final Function onTapStatus;
+  final Function onPromotion;
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +54,11 @@ class WebWidget extends StatelessWidget {
                                     '${mainList.indexOf(list[index]) + 1}',
                                     context,
                                     80),
-                                Expanded(
-                                    child: getHeaderCell(
-                                       list[index].categories!.isNotEmpty? '${list[index].categories![0].name}':'Aucune categories',
-                                        context,
-                                        130)),
+                                getHeaderCell(
+                                   list[index].categories!.isNotEmpty? '${list[index].categories![0].name}':'Aucune categories',
+                                    context,
+                                    130),
+                                getHorSpace(5.h),
                                 Expanded(
                                     child: SizedBox(
                                   width: 100.h,
@@ -76,12 +77,14 @@ class WebWidget extends StatelessWidget {
                                   ),
                                 )),
                                 Expanded(
-                                    flex: 1,
+                                    flex: 2,
                                     child: getHeaderTitle(
                                         context, '${list[index].nom!}')),
+                                getHorSpace(5.h),
                                 Expanded(
+                                  flex: 2,
                                     child: getHeaderCell(
-                                        '${list[index].author!.firstname} ${list[index].author!.lastname}',
+                                        '${list[index].author!.firstname}',
                                         context,
                                         130)),
                                 Expanded(
@@ -93,6 +96,11 @@ class WebWidget extends StatelessWidget {
                                   flex: 1,
                                   child: getActiveDeActiveCell(context,
                                       list[index].status!.value, list[index]),
+                                ),
+                                 Expanded(
+                                  flex: 1,
+                                  child: getPromotionCell(context,
+                                      list[index].hasPromo!.value, list[index]),
                                 ),
                                 Stack(
                                   children: [
@@ -158,6 +166,22 @@ class WebWidget extends StatelessWidget {
     );
   }
 
+    getPromotionCell(BuildContext context, bool isActive, Book storyModel) {
+    return InkWell(
+      child: Container(
+          width: 120.h,
+          alignment: Alignment.centerLeft,
+          child: getButton(
+              context,
+              isActive ? 'Activer' : 'Desactiver',
+              isActive ? "#00A010".toColor() : "#FD3E3E".toColor(),
+              isActive ? "#E7FFE8".toColor() : "#FFF2F2".toColor())),
+      onTap: () {
+        onTapStatus(storyModel);
+      },
+    );
+  }
+
   getButton(BuildContext context, String string, Color color, Color bgColor) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 12.h),
@@ -179,11 +203,13 @@ class WebWidget extends StatelessWidget {
       child: Row(
         children: [
           getHeaderCell('ID', context, 80),
-          Expanded(child: getHeaderCell('Categorie', context, 130)),
+          getHeaderCell('Categorie', context, 130),
+          getHorSpace(5.h),
           Expanded(child: getHeaderCell('Image', context, 100)),
-          Expanded(flex: 1, child: getHeaderTitle(context, 'Titre')),
+          Expanded(flex: 2, child: getHeaderTitle(context, 'Titre')),
+          getHorSpace(5.h),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: getHeaderCell('Auteur', context, 100),
           ),
           Expanded(
@@ -193,6 +219,12 @@ class WebWidget extends StatelessWidget {
           Expanded(
               child: getHeaderCell(
                   'Status'
+                  '',
+                  context,
+                  120)),
+          Expanded(
+              child: getHeaderCell(
+                  'Promotion'
                   '',
                   context,
                   120)),

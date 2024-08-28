@@ -293,6 +293,28 @@ class BookController extends GetxController with StateMixin<List<Book>> {
     }
   }
 
+
+    Future<void> updateBookPromotion({Book? book}) async {
+    isLoading.value = true;
+    try {
+      await homeService.updateBookPromotion(
+        book: book,
+        hasPromo: book!.hasPromo!.value,
+      );
+
+      //categoryList.add(book);
+      Fluttertoast.showToast(
+        msg: "Promotion mise a jour",
+        backgroundColor: Colors.green,
+      );
+      isLoading.value = false;
+      clearData();
+    } on AppException catch (e) {
+      Fluttertoast.showToast(msg: e.message!, backgroundColor: Colors.red);
+      isLoading.value = false;
+    }
+  }
+
   void setBook(Book book) {
     nameController.text = book.nom!;
     price.text = book.prix.toString();
