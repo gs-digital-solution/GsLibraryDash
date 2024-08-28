@@ -296,11 +296,11 @@ class _StoryScreenState extends State<StoryScreen> {
     updateStatusPromotion(BuildContext context, Book storyModel) {
     getCommonDialog(
         context: context,
-        title: storyModel.status!.value
+        title: storyModel.hasPromo!.value
             ? 'Voulez-vous retirer ce livre en promotion ?'
             : 'Voulez-vous mettre ce livre en promotion?',
         function: () {
-          storyModel.status!.value = !storyModel.status!.value;
+          storyModel.hasPromo!.value = !storyModel.hasPromo!.value;
           bookController.updateBookPromotion(book: storyModel);
         },
         subTitle: 'Promotion Livre');

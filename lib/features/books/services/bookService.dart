@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getX;
 import 'package:gslibrarydashboard/exceptions/appException.dart';
@@ -28,7 +30,6 @@ class BookService extends getX.GetxService {
         throw AppException(message: response.data['msg']);
       }
     } on DioException catch (e) {
-      
       throw AppException(message: e.response!.data['msg']);
     }
   }
@@ -50,12 +51,7 @@ class BookService extends getX.GetxService {
     bool? popular,
     bool? featured,
   }) async {
-    FormData formData = FormData.fromMap({
-      'files':[
-
-      ]
-    });
-    
+    FormData formData = FormData.fromMap({'files': []});
 
     //print(description);
 
@@ -93,8 +89,6 @@ class BookService extends getX.GetxService {
     formData.fields.add(MapEntry("featured", '$featured'));
     //  formData.fields.add(MapEntry("status", '${true}'));
     //print(formData.fields);
-
-  
 
     try {
       final response = await BaseService.dio.post(
@@ -163,7 +157,6 @@ class BookService extends getX.GetxService {
     }
 
     if (payante!.isNotEmpty) {
-      
       formData.files.add(
         MapEntry(
           'payante',
@@ -221,7 +214,7 @@ class BookService extends getX.GetxService {
     try {
       final response =
           await BaseService.dio.post("books/${book!.sId}", data: formData);
-      
+
       if (response.statusCode == 201) {
         return Book.fromJson(response.data['book']);
       } else {
@@ -230,36 +223,40 @@ class BookService extends getX.GetxService {
     } on DioException catch (e) {
       print(e.error);
       if (e.type == DioExceptionType.badResponse) {
-        throw AppException(message: e.response!.data['msg'],);
+        throw AppException(
+          message: e.response!.data['msg'],
+        );
       } else {
         throw AppException(
-            message: "Verifier votre connexion internet et ressayez",);
+          message: "Verifier votre connexion internet et ressayez",
+        );
       }
     }
   }
 
-    Future<Book> updateBookPromotion({
+  Future<Book> updateBookPromotion({
     bool? hasPromo,
     Book? book,
   }) async {
-    FormData formData = FormData.fromMap({});
-    formData.fields.add(MapEntry("", '$hasPromo'));
     try {
-      final response =
-          await BaseService.dio.post("books/${book!.sId}", data: formData);
-      
+      final response = await BaseService.dio.post("books/promo/${book!.sId}",
+          data: json.encode({"hasPromo": hasPromo}));
+
       if (response.statusCode == 201) {
         return Book.fromJson(response.data['book']);
       } else {
         throw AppException(message: "Une erreur est survenue");
       }
     } on DioException catch (e) {
-      print(e.error);
+      print(e.response!.data);
       if (e.type == DioExceptionType.badResponse) {
-        throw AppException(message: e.response!.data['msg'],);
+        throw AppException(
+          message: e.response!.data['msg'],
+        );
       } else {
         throw AppException(
-            message: "Verifier votre connexion internet et ressayez",);
+          message: "Verifier votre connexion internet et ressayez",
+        );
       }
     }
   }

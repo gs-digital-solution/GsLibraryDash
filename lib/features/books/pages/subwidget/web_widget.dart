@@ -15,7 +15,8 @@ class WebWidget extends StatelessWidget {
       required this.queryText,
       required this.function,
       required this.onTapStatus,
-      required this.mainList,required this.onPromotion});
+      required this.mainList,
+      required this.onPromotion});
   final List<Book> list;
   final List<Book> mainList;
   final RxString queryText;
@@ -55,7 +56,9 @@ class WebWidget extends StatelessWidget {
                                     context,
                                     80),
                                 getHeaderCell(
-                                   list[index].categories!.isNotEmpty? '${list[index].categories![0].name}':'Aucune categories',
+                                    list[index].categories!.isNotEmpty
+                                        ? '${list[index].categories![0].name}'
+                                        : 'Aucune categories',
                                     context,
                                     130),
                                 getHorSpace(5.h),
@@ -82,7 +85,7 @@ class WebWidget extends StatelessWidget {
                                         context, '${list[index].nom!}')),
                                 getHorSpace(5.h),
                                 Expanded(
-                                  flex: 2,
+                                    flex: 2,
                                     child: getHeaderCell(
                                         '${list[index].author!.firstname}',
                                         context,
@@ -97,7 +100,7 @@ class WebWidget extends StatelessWidget {
                                   child: getActiveDeActiveCell(context,
                                       list[index].status!.value, list[index]),
                                 ),
-                                 Expanded(
+                                Expanded(
                                   flex: 1,
                                   child: getPromotionCell(context,
                                       list[index].hasPromo!.value, list[index]),
@@ -166,7 +169,7 @@ class WebWidget extends StatelessWidget {
     );
   }
 
-    getPromotionCell(BuildContext context, bool isActive, Book storyModel) {
+  getPromotionCell(BuildContext context, bool isActive, Book storyModel) {
     return InkWell(
       child: Container(
           width: 120.h,
@@ -177,7 +180,7 @@ class WebWidget extends StatelessWidget {
               isActive ? "#00A010".toColor() : "#FD3E3E".toColor(),
               isActive ? "#E7FFE8".toColor() : "#FFF2F2".toColor())),
       onTap: () {
-        onTapStatus(storyModel);
+        onPromotion(storyModel);
       },
     );
   }
@@ -223,11 +226,13 @@ class WebWidget extends StatelessWidget {
                   context,
                   120)),
           Expanded(
-              child: getHeaderCell(
-                  'Promotion'
-                  '',
-                  context,
-                  120)),
+            child: getHeaderCell(
+              'Promotion'
+              '',
+              context,
+              120,
+            ),
+          ),
           getHeaderTitle(context, 'Action'),
         ],
       ),
