@@ -90,6 +90,58 @@ class _DashboardPageState extends State<DashboardPage> {
                                       borderRadius: BorderRadius.only(
                                           topLeft: Radius.circular(16.h),
                                           topRight: Radius.circular(16.h)),
+                                      color: Color(0XFFD8F1E4)),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      getSvgImage("dashboard_category_icon.svg",
+                                          height: iconSize, width: iconSize),
+                                      getHorSpace(12.h),
+                                      getMultilineCustomFont(
+                                        "Solde GSLIBARY",
+                                        fontSize,
+                                        Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                        overflow: TextOverflow.visible,
+                                      ),
+                                    ],
+                                  ).paddingSymmetric(horizontal: 15.h),
+                                ),
+                                getVerSpace(12.h),
+                                getCustomFont(
+                                  '${snapshot.data!.soldeGslibrary!.toStringAsFixed(2)} XAF',
+                                  fontSize1,
+                                  Colors.orangeAccent,
+                                  1,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                      offset: Offset(0, 16),
+                                      blurRadius: 31,
+                                      color:
+                                          Color(0XFFACBFC1).withOpacity(0.10))
+                                ],
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(16.h),
+                                ),
+                                color: getSubCardColor(context)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: 96.h,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(16.h),
+                                          topRight: Radius.circular(16.h)),
                                       color: Color(0XFFFFEDE9)),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -120,7 +172,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               ],
                             ),
                           ),
-                        //  getHorSpace(20.h),
+
                           Container(
                             decoration: BoxDecoration(
                                 boxShadow: [
@@ -153,7 +205,60 @@ class _DashboardPageState extends State<DashboardPage> {
                                           height: iconSize, width: iconSize),
                                       getHorSpace(12.h),
                                       getMultilineCustomFont(
-                                        "Restant a Payer",
+                                        "Restant a Payer au Utilisateurs",
+                                        fontSize,
+                                        Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                        overflow: TextOverflow.visible,
+                                      ),
+                                    ],
+                                  ).paddingSymmetric(horizontal: 15.h),
+                                ),
+                                getVerSpace(12.h),
+                                getCustomFont(
+                                  '${snapshot.data!.montantUser} XAF',
+                                  fontSize1,
+                                  Colors.orangeAccent,
+                                  1,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ],
+                            ),
+                          ),
+                          //  getHorSpace(20.h),
+                          Container(
+                            decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                      offset: Offset(0, 16),
+                                      blurRadius: 31,
+                                      color:
+                                          Color(0XFFACBFC1).withOpacity(0.10))
+                                ],
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(16.h),
+                                ),
+                                color: getSubCardColor(context)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: 96.h,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(16.h),
+                                          topRight: Radius.circular(16.h)),
+                                      color: Color(0XFFD8F1E4)),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      getSvgImage("dashboard_category_icon.svg",
+                                          height: iconSize, width: iconSize),
+                                      getHorSpace(12.h),
+                                      getMultilineCustomFont(
+                                        "Restant a Payer aux Auteurs",
                                         fontSize,
                                         Colors.black,
                                         fontWeight: FontWeight.w300,
@@ -173,7 +278,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               ],
                             ),
                           ),
-                         // getHorSpace(20.h),
+                          // getHorSpace(20.h),
                           Container(
                             decoration: BoxDecoration(
                                 boxShadow: [
@@ -226,7 +331,6 @@ class _DashboardPageState extends State<DashboardPage> {
                               ],
                             ),
                           ),
-                          
                         ],
                       );
                     } else {

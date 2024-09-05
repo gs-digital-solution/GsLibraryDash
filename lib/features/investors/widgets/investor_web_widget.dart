@@ -95,6 +95,11 @@ class InvestorWebWidget extends StatelessWidget{
                                           150),
                                       getHorSpace(10.h),
                                        getHeaderCell(
+                                          '${list[index].montantTotalCommandes??""} XAF',
+                                          context,
+                                          150),
+                                      getHorSpace(10.h),
+                                       getHeaderCell(
                                           '${list[index].solde??""} XAF',
                                           context,
                                           150),
@@ -222,6 +227,11 @@ class InvestorWebWidget extends StatelessWidget{
               200),
           getHeaderCell(
               'Pourcentage'
+                  '',
+              context,
+              150),
+          getHeaderCell(
+              'Solde GSLIBRARY'
                   '',
               context,
               150),
