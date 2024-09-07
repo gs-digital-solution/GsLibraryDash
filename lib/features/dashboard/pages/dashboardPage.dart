@@ -100,7 +100,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           height: iconSize, width: iconSize),
                                       getHorSpace(12.h),
                                       getMultilineCustomFont(
-                                        "Solde GSLIBARY",
+                                        "Solde GSLIBARY + INVESTISSEUR",
                                         fontSize,
                                         Colors.black,
                                         fontWeight: FontWeight.w300,
@@ -111,7 +111,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                 ),
                                 getVerSpace(12.h),
                                 getCustomFont(
-                                  '${snapshot.data!.soldeGslibrary!.toStringAsFixed(2)} XAF',
+                                  '${(snapshot.data!.commande! - (snapshot.data!.montantUser! + snapshot.data!.montant!)).toStringAsFixed(2)} XAF',
                                   fontSize1,
                                   Colors.orangeAccent,
                                   1,
