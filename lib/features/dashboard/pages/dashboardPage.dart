@@ -100,7 +100,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           height: iconSize, width: iconSize),
                                       getHorSpace(12.h),
                                       getMultilineCustomFont(
-                                        "Solde GSLIBARY + INVESTISSEUR",
+                                        "Solde GSLIBARY + INVESTISSEUR".toUpperCase(),
                                         fontSize,
                                         Colors.black,
                                         fontWeight: FontWeight.w300,
@@ -111,7 +111,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                 ),
                                 getVerSpace(12.h),
                                 getCustomFont(
-                                  '${(snapshot.data!.commande! - (snapshot.data!.montantUser! + snapshot.data!.montant!)).toStringAsFixed(2)} XAF',
+                                  '${(snapshot.data!.soldeGslibrary!).toStringAsFixed(2)} XAF',
                                   fontSize1,
                                   Colors.orangeAccent,
                                   1,
@@ -152,7 +152,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           height: iconSize, width: iconSize),
                                       getHorSpace(12.h),
                                       getMultilineCustomFont(
-                                        "Total Commandes",
+                                        "Total Commandes".toUpperCase(),
                                         fontSize,
                                         Colors.black,
                                         fontWeight: FontWeight.w300,
@@ -205,7 +205,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           height: iconSize, width: iconSize),
                                       getHorSpace(12.h),
                                       getMultilineCustomFont(
-                                        "Restant a Payer au Utilisateurs",
+                                        "Restant a Payer au Utilisateurs".toUpperCase(),
                                         fontSize,
                                         Colors.black,
                                         fontWeight: FontWeight.w300,
@@ -258,7 +258,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           height: iconSize, width: iconSize),
                                       getHorSpace(12.h),
                                       getMultilineCustomFont(
-                                        "Restant a Payer aux Auteurs",
+                                        "Restant a Payer aux Auteurs".toUpperCase(),
                                         fontSize,
                                         Colors.black,
                                         fontWeight: FontWeight.w300,
@@ -311,7 +311,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           height: iconSize, width: iconSize),
                                       getHorSpace(12.h),
                                       getMultilineCustomFont(
-                                        "Total paiements",
+                                        "Total paiements".toUpperCase(),
                                         fontSize,
                                         Colors.black,
                                         fontWeight: FontWeight.w300,

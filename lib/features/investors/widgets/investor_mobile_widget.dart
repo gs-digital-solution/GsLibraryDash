@@ -86,7 +86,7 @@ class InvestorMobileWidget extends StatelessWidget{
 
                                                     getSubCell(removeAllHtmlTags(authorModel.investor!.description ?? ""), context, 325,isMaxLine: true),
                                                     getHorizontalSpace(context, 20),
-                                                     getSubCell(removeAllHtmlTags(authorModel.solde.toString()+'XAF'), context, 325,isMaxLine: true),
+                                                     getSubCell(removeAllHtmlTags(authorModel.solde!.toStringAsFixed(2)+'XAF'), context, 325,isMaxLine: true),
                                                  //   getActiveDeActiveCell(context, authorModel.status! , authorModel),
                                                     // getActiveDeActiveCell( context, storyModel.isActive!),
 

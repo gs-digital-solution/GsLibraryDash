@@ -293,17 +293,110 @@ class _StoryScreenState extends State<StoryScreen> {
         subTitle: 'Livre');
   }
 
-    updateStatusPromotion(BuildContext context, Book storyModel) {
-    getCommonDialog(
+  updateStatusPromotion(BuildContext context, Book storyModel) {
+    getCommonPromotionDialog(
         context: context,
         title: storyModel.hasPromo!.value
             ? 'Voulez-vous retirer ce livre en promotion ?'
             : 'Voulez-vous mettre ce livre en promotion?',
         function: () {
           storyModel.hasPromo!.value = !storyModel.hasPromo!.value;
+
           bookController.updateBookPromotion(book: storyModel);
         },
-        subTitle: 'Promotion Livre');
+        subTitle: 'Promotion Livre',
+        bookController: bookController,
+        book: storyModel);
+  }
+
+  getCommonPromotionDialog(
+      {required BuildContext context,
+      required String title,
+      required String subTitle,
+      required Function function,
+      BookController? bookController,
+      Book? book}) {
+    bookController!.pourcentageReduction.text =
+        book!.pourcentageReduction.toString();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: Container(
+            height: 300.h,
+            width: 300.h,
+            padding: EdgeInsets.all(20.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  subTitle,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Text(
+                  title,
+                   textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                TextFormField(
+                  controller: bookController.pourcentageReduction,
+                  decoration: InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: "Entrer le pourcentage de reduction"),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    new TextButton(
+                      child: new Text('Non',
+                          style: TextStyle(
+                            color: getPrimaryColor(context),
+                            fontWeight: FontWeight.bold,
+                          )),
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                    ),
+                    new TextButton(
+                      child: new Text('Oui',
+                          style: TextStyle(
+                            color: getPrimaryColor(context),
+                            fontWeight: FontWeight.bold,
+                          )),
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    ).then((value) {
+      if (value) {
+        function();
+      }
+    });
   }
 
   _showPopupMenu(BuildContext context, var detail, Book storyModel) async {

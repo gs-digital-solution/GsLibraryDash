@@ -237,10 +237,17 @@ class BookService extends getX.GetxService {
   Future<Book> updateBookPromotion({
     bool? hasPromo,
     Book? book,
+    int?pourcentageReduction,
   }) async {
+    Map<String,dynamic> promoData={
+      "hasPromo": hasPromo
+    };
+    if(pourcentageReduction!=null){
+      promoData['pourcentageReduction']=pourcentageReduction;
+    }
     try {
       final response = await BaseService.dio.post("books/promo/${book!.sId}",
-          data: json.encode({"hasPromo": hasPromo}));
+          data: json.encode(promoData));
 
       if (response.statusCode == 201) {
         return Book.fromJson(response.data['book']);

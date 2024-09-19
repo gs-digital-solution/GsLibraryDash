@@ -29,6 +29,8 @@ class BookController extends GetxController with StateMixin<List<Book>> {
   TextEditingController pdfController = TextEditingController();
   TextEditingController pdfControllerPayante = TextEditingController();
 
+  TextEditingController pourcentageReduction= TextEditingController(text: "0");
+
   final HomeController homeController = Get.find();
 
   QuillController descController = QuillController.basic();
@@ -294,12 +296,13 @@ class BookController extends GetxController with StateMixin<List<Book>> {
   }
 
 
-    Future<void> updateBookPromotion({Book? book}) async {
+    Future<void> updateBookPromotion({Book? book,}) async {
     isLoading.value = true;
     try {
       await homeService.updateBookPromotion(
         book: book,
         hasPromo: book!.hasPromo!.value,
+        pourcentageReduction: int.parse(pourcentageReduction.text),
       );
 
       //categoryList.add(book);

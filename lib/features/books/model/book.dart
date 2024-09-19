@@ -20,6 +20,7 @@ class Book {
   RxBool? popular;
   RxBool? featured;
   RxBool? hasPromo;
+  int? pourcentageReduction;
 
   Book(
       {this.gratuite,
@@ -38,6 +39,7 @@ class Book {
       this.popular,
       this.featured,
       this.hasPromo,
+      this.pourcentageReduction,
       this.iV});
 
   Book.fromJson(Map<String, dynamic> json) {
@@ -53,6 +55,7 @@ class Book {
         json['avatar'] != null ? new Avatar.fromJson(json['avatar']) : null;
     prix = json['prix'];
     pourcentage = json['pourcentage'];
+    pourcentageReduction = json['pourcentageReduction']!=null?json['pourcentageReduction']:0;
     author =
         json['author'] != null ? new TopAuthors.fromJson(json['author']) : null;
     if (json['categories'] != null) {
@@ -83,6 +86,7 @@ class Book {
         json['avatar'] != null ? new Avatar.fromJson(json['avatar']) : null;
     prix = json['prix'];
     pourcentage = json['pourcentage'];
+    pourcentageReduction = json['pourcentageReduction'];
     status = RxBool(json['status']);
     popular = RxBool(json['popular']);
     featured = RxBool(json['featured']);
