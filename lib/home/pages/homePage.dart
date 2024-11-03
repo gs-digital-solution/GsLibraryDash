@@ -26,6 +26,7 @@ import 'package:gslibrarydashboard/features/retraits/pages/addRetrait.dart';
 import 'package:gslibrarydashboard/features/retraits/pages/retraitPage.dart';
 import 'package:gslibrarydashboard/features/sliders/screens/add_slider_page.dart';
 import 'package:gslibrarydashboard/features/sliders/screens/slider_page.dart';
+import 'package:gslibrarydashboard/features/transfertsBooks/pages/transfertpage.dart';
 import 'package:gslibrarydashboard/features/users/pages/userpage.dart';
 import 'package:gslibrarydashboard/home/controller/homeController.dart';
 import 'package:gslibrarydashboard/main.dart';
@@ -192,6 +193,11 @@ class _HomePageState extends State<HomePage> {
                 route: '/users',
                 icon: Icons.dashboard,
               ),
+                AdminMenuItem(
+                title: 'Transfert de livre',
+                route: '/transferts',
+                icon: Icons.book,
+              ),
               AdminMenuItem(
                 title: 'Investisseurs',
                 icon: Icons.person,
@@ -314,6 +320,8 @@ class _HomePageState extends State<HomePage> {
                   return DashboardPage();
                 case '/users':
                   return UserPage();
+              case '/transferts':
+                  return TransfertPage();
                 case '/categories':
                   return CategoryScreen();
                 case '/categories/add':

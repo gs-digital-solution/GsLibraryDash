@@ -2,23 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
-
-import 'package:gslibrarydashboard/features/books/controller/bookController.dart';
 import 'package:gslibrarydashboard/features/books/model/book.dart';
-import 'package:gslibrarydashboard/features/books/pages/subwidget/mobile_widget.dart';
-import 'package:gslibrarydashboard/features/books/pages/subwidget/web_widget.dart';
+
 import 'package:gslibrarydashboard/features/categories/screens/entries_drop_down.dart';
+import 'package:gslibrarydashboard/features/commandes/controller/commandeController.dart';
+import 'package:gslibrarydashboard/features/commandes/model/commande.dart';
+import 'package:gslibrarydashboard/features/commandes/model/user.dart';
+import 'package:gslibrarydashboard/features/commandes/pages/subwidget/mobile_commande_widget.dart';
+import 'package:gslibrarydashboard/features/commandes/pages/subwidget/web_commande_widget.dart';
+import 'package:gslibrarydashboard/features/dashboard/controllers/dashboardController.dart';
+import 'package:gslibrarydashboard/features/transfertsBooks/controllers/transfert_demand_controller.dart';
+import 'package:gslibrarydashboard/features/transfertsBooks/models/transfert.dart';
+import 'package:gslibrarydashboard/features/transfertsBooks/pages/widgets/mobile_transfert_widget.dart';
+import 'package:gslibrarydashboard/features/transfertsBooks/pages/widgets/web_transfert_widget.dart';
+import 'package:gslibrarydashboard/features/users/controller/usercontroller.dart';
+import 'package:gslibrarydashboard/features/users/pages/widgets/mobile_user_widget.dart';
+import 'package:gslibrarydashboard/features/users/pages/widgets/web_user_widget.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/theme/theme_controller.dart';
 
-class StoryScreen extends StatefulWidget {
-  StoryScreen();
+class TransfertPage extends StatefulWidget {
+  TransfertPage();
 
   @override
-  State<StoryScreen> createState() => _StoryScreenState();
+  State<TransfertPage> createState() => _TransfertPageState();
 }
 
-class _StoryScreenState extends State<StoryScreen> {
+class _TransfertPageState extends State<TransfertPage> {
   @override
   void initState() {
     super.initState();
@@ -30,7 +40,8 @@ class _StoryScreenState extends State<StoryScreen> {
 
   final ScrollController _controller = ScrollController();
 
-  final BookController bookController = Get.put(BookController());
+  final TransfertDemandController bookController = Get.put(TransfertDemandController());
+
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +56,10 @@ class _StoryScreenState extends State<StoryScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          getTextWidget(context, 'Livres', 75, getFontColor(context),
+          getTextWidget(context, 'Transferts de Livres', 75, getFontColor(context),
               fontWeight: FontWeight.w700),
           getVerticalSpace(context, 35),
+          
           Expanded(
               child: getCommonContainer(
                   context: context,
@@ -75,7 +87,7 @@ class _StoryScreenState extends State<StoryScreen> {
                             },
                             child: Text('Actualiser'),
                           ),
-                          getHorizontalSpace(context, 15),
+                            getHorizontalSpace(context, 15),
                           Expanded(
                               child: getSearchTextFiledWidget(
                                   context, 'Search..', textEditingController,
@@ -114,7 +126,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                 if (d > 0) {
                                   i = i + 1;
                                 }
-                                List<Book> paginationList = [];
+                                List<TransfertDevice> paginationList = [];
 
                                 paginationList = state
                                     .skip(position.value * totalItem.value)
@@ -130,7 +142,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                         child: Column(
                                           children: [
                                             isWeb(context)
-                                                ? WebWidget(
+                                                ? TransfertWidgetWeb(
                                                     mainList: state,
                                                     list: paginationList,
                                                     queryText: queryText,
@@ -141,13 +153,8 @@ class _StoryScreenState extends State<StoryScreen> {
                                                     onTapStatus: (model) {
                                                       updateStatus(
                                                           context, model);
-                                                    },
-                                                    onPromotion: (model) {
-                                                      updateStatusPromotion(
-                                                          context, model);
-                                                    },
-                                                  )
-                                                : MobileWidget(
+                                                    })
+                                                : TransfertMobileWidget(
                                                     mainList: state,
                                                     list: paginationList,
                                                     queryText: queryText,
@@ -164,7 +171,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                                 (getCommonPadding(context) /
                                                     2)),
                                             Container(
-                                              width: double.infinity,
+                                              width: Get.width,
                                               child: Center(
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -172,7 +179,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.center,
                                                   mainAxisSize:
-                                                      MainAxisSize.min,
+                                                      MainAxisSize.max,
                                                   children: [
                                                     InkWell(
                                                       onTap: () {
@@ -194,47 +201,42 @@ class _StoryScreenState extends State<StoryScreen> {
                                                     getHorizontalSpace(
                                                         context, 10),
                                                     Expanded(
+                                                     
                                                       child: Wrap(
-                                                        children: List.generate(
-                                                            i.toInt(),
-                                                            (index) => InkWell(
-                                                                  child:
-                                                                      Container(
-                                                                    margin: EdgeInsets.symmetric(
-                                                                        horizontal:
-                                                                            5.h),
-                                                                    height:
-                                                                        35.h,
-                                                                    width: 35.h,
-                                                                    decoration: getDefaultDecoration(
-                                                                        bgColor: position.value ==
-                                                                                index
-                                                                            ? getPrimaryColor(
-                                                                                context)
-                                                                            : Colors
-                                                                                .transparent,
-                                                                        radius: getResizeRadius(
-                                                                            context,
-                                                                            15)),
-                                                                    child:
-                                                                        Center(
-                                                                      child: getTextWidget(
-                                                                          context,
-                                                                          '${index + 1}',
-                                                                          50,
-                                                                          position.value == index
-                                                                              ? Colors.white
-                                                                              : subPrimaryColor(context)),
-                                                                    ),
-                                                                  ),
-                                                                  onTap: () {
-                                                                    position.value =
-                                                                        index;
-                                                                    _controller
-                                                                        .jumpTo(
-                                                                            0);
-                                                                  },
-                                                                )),
+                                                      
+                                                        children:
+                                                            List.generate(
+                                                                i.toInt(),
+                                                                (index) =>
+                                                                    InkWell(
+                                                                      child:
+                                                                          Container(
+                                                                        margin:
+                                                                            EdgeInsets.symmetric(horizontal: 5.h),
+                                                                        height:
+                                                                            35.h,
+                                                                        width:
+                                                                            35.h,
+                                                                        decoration: getDefaultDecoration(
+                                                                            bgColor: position.value == index ? getPrimaryColor(context) : Colors.transparent,
+                                                                            radius: getResizeRadius(context, 15)),
+                                                                        child:
+                                                                            Center(
+                                                                          child: getTextWidget(
+                                                                              context,
+                                                                              '${index + 1}',
+                                                                              50,
+                                                                              position.value == index ? Colors.white : subPrimaryColor(context)),
+                                                                        ),
+                                                                      ),
+                                                                      onTap:
+                                                                          () {
+                                                                        position.value =
+                                                                            index;
+                                                                        _controller
+                                                                            .jumpTo(0);
+                                                                      },
+                                                                    )),
                                                       ),
                                                     ),
                                                     getHorizontalSpace(
@@ -256,6 +258,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                                         width: 18.h,
                                                       ),
                                                     ),
+                                                    
                                                   ],
                                                 ).marginOnly(
                                                     right: getCommonPadding(
@@ -284,123 +287,15 @@ class _StoryScreenState extends State<StoryScreen> {
     getCommonDialog(
         context: context,
         title: storyModel.status!.value
-            ? 'Voulez-vous desactiver ce livre?'
-            : 'Voulez-vous activer ce livre?',
+            ? 'Do you want to de-active this book?'
+            : 'Do you want to active this book?',
         function: () {
-          storyModel.status!.value = !storyModel.status!.value;
-          bookController.updateBookStatus(book: storyModel);
+          
         },
-        subTitle: 'Livre');
+        subTitle: 'Book');
   }
 
-  updateStatusPromotion(BuildContext context, Book storyModel) {
-    getCommonPromotionDialog(
-        context: context,
-        title: storyModel.hasPromo!.value
-            ? 'Voulez-vous retirer ce livre en promotion ?'
-            : 'Voulez-vous mettre ce livre en promotion?',
-        function: () {
-          storyModel.hasPromo!.value = !storyModel.hasPromo!.value;
-           
-
-          bookController.updateBookPromotion(book: storyModel);
-        },
-        subTitle: 'Promotion Livre',
-        bookController: bookController,
-        book: storyModel);
-  }
-
-  getCommonPromotionDialog(
-      {required BuildContext context,
-      required String title,
-      required String subTitle,
-      required Function function,
-      BookController? bookController,
-      Book? book}) {
-    bookController!.pourcentageReduction.text =
-        book!.pourcentageReduction.toString();
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          child: Container(
-            height: 300.h,
-            width: 300.h,
-            padding: EdgeInsets.all(20.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  subTitle,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Text(
-                  title,
-                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                TextFormField(
-                  controller: bookController.pourcentageReduction,
-                  decoration: InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: "Entrer le pourcentage de reduction"),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    new TextButton(
-                      child: new Text('Non',
-                          style: TextStyle(
-                            color: getPrimaryColor(context),
-                            fontWeight: FontWeight.bold,
-                          )),
-                      onPressed: () {
-                        Navigator.of(context).pop(false);
-                      },
-                    ),
-                    new TextButton(
-                      child: new Text('Oui',
-                          style: TextStyle(
-                            color: getPrimaryColor(context),
-                            fontWeight: FontWeight.bold,
-                          )),
-                      onPressed: () {
-                        Navigator.of(context).pop(true);
-                      },
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-        );
-      },
-    ).then((value) {
-      if (value) {
-        function();
-      }
-    });
-  }
-
-  _showPopupMenu(BuildContext context, var detail, Book storyModel) async {
+  _showPopupMenu(BuildContext context, var detail, TransfertDevice storyModel) async {
     final RenderBox? overlay =
         Overlay.of(context).context.findRenderObject() as RenderBox;
 
@@ -418,18 +313,16 @@ class _StoryScreenState extends State<StoryScreen> {
         PopupMenuItem<String>(
             child: Container(
               child: MenuItem(
-                title: "Mettre a jour",
+                title: "Edit",
                 space: 0,
               ),
             ),
-            onTap: () {
-              bookController.setBook(storyModel);
-            },
-            value: 'Mettre a jour'),
+            onTap: () {},
+            value: 'Edit'),
         PopupMenuItem<String>(
             child: Container(
               child: MenuItem(
-                title: "Supprimer",
+                title: "Delete",
                 space: 0,
                 visibility: false,
               ),
@@ -437,13 +330,11 @@ class _StoryScreenState extends State<StoryScreen> {
             onTap: () {
               getCommonDialog(
                   context: context,
-                  title: 'Voulez-vous supprimer ce livre?',
-                  function: () {
-                    bookController.deleteCategory(model: storyModel);
-                  },
-                  subTitle: 'Supprimer');
+                  title: 'Do you want to delete this book?',
+                  function: () {},
+                  subTitle: 'Delete');
             },
-            value: 'Supprimer'),
+            value: 'Delete'),
       ],
       elevation: 1,
     );

@@ -1,18 +1,11 @@
-import 'dart:html';
 
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/features/author/controllers/authorController.dart';
-import 'package:gslibrarydashboard/features/books/controller/bookController.dart';
-import 'package:gslibrarydashboard/features/books/model/book.dart';
-import 'package:gslibrarydashboard/features/books/pages/category_dropdown.dart';
-import 'package:gslibrarydashboard/features/books/pages/subwidget/status_drop_down.dart';
-import 'package:gslibrarydashboard/features/categories/controller/categoryController.dart';
 import 'package:gslibrarydashboard/features/dashboard/controllers/dashboardController.dart';
 import 'package:gslibrarydashboard/features/retraits/controller/retraitController.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';

@@ -240,7 +240,7 @@ class BookService extends getX.GetxService {
     int?pourcentageReduction,
   }) async {
     Map<String,dynamic> promoData={
-      "hasPromo": hasPromo
+      "hasPromo": hasPromo,
     };
     if(pourcentageReduction!=null){
       promoData['pourcentageReduction']=pourcentageReduction;
