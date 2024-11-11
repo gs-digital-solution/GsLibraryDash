@@ -73,7 +73,12 @@ class CommandeWebWidget extends StatelessWidget {
                                         //     .circular(10.r),
                                         child: Image(
                                           image: NetworkImage(
-                                        list[index].book!=null?      list[index].book!.avatar!.url!:""),
+                                              list[index].book != null
+                                                  ? list[index]
+                                                      .book!
+                                                      .avatar!
+                                                      .url!
+                                                  : ""),
                                         ),
                                       ),
                                     ),
@@ -82,7 +87,10 @@ class CommandeWebWidget extends StatelessWidget {
                                 Expanded(
                                     flex: 1,
                                     child: getHeaderTitle(
-                                        context,list[index].book!=null? '${list[index].book!.nom}':'')),
+                                        context,
+                                        list[index].book != null
+                                            ? '${list[index].book!.nom}'
+                                            : '')),
                                 Expanded(
                                     child: getHeaderCell(
                                         '${list[index].author!.firstname ?? ""} ',
@@ -94,31 +102,35 @@ class CommandeWebWidget extends StatelessWidget {
                                         context,
                                         130)),
                                 Expanded(
-                                  flex: 1,
+                                    flex: 1,
                                     child: getHeaderCell(
                                         '${list[index].montant} FCFA',
                                         context,
                                         150)),
                                 Expanded(
-                                     flex: 1,
-                                    child:list[index].book==null?SizedBox(): getHeaderCell(
-                                        '${list[index].book!.prix??0} ',
-                                        context,
-                                        150)),
+                                    flex: 1,
+                                    child: list[index].book == null
+                                        ? SizedBox()
+                                        : getHeaderCell(
+                                            '${list[index].book!.prix ?? 0} ',
+                                            context,
+                                            150)),
                                 Expanded(
-                                     flex: 1,
-                                    child:list[index].book==null?SizedBox(): getHeaderCell(
-                                        '${list[index].book!.pourcentage??0} ',
-                                        context,
-                                        150)),
-                                      
+                                    flex: 1,
+                                    child: list[index].book == null
+                                        ? SizedBox()
+                                        : getHeaderCell(
+                                            '${list[index].book!.pourcentage ?? 0} ',
+                                            context,
+                                            150)),
                                 Expanded(
                                     child: getHeaderCell(
                                         '${list[index].createdAt!.split('T').first}',
                                         context,
                                         130)),
                                 Expanded(
-                                    child: getActiveDeActiveCell(context,list[index].status!)),
+                                    child: getActiveDeActiveCell(
+                                        context, list[index].status!.value,list[index])),
                                 Expanded(
                                     child: getHeaderCell(
                                         '${list[index].createdAt!.split('T').last.split('.').first}',
@@ -172,15 +184,21 @@ class CommandeWebWidget extends StatelessWidget {
     _tapPosition = details.globalPosition;
   }
 
-  getActiveDeActiveCell(BuildContext context, bool isActive) {
-    return Container(
+  getActiveDeActiveCell(BuildContext context, bool isActive, Commande storyModel) {
+    return InkWell(
+      child: Container(
         width: 120.h,
         alignment: Alignment.centerLeft,
         child: getButton(
             context,
             isActive ? 'Payée' : 'Non Payée',
             isActive ? "#00A010".toColor() : "#FD3E3E".toColor(),
-            isActive ? "#E7FFE8".toColor() : "#FFF2F2".toColor()));
+            isActive ? "#E7FFE8".toColor() : "#FFF2F2".toColor()),
+      ),
+      onTap: () {
+        onTapStatus(storyModel);
+      },
+    );
   }
 
   getButton(BuildContext context, String string, Color color, Color bgColor) {
@@ -215,7 +233,7 @@ class CommandeWebWidget extends StatelessWidget {
             flex: 1,
             child: getHeaderCell('Montant', context, 150),
           ),
-           Expanded(
+          Expanded(
             flex: 1,
             child: getHeaderCell('Prix du livre', context, 150),
           ),

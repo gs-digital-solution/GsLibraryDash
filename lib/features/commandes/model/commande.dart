@@ -1,5 +1,7 @@
 
 
+import 'package:get/get.dart';
+
 import '../../books/model/book.dart';
 
 class Commande {
@@ -11,7 +13,7 @@ class Commande {
   String? createdAt;
   String? updatedAt;
   int? iV;
-  bool?status;
+  RxBool?status;
 
   Commande(
       {this.sId,
@@ -26,14 +28,14 @@ class Commande {
 
   Commande.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    montant = json['montant'];
+    montant = json['montant'] is int?json['montant']:double.parse(json['montant'].toString()).round();
     author =
         json['author'] != null ? new Author.fromJson(json['author']) : null;
     user = json['user'] != null ? new Author.fromJson(json['user']) : null;
     book = json['book'] != null ? new Book.fromJsonCommande(json['book']) : null;
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    status=json['status'];
+    status=RxBool(json['status']);
     iV = json['__v'];
   }
 

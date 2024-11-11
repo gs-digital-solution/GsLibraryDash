@@ -108,4 +108,32 @@ class CommandeService extends getX.GetxService {
       }
     }
   }
+
+    Future<bool> confirmOrder({
+    Commande?commande,
+  }) async {
+    print(commande);
+    try {
+      final response = await BaseService.dio.post(
+        "commandes/activate/${commande!.sId}",
+      
+      );
+      print(response.data);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw AppException(message: response.data);
+      }
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        throw AppException(message: "Verifier votre connection internet et ressayez-svp");
+      } else if (e.type == DioExceptionType.badResponse) {
+        throw AppException(message: e.response!.data['msg']);
+      } else {
+        throw Exception(e.message);
+      }
+    }
+  }
 }

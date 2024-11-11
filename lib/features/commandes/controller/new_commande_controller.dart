@@ -47,14 +47,15 @@ class NewCommandeController extends GetxController
 
   Future<bool> createCommande(
       {Book? book, User? user, BuildContext? context}) async {
-    double amount = book!.prix! - (book.prix! * book.pourcentage!) / 100;
+   // double amount = book!.prix! - ((book.prix! * book.pourcentage!) / 100);
     
     Map<String, dynamic> paymentData = {
-      "author": "${book.author!.sId}",
+      "author": "${book!.author!.sId}",
       "book": "${book.sId}",
-      "montant": amount.toInt(),
+      "montant": book.prix,
       "user":user!.sId,
       "deviceId": user.deviceId,
+      "pourcentage":book.pourcentage
     };
     loadingPurchase.value = true;
 
@@ -66,6 +67,7 @@ class NewCommandeController extends GetxController
       searchUserController.clear();
 
       loadingPurchase.value = false;
+         showCustomToast(message: 'Commande cree avec sucess', context: context!);
       return true;
     } on AppException catch (e) {
       loadingPurchase.value = false;

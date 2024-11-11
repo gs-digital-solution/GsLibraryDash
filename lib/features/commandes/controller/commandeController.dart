@@ -39,7 +39,7 @@ class CommandeController extends GetxController
   Future<bool> createCommande(
       {Book? book, User? user, BuildContext? context}) async {
     double amount = book!.prix! - (book.prix! * book.pourcentage!) / 100;
-    
+
     Map<String, dynamic> paymentData = {
       "author": "${book.author!.sId}",
       "book": "${book.sId}",
@@ -54,6 +54,23 @@ class CommandeController extends GetxController
       );
 
       loadingPurchase.value = false;
+      return true;
+    } on AppException catch (e) {
+      loadingPurchase.value = false;
+      showCustomToast(message: e.message!, context: context!);
+      return false;
+    }
+  }
+
+  Future<bool> confirmOrder({Commande? commande, BuildContext? context}) async {
+    try {
+      bool value = await homeService.confirmOrder(
+        commande: commande,
+      );
+      showCustomToast(
+          message:
+              "commande active et disponible dans les commandes utilisateurs",
+          context: context!);
       return true;
     } on AppException catch (e) {
       loadingPurchase.value = false;

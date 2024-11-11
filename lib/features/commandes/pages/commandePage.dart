@@ -219,9 +219,13 @@ class _CommandePageState extends State<CommandePage> {
                                                       _showPopupMenu(context,
                                                           detail, model);
                                                     },
-                                                    onTapStatus: (model) {
-                                                      updateStatus(
-                                                          context, model);
+                                                    onTapStatus:
+                                                        (Commande? model) {
+                                                      model!.status!.value ==
+                                                              true
+                                                          ? null
+                                                          : updateStatus(
+                                                              context, model);
                                                     }),
                                             getVerticalSpace(
                                                 context,
@@ -344,14 +348,19 @@ class _CommandePageState extends State<CommandePage> {
     ));
   }
 
-  updateStatus(BuildContext context, Book storyModel) {
+  updateStatus(BuildContext context, Commande storyModel) {
     getCommonDialog(
         context: context,
-        title: storyModel.status!.value
-            ? 'Do you want to de-active this book?'
-            : 'Do you want to active this book?',
-        function: () {},
-        subTitle: 'Book');
+        title: storyModel.status!.value == false
+            ? 'Operation irreversible.Voulez vous valider cette commande?'
+            : "Commande deja active",
+        function: storyModel.status!.value == true
+            ? () {}
+            : () {
+                storyModel.status!.value = !storyModel.status!.value;
+                bookController.confirmOrder(commande: storyModel,context: context);
+              },
+        subTitle: 'Commande');
   }
 
   _showPopupMenu(BuildContext context, var detail, Commande storyModel) async {
