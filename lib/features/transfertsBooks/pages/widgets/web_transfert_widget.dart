@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
 
 import 'package:gslibrarydashboard/features/commandes/model/user.dart';
+import 'package:gslibrarydashboard/features/history/controller/history_controller.dart';
 import 'package:gslibrarydashboard/features/transfertsBooks/models/transfert.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
@@ -65,7 +66,6 @@ class TransfertWidgetWeb extends StatelessWidget {
                                     flex: 1,
                                     child: getHeaderTitle(
                                         context, list[index].user!.firstname!)),
-                              
                                 Expanded(
                                     child: SizedBox(
                                   width: 130,
@@ -100,18 +100,15 @@ class TransfertWidgetWeb extends StatelessWidget {
                                 Expanded(
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.green
-                                    ),
+                                        backgroundColor: Colors.green),
                                     onPressed: () {},
                                     child: Text("Confirmer"),
                                   ),
                                 ),
                                 Expanded(
-                                   
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.red
-                                    ),
+                                        backgroundColor: Colors.red),
                                     onPressed: () {},
                                     child: Text("Rejeter"),
                                   ),
@@ -119,9 +116,107 @@ class TransfertWidgetWeb extends StatelessWidget {
                                 Expanded(
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.orange
-                                    ),
-                                    onPressed: () {},
+                                        backgroundColor: Colors.orange),
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) =>
+                                            GetBuilder<HistoryController>(
+                                          init: HistoryController(
+                                            userId: list[index].user!.sId,
+                                          ),
+                                          builder: (controller) => Dialog(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.zero,
+                                            ),
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20, vertical: 20),
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                          child: getCustomFont(
+                                                              "Device Id",
+                                                              12.sp,
+                                                              Colors.black,
+                                                              1)),
+                                                      Expanded(
+                                                          child: getCustomFont(
+                                                              "Date",
+                                                              12.sp,
+                                                              Colors.black,
+                                                              1)),
+                                                      Expanded(
+                                                          child: getCustomFont(
+                                                              "Heure",
+                                                              12.sp,
+                                                              Colors.black,
+                                                              1)),
+                                                    ],
+                                                  ),
+                                                  Divider(),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  controller.obx(
+                                                    (state) => Expanded(
+                                                      child: ListView.builder(
+                                                        itemBuilder:
+                                                            (context, index) =>
+                                                                Container(
+                                                          child: Container(
+                                                            margin: EdgeInsets.only(bottom: 10),
+                                                            child: Row(
+                                                              children: [
+                                                                Expanded(
+                                                                    child: getCustomFont(
+                                                                        state[index]
+                                                                                .deviceId ??
+                                                                            "",
+                                                                        12.sp,
+                                                                        Colors
+                                                                            .black,
+                                                                        1,fontWeight: FontWeight.bold)),
+                                                                Expanded(
+                                                                    child: getCustomFont(
+                                                                        state[index]
+                                                                            .createdAt!
+                                                                            .split(
+                                                                                "T")
+                                                                            .first,
+                                                                        12.sp,
+                                                                        Colors
+                                                                            .black,
+                                                                        1,fontWeight: FontWeight.bold)),
+                                                                Expanded(
+                                                                    child: getCustomFont(
+                                                                        state[index]
+                                                                            .createdAt!
+                                                                            .split(
+                                                                                "T")
+                                                                            .last.split(".").first,
+                                                                        12.sp,
+                                                                        Colors
+                                                                            .black,
+                                                                        1,fontWeight: FontWeight.bold)),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        itemCount:
+                                                            state!.length,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
                                     child: Text("Historique"),
                                   ),
                                 ),
@@ -175,9 +270,9 @@ class TransfertWidgetWeb extends StatelessWidget {
       child: Row(
         children: [
           getHeaderCell('ID', context, 30),
-           getHorSpace(10.h),
+          getHorSpace(10.h),
           Expanded(child: getHeaderCell('Nom', context, 80)),
-                Expanded(child: getHeaderCell('Telephone', context, 80)),
+          Expanded(child: getHeaderCell('Telephone', context, 80)),
           Expanded(child: getHeaderCell('Ancien Device', context, 100)),
           Expanded(
             flex: 1,
@@ -201,13 +296,13 @@ class TransfertWidgetWeb extends StatelessWidget {
                   '',
                   context,
                   120)),
-                  Expanded(
+          Expanded(
               child: getHeaderCell(
                   ''
                   '',
                   context,
                   120)),
-                     Expanded(
+          Expanded(
               child: getHeaderCell(
                   ''
                   '',
