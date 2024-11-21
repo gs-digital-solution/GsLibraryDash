@@ -5,6 +5,7 @@ import 'package:gslibrarydashboard/common/common.dart';
 
 import 'package:gslibrarydashboard/features/commandes/model/user.dart';
 import 'package:gslibrarydashboard/features/history/controller/history_controller.dart';
+import 'package:gslibrarydashboard/features/transfertsBooks/controllers/transfert_demand_controller.dart';
 import 'package:gslibrarydashboard/features/transfertsBooks/models/transfert.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
@@ -18,12 +19,14 @@ class TransfertWidgetWeb extends StatelessWidget {
       required this.queryText,
       required this.function,
       required this.onTapStatus,
+      required this.controller,
       required this.mainList});
   final List<TransfertDevice> list;
   final List<TransfertDevice> mainList;
   final RxString queryText;
   final Function(Offset, TransfertDevice) function;
   final Function onTapStatus;
+  final TransfertDemandController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -93,131 +96,386 @@ class TransfertWidgetWeb extends StatelessWidget {
                                         context,
                                         130)),
                                 Expanded(
-                                    child: getHeaderCell(
-                                        '${list[index].createdAt!.split('T').last.split('.').first}',
-                                        context,
-                                        130)),
-                                Expanded(
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.green),
-                                    onPressed: () {},
-                                    child: Text("Confirmer"),
+                                  child: getHeaderCell(
+                                    '${list[index].requestCount}',
+                                    context,
+                                    130,
                                   ),
                                 ),
                                 Expanded(
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.red),
-                                    onPressed: () {},
-                                    child: Text("Rejeter"),
+                                  child: Builder(
+                                    builder: (context) {
+                                      switch (list[index].status!.value) {
+                                        case 0:
+                                          return getCustomFont(
+                                            "En cours",
+                                            12.sp,
+                                            Colors.orange,
+                                            1,
+                                            fontWeight: FontWeight.bold,
+                                            textAlign: TextAlign.center,
+                                          );
+
+                                        case 1:
+                                          return getCustomFont(
+                                            "Acceptee",
+                                            12.sp,
+                                            Colors.green,
+                                            1,
+                                            fontWeight: FontWeight.bold,
+                                             textAlign: TextAlign.center,
+                                          );
+
+                                        default:
+                                          return getCustomFont(
+                                            "Refusee",
+                                            12.sp,
+                                            Colors.red,
+                                            1,
+                                            fontWeight: FontWeight.bold,
+                                             textAlign: TextAlign.center,
+                                          );
+                                      }
+                                    },
                                   ),
                                 ),
                                 Expanded(
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.orange),
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) =>
-                                            GetBuilder<HistoryController>(
-                                          init: HistoryController(
-                                            userId: list[index].user!.sId,
-                                          ),
-                                          builder: (controller) => Dialog(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.zero,
-                                            ),
-                                            child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 20, vertical: 20),
-                                              child: Column(
-                                                children: [
-                                                  Row(
+                                  child: PopupMenuButton<int>(
+                                    icon: Icon(Icons.more_vert),
+                                    itemBuilder: (context) => [
+                                      PopupMenuItem(
+                                        value: 1,
+                                        child: getCustomFont(
+                                          "Confirmer",
+                                          18.sp,
+                                          Colors.green,
+                                          1,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 2,
+                                        child: getCustomFont(
+                                          "Rejeter",
+                                          18.sp,
+                                          Colors.red,
+                                          1,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 3,
+                                        child: getCustomFont(
+                                          "Historique",
+                                          18.sp,
+                                          Colors.orange,
+                                          1,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      )
+                                    ],
+                                    onSelected: (value) async {
+                                      switch (value) {
+                                        case 3:
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                GetBuilder<HistoryController>(
+                                              init: HistoryController(
+                                                userId: list[index].user!.sId,
+                                              ),
+                                              builder: (controller) => Dialog(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.zero,
+                                                ),
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 20,
+                                                      vertical: 20),
+                                                  child: Column(
                                                     children: [
-                                                      Expanded(
-                                                          child: getCustomFont(
-                                                              "Device Id",
-                                                              12.sp,
-                                                              Colors.black,
-                                                              1)),
-                                                      Expanded(
-                                                          child: getCustomFont(
-                                                              "Date",
-                                                              12.sp,
-                                                              Colors.black,
-                                                              1)),
-                                                      Expanded(
-                                                          child: getCustomFont(
-                                                              "Heure",
-                                                              12.sp,
-                                                              Colors.black,
-                                                              1)),
-                                                    ],
-                                                  ),
-                                                  Divider(),
-                                                  SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  controller.obx(
-                                                    (state) => Expanded(
-                                                      child: ListView.builder(
-                                                        itemBuilder:
-                                                            (context, index) =>
-                                                                Container(
-                                                          child: Container(
-                                                            margin: EdgeInsets.only(bottom: 10),
-                                                            child: Row(
-                                                              children: [
-                                                                Expanded(
-                                                                    child: getCustomFont(
-                                                                        state[index]
-                                                                                .deviceId ??
-                                                                            "",
-                                                                        12.sp,
-                                                                        Colors
-                                                                            .black,
-                                                                        1,fontWeight: FontWeight.bold)),
-                                                                Expanded(
-                                                                    child: getCustomFont(
-                                                                        state[index]
-                                                                            .createdAt!
-                                                                            .split(
-                                                                                "T")
-                                                                            .first,
-                                                                        12.sp,
-                                                                        Colors
-                                                                            .black,
-                                                                        1,fontWeight: FontWeight.bold)),
-                                                                Expanded(
-                                                                    child: getCustomFont(
-                                                                        state[index]
-                                                                            .createdAt!
-                                                                            .split(
-                                                                                "T")
-                                                                            .last.split(".").first,
-                                                                        12.sp,
-                                                                        Colors
-                                                                            .black,
-                                                                        1,fontWeight: FontWeight.bold)),
-                                                              ],
+                                                      Row(
+                                                        children: [
+                                                          Expanded(
+                                                              child: getCustomFont(
+                                                                  "Device Id",
+                                                                  12.sp,
+                                                                  Colors.black,
+                                                                  1)),
+                                                          Expanded(
+                                                              child:
+                                                                  getCustomFont(
+                                                                      "Date",
+                                                                      12.sp,
+                                                                      Colors
+                                                                          .black,
+                                                                      1)),
+                                                          Expanded(
+                                                              child:
+                                                                  getCustomFont(
+                                                                      "Heure",
+                                                                      12.sp,
+                                                                      Colors
+                                                                          .black,
+                                                                      1)),
+                                                        ],
+                                                      ),
+                                                      Divider(),
+                                                      SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      controller.obx(
+                                                        (state) => Expanded(
+                                                          child:
+                                                              ListView.builder(
+                                                            itemBuilder:
+                                                                (context,
+                                                                        index) =>
+                                                                    Container(
+                                                              child: Container(
+                                                                margin: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            10),
+                                                                child: Row(
+                                                                  children: [
+                                                                    Expanded(
+                                                                        child: getCustomFont(
+                                                                            state[index].deviceId ??
+                                                                                "",
+                                                                            12.sp,
+                                                                            Colors.black,
+                                                                            1,
+                                                                            fontWeight: FontWeight.bold)),
+                                                                    Expanded(
+                                                                        child: getCustomFont(
+                                                                            state[index].createdAt!.split("T").first,
+                                                                            12.sp,
+                                                                            Colors.black,
+                                                                            1,
+                                                                            fontWeight: FontWeight.bold)),
+                                                                    Expanded(
+                                                                        child: getCustomFont(
+                                                                            state[index].createdAt!.split("T").last.split(".").first,
+                                                                            12.sp,
+                                                                            Colors.black,
+                                                                            1,
+                                                                            fontWeight: FontWeight.bold)),
+                                                                  ],
+                                                                ),
+                                                              ),
                                                             ),
+                                                            itemCount:
+                                                                state!.length,
                                                           ),
                                                         ),
-                                                        itemCount:
-                                                            state!.length,
                                                       ),
-                                                    ),
+                                                    ],
                                                   ),
-                                                ],
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ),
-                                      );
+                                          );
+                                          break;
+                                        case 2:
+                                          if (await showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            routeSettings: RouteSettings(),
+                                            builder: (context) => WillPopScope(
+                                              onWillPop: () async {
+                                                return false;
+                                              },
+                                              child: Dialog(
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 10,
+                                                      vertical: 10),
+                                                  width: Get.width / 3,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  15))),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        "Confirmez le rejet de cette demande?",
+                                                        style: TextStyle(
+                                                          fontFamily: Constants
+                                                              .fontsFamily,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          ElevatedButton(
+                                                            onPressed:
+                                                                () async {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(true);
+                                                            },
+                                                            child: Text(
+                                                              'Oui',
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    Constants
+                                                                        .fontsFamily,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 20,
+                                                          ),
+                                                          ElevatedButton(
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(false);
+                                                            },
+                                                            child: Text(
+                                                              'Non',
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    Constants
+                                                                        .fontsFamily,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          )) {
+                                            controller?.cancelTransfert(
+                                                transfertDevice: list[index],
+                                                context: context);
+                                          }
+                                        default:
+                                          if (await showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            routeSettings: RouteSettings(),
+                                            builder: (context) => WillPopScope(
+                                              onWillPop: () async {
+                                                return false;
+                                              },
+                                              child: Dialog(
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 10,
+                                                      vertical: 10),
+                                                  width: Get.width / 3,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  15))),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        "Confirmez la validation de cette demande?",
+                                                        style: TextStyle(
+                                                          fontFamily: Constants
+                                                              .fontsFamily,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          ElevatedButton(
+                                                            onPressed:
+                                                                () async {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(true);
+                                                            },
+                                                            child: Text(
+                                                              'Oui',
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    Constants
+                                                                        .fontsFamily,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 20,
+                                                          ),
+                                                          ElevatedButton(
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(false);
+                                                            },
+                                                            child: Text(
+                                                              'Non',
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    Constants
+                                                                        .fontsFamily,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          )) {
+                                            controller?.validateTransfert(
+                                                transfertDevice: list[index],
+                                                context: context);
+                                          }
+                                      }
                                     },
-                                    child: Text("Historique"),
                                   ),
                                 ),
                               ],
@@ -286,19 +544,13 @@ class TransfertWidgetWeb extends StatelessWidget {
                   120)),
           Expanded(
               child: getHeaderCell(
-                  'Heure'
+                  'Numero demande'
                   '',
                   context,
                   120)),
           Expanded(
               child: getHeaderCell(
-                  ''
-                  '',
-                  context,
-                  120)),
-          Expanded(
-              child: getHeaderCell(
-                  ''
+                  'Status'
                   '',
                   context,
                   120)),

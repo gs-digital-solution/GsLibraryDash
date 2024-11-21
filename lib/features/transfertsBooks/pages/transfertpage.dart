@@ -5,19 +5,10 @@ import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/features/books/model/book.dart';
 
 import 'package:gslibrarydashboard/features/categories/screens/entries_drop_down.dart';
-import 'package:gslibrarydashboard/features/commandes/controller/commandeController.dart';
-import 'package:gslibrarydashboard/features/commandes/model/commande.dart';
-import 'package:gslibrarydashboard/features/commandes/model/user.dart';
-import 'package:gslibrarydashboard/features/commandes/pages/subwidget/mobile_commande_widget.dart';
-import 'package:gslibrarydashboard/features/commandes/pages/subwidget/web_commande_widget.dart';
-import 'package:gslibrarydashboard/features/dashboard/controllers/dashboardController.dart';
 import 'package:gslibrarydashboard/features/transfertsBooks/controllers/transfert_demand_controller.dart';
 import 'package:gslibrarydashboard/features/transfertsBooks/models/transfert.dart';
 import 'package:gslibrarydashboard/features/transfertsBooks/pages/widgets/mobile_transfert_widget.dart';
 import 'package:gslibrarydashboard/features/transfertsBooks/pages/widgets/web_transfert_widget.dart';
-import 'package:gslibrarydashboard/features/users/controller/usercontroller.dart';
-import 'package:gslibrarydashboard/features/users/pages/widgets/mobile_user_widget.dart';
-import 'package:gslibrarydashboard/features/users/pages/widgets/web_user_widget.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/theme/theme_controller.dart';
 
@@ -146,6 +137,7 @@ class _TransfertPageState extends State<TransfertPage> {
                                                     mainList: state,
                                                     list: paginationList,
                                                     queryText: queryText,
+                                                    controller: bookController,
                                                     function: (detail, model) {
                                                       _showPopupMenu(context,
                                                           detail, model);

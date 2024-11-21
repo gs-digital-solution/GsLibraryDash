@@ -1,5 +1,6 @@
 
 
+import 'package:get/get.dart';
 import 'package:gslibrarydashboard/features/commandes/model/user.dart';
 
 class TransfertDevice {
@@ -7,11 +8,12 @@ class TransfertDevice {
   String? newDeviceId;
   String? motif;
   int? restoreLimit;
-  int? status;
+  RxInt? status;
   User? user;
   String? createdAt;
   String? updatedAt;
   int? iV;
+   int? requestCount;
 
   TransfertDevice(
       {this.sId,
@@ -22,6 +24,7 @@ class TransfertDevice {
       this.user,
       this.createdAt,
       this.updatedAt,
+      this.requestCount,
       this.iV});
 
   TransfertDevice.fromJson(Map<String, dynamic> json) {
@@ -29,12 +32,13 @@ class TransfertDevice {
     newDeviceId = json['newDeviceId'];
     motif = json['motif'];
     restoreLimit = json['restoreLimit'];
-    status = json['status'];
+    status = RxInt(json['status']);
     user =
         json['userId'] != null ? User.fromJson(json['userId']) : null;
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     iV = json['__v'];
+    requestCount = json['requestCount'];
   }
 
   Map<String, dynamic> toJson() {

@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/exceptions/appException.dart';
 import 'package:gslibrarydashboard/features/transfertsBooks/services/transfert_service.dart';
 
@@ -32,6 +34,36 @@ class TransfertDemandController extends GetxController
       }
     } on AppException catch (e) {
       change(null, status: RxStatus.error(e.message));
+    }
+  }
+
+  Future<void> validateTransfert(
+      {TransfertDevice? transfertDevice, BuildContext? context}) async {
+    try {
+      bool value = await categoryService.validateTransfert(
+        id: transfertDevice!.sId,
+        deviceId: transfertDevice.newDeviceId,
+        userId: transfertDevice.user!.sId,
+      );
+      transfertDevice.status!.value = 1;
+      showCustomToast(
+          context: context!, message: "Transfert effectué avec succès.");
+    } on AppException catch (e) {
+      showCustomToast(context: context!, message: e.message!);
+    }
+  }
+
+  Future<void> cancelTransfert(
+      {TransfertDevice? transfertDevice, BuildContext? context}) async {
+    try {
+      bool value = await categoryService.cancelTransfertBook(
+        id: transfertDevice!.sId,
+      );
+      transfertDevice.status!.value = -1;
+      showCustomToast(
+          context: context!, message: "Demande de transfert Rejetée");
+    } on AppException catch (e) {
+      showCustomToast(context: context!, message: e.message!);
     }
   }
 }
