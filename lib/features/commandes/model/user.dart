@@ -35,8 +35,8 @@ class User {
     role = json['role'];
     isActivated = json['isActivated'];
     status = json['status'];
-    solde = json['solde'];
-    createdAt = json['created_at'];
+    solde = double.parse(json['solde'].toString()).toInt();
+   createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     iV = json['__v'];
   }

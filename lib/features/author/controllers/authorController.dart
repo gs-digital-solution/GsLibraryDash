@@ -1,5 +1,6 @@
-
+import 'dart:html';
 import 'dart:typed_data';
+import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
@@ -11,6 +12,7 @@ import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/exceptions/appException.dart';
 import 'package:gslibrarydashboard/features/author/models/author.dart';
 import 'package:gslibrarydashboard/features/author/services/authorService.dart';
+import 'package:gslibrarydashboard/features/commandes/model/commande.dart';
 import 'package:gslibrarydashboard/home/controller/homeController.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/utils/responsive.dart';
@@ -28,8 +30,10 @@ class AuthorController extends GetxController
   TextEditingController designation = TextEditingController();
   TextEditingController password = TextEditingController();
   RxList<TopAuthors> authorList = <TopAuthors>[].obs;
+  RxList<Commande> commandes = <Commande>[].obs;
   final AuthorService homeService = Get.put(AuthorService());
   TopAuthors? authorModel;
+  RxBool loading = false.obs;
 
   QuillController controller = QuillController.basic();
 
@@ -40,7 +44,7 @@ class AuthorController extends GetxController
   RxBool isLoading = false.obs;
   RxBool activeStatus = true.obs;
   RxString author = ''.obs;
-    RxList selectedAuthors = [].obs;
+  RxList selectedAuthors = [].obs;
   RxList selectedAuthorsNameList = [].obs;
 
   @override
@@ -148,7 +152,6 @@ class AuthorController extends GetxController
 
   Future<void> deleteCategory({TopAuthors? model}) async {
     try {
-     
       await homeService.deleteCategory(
         model: model,
       );
@@ -170,14 +173,14 @@ class AuthorController extends GetxController
     description.clear();
     designation.clear();
     phonenumber.clear();
-   
+
     controller = QuillController.basic();
     password.clear();
     email.clear();
     isLoading.value = false;
     activeStatus.value = true;
     webImage = Uint8List(10);
-    authorModel=null;
+    authorModel = null;
   }
 
   String getFileExtension(String fileName) {
@@ -220,53 +223,52 @@ class AuthorController extends GetxController
     }
   }
 
-
-    Future<void> showAuthorDialog(BuildContext context) async {
-
+  Future<void> showAuthorDialog(BuildContext context) async {
     return showDialog(
         context: context,
         builder: (context) {
-
           return AlertDialog(
-
-            title: getTextWidget(context,'Select Author',60,getFontColor(context),fontWeight: FontWeight.w700),
+            title: getTextWidget(
+                context, 'Select Author', 60, getFontColor(context),
+                fontWeight: FontWeight.w700),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.r),
             ),
             backgroundColor: getBackgroundColor(context),
-
             contentPadding: EdgeInsets.zero,
-
             content: Container(
-              padding: EdgeInsets.symmetric(horizontal: 25.h,vertical: 15.h),
-              width: Responsive.isDesktop(context) ||Responsive.isDesktop(context)? 450.h: 350.h,
-
+              padding: EdgeInsets.symmetric(horizontal: 25.h, vertical: 15.h),
+              width:
+                  Responsive.isDesktop(context) || Responsive.isDesktop(context)
+                      ? 450.h
+                      : 350.h,
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: authorList.length,
                 itemBuilder: (context, index) {
                   return ListTile(
                     // title: getCustomFont("text", 18, getFontColor(context), 1),
-                    title: getCustomFont(authorList[index].firstname??"", 14, getFontColor(context), 1),
-                    trailing: Obx(() => Checkbox(
+                    title: getCustomFont(authorList[index].firstname ?? "", 14,
+                        getFontColor(context), 1),
+                    trailing: Obx(
+                      () => Checkbox(
                         activeColor: getPrimaryColor(context),
                         checkColor: Colors.white,
-
                         onChanged: (checked) {
-
-                          if(selectedAuthors.contains(authorList[index].sId!)){
+                          if (selectedAuthors
+                              .contains(authorList[index].sId!)) {
                             selectedAuthors.remove(authorList[index].sId!);
-                            selectedAuthorsNameList.remove(authorList[index].lastname!);
-                          }else{
+                            selectedAuthorsNameList
+                                .remove(authorList[index].lastname!);
+                          } else {
                             selectedAuthors.add(authorList[index].sId!);
-                            selectedAuthorsNameList.add(authorList[index].firstname!);
+                            selectedAuthorsNameList
+                                .add(authorList[index].firstname!);
                           }
-
-                     
-
-                         
                         },
-                        value: selectedAuthors.contains(authorList[index].sId!),),),
+                        value: selectedAuthors.contains(authorList[index].sId!),
+                      ),
+                    ),
                   );
                 },
               ),
@@ -276,9 +278,12 @@ class AuthorController extends GetxController
                 context,
                 'Submit',
                 isProgress: false,
-                    () {
+                () {
                   Get.back();
-                  firstname.text = selectedAuthorsNameList.toString().replaceAll('[', '').replaceAll(']', '');
+                  firstname.text = selectedAuthorsNameList
+                      .toString()
+                      .replaceAll('[', '')
+                      .replaceAll(']', '');
                 },
                 horPadding: 25.h,
                 horizontalSpace: 0,
@@ -286,11 +291,75 @@ class AuthorController extends GetxController
                 btnHeight: 40.h,
               )
             ],
-
           );
         });
   }
 
-  
-}
+  void exportToExcelWeb({List<Commande>? commandes,TopAuthors?topAuthors}) {
+    // Créer une nouvelle feuille Excel
+    var excel = Excel.createExcel();
 
+    // Ajouter des données à la feuille
+    Sheet sheet = excel['Sheet1'];
+
+    sheet.appendRow(
+      [
+        TextCellValue("ID"),
+        TextCellValue("Prix en FCFA"),
+        TextCellValue("Nom du Livre"),
+        TextCellValue("Date de Vente"),
+      ],
+    );
+
+    for (var i = 0; i < commandes!.length; i++) {
+      sheet.appendRow(
+        [
+          IntCellValue(i),
+          TextCellValue("${commandes[i].montant!}"),
+          TextCellValue(commandes[i].book!.nom??""),
+          TextCellValue(commandes[i].createdAt!.split("T").first),
+        ],
+      );
+    }
+
+    // Encoder les données au format Excel
+    var fileBytes = excel.encode();
+
+    // Créer un fichier pour le téléchargement
+    final blob = Blob([fileBytes],
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    final url = Url.createObjectUrlFromBlob(blob);
+
+    // Télécharger le fichier
+    final anchor = AnchorElement(href: url)
+      ..target = 'blank'
+      ..download = 'commandes-authorId.xlsx'
+      ..click();
+
+    Url.revokeObjectUrl(url);
+  }
+
+  Future<void> getCommandeAuthor(
+      {String? authorId, String? startDate, String? endDate,TopAuthors?topAuthors}) async {
+    loading.value = true;
+
+    try {
+      commandes.value = await homeService.getCommandesAuthor(
+        authorId: authorId,
+        startDate: startDate,
+        endDate: endDate,
+      );
+
+      if (commandes.isEmpty) {
+        loading.value = false;
+        Fluttertoast.showToast(msg: "Aucunes Commandes realisees.");
+      } else {
+        exportToExcelWeb(commandes: commandes);
+        loading.value = false;
+      }
+    } on AppException catch (e) {
+      loading.value = false;
+      Fluttertoast.showToast(msg: "Une erreur est survenue.");
+    }
+  }
+}

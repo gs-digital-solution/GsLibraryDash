@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getX;
 import 'package:gslibrarydashboard/exceptions/appException.dart';
 import 'package:gslibrarydashboard/features/author/models/author.dart';
+import 'package:gslibrarydashboard/features/commandes/model/commande.dart';
 import 'package:gslibrarydashboard/home/services/baseService.dart';
 
 class AuthorService extends getX.GetxService {
@@ -169,6 +170,35 @@ class AuthorService extends getX.GetxService {
         throw AppException(
             message: "Verifier votre connexion internet et ressayez");
       }
+    }
+  }
+
+  Future<List<Commande>> getCommandesAuthor({
+    String? authorId,
+    String? startDate,
+    String? endDate,
+  }) async {
+    try {
+      final response =
+          await BaseService.dio.get('commandes/author', queryParameters: {
+        "authorId": authorId,
+        "startDate": startDate,
+        "endDate": endDate,
+      });
+
+      if (response.statusCode == 200) {
+        print("Objet");
+        print(response.data['data']);
+        List<Commande> list = (response.data['data'] as List)
+            .map((e) => Commande.fromJsonExport(e))
+            .toList();
+        return list;
+      } else {
+        throw AppException(message: response.data['msg']);
+      }
+    } on DioException catch (e) {
+      print(e.message);
+      throw AppException(message: e.response!.data['msg']);
     }
   }
 }

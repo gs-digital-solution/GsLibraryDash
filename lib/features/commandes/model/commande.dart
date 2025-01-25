@@ -1,5 +1,3 @@
-
-
 import 'package:get/get.dart';
 
 import '../../books/model/book.dart';
@@ -13,7 +11,7 @@ class Commande {
   String? createdAt;
   String? updatedAt;
   int? iV;
-  RxBool?status;
+  RxBool? status;
 
   Commande(
       {this.sId,
@@ -28,14 +26,33 @@ class Commande {
 
   Commande.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    montant = json['montant'] is int?json['montant']:double.parse(json['montant'].toString()).round();
+    montant = json['montant'] is int
+        ? json['montant']
+        : double.parse(json['montant'].toString()).round();
     author =
         json['author'] != null ? new Author.fromJson(json['author']) : null;
     user = json['user'] != null ? new Author.fromJson(json['user']) : null;
-    book = json['book'] != null ? new Book.fromJsonCommande(json['book']) : null;
+    book =
+        json['book'] != null ? new Book.fromJsonCommande(json['book']) : null;
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    status=RxBool(json['status']);
+    status = RxBool(json['status']);
+    iV = json['__v'];
+  }
+
+  Commande.fromJsonExport(Map<String, dynamic> json) {
+    sId = json['_id'];
+    montant = json['montant'] is int
+        ? json['montant']
+        : double.parse(json['montant'].toString()).round();
+    author =
+        json['author'] != null ? new Author.fromJsonExport(json['author']) : null;
+
+    book =
+        json['book'] != null ? new Book.fromJsonCommande(json['book']) : null;
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    status = RxBool(json['status']);
     iV = json['__v'];
   }
 
@@ -115,6 +132,22 @@ class Author {
     iV = json['__v'];
   }
 
+    Author.fromJsonExport(Map<String, dynamic> json) {
+    sId = json['_id'];
+    lastname = json['lastname'];
+    firstname = json['firstname'];
+    email = json['email'];
+    phonenumber = json['phonenumber'];
+    password = json['password'];
+    role = json['role'];
+    isActivated = json['isActivated'];
+    status = json['status'];
+    description = json['description'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    iV = json['__v'];
+  }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.avatar != null) {
@@ -157,5 +190,3 @@ class Avatar {
     return data;
   }
 }
-
-

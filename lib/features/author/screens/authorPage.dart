@@ -10,6 +10,7 @@ import 'package:gslibrarydashboard/features/author/widgets/author_web_widget.dar
 import 'package:gslibrarydashboard/features/categories/screens/entries_drop_down.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/theme/theme_controller.dart';
+import 'package:intl/intl.dart';
 
 class AuthorScreen extends StatefulWidget {
   AuthorScreen();
@@ -25,6 +26,12 @@ class _AuthorScreenState extends State<AuthorScreen> {
 
   final ScrollController _controller = ScrollController();
   final AuthorController authorController = Get.find();
+
+  //DateTime? _dateDebut;
+  // DateTime? _dateFin;
+
+  Rx<DateTime>? _dateDebut = DateTime(2024).obs;
+  Rx<DateTime>? _dateFin = DateTime(2025).obs;
 
   @override
   void initState() {
@@ -177,12 +184,10 @@ class _AuthorScreenState extends State<AuthorScreen> {
                                                 getHorizontalSpace(context, 10),
                                                 Expanded(
                                                   child: Wrap(
-                                                    
                                                     children: List.generate(
                                                         i.toInt(),
                                                         (index) => InkWell(
-                                                              child:
-                                                                  Container(
+                                                              child: Container(
                                                                 margin: EdgeInsets
                                                                     .symmetric(
                                                                         horizontal:
@@ -206,16 +211,17 @@ class _AuthorScreenState extends State<AuthorScreen> {
                                                                       50,
                                                                       position.value ==
                                                                               index
-                                                                          ? Colors.white
-                                                                          : subPrimaryColor(context)),
+                                                                          ? Colors
+                                                                              .white
+                                                                          : subPrimaryColor(
+                                                                              context)),
                                                                 ),
                                                               ),
                                                               onTap: () {
                                                                 position.value =
                                                                     index;
                                                                 _controller
-                                                                    .jumpTo(
-                                                                        0);
+                                                                    .jumpTo(0);
                                                               },
                                                             )),
                                                   ),
@@ -237,7 +243,6 @@ class _AuthorScreenState extends State<AuthorScreen> {
                                                     width: 18.h,
                                                   ),
                                                 ),
-                                               
                                               ],
                                             ).marginOnly(
                                                 right:
@@ -260,6 +265,116 @@ class _AuthorScreenState extends State<AuthorScreen> {
         ),
       ),
     );
+  }
+
+  void _afficherDialogue(BuildContext context, {String? authorId}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Sélectionnez une période'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Date de début:'),
+                  TextButton(
+                    onPressed: () async {
+                      DateTime? selectedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime.now(),
+                      );
+                      if (selectedDate != null) {
+                        _dateDebut!.value = selectedDate;
+                      }
+                    },
+                    child: Obx(
+                      () => Text(
+                        DateFormat('dd/MM/yyyy').format(_dateDebut!.value),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Date de fin:'),
+                  TextButton(
+                    onPressed: () async {
+                      DateTime? selectedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime.now(),
+                      );
+                      if (selectedDate != null) {
+                        setState(() {
+                          _dateFin!.value = selectedDate;
+                        });
+                      }
+                    },
+                    child: Obx(
+                      () => Text(
+                        _dateFin == null
+                            ? 'Choisir'
+                            : DateFormat('dd/MM/yyyy').format(_dateFin!.value),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Ferme la boîte de dialogue
+              },
+              child: Text('Annuler'),
+            ),
+            Obx(
+              () => ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context); // Ferme la boîte de dialogue
+                  _exporterLesVentes(authorId: authorId); // Lance l'exportation
+                },
+                child: authorController.loading.isTrue
+                    ? getProgressDialog(context)
+                    : Text('Exporter'),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _exporterLesVentes({String? authorId}) async {
+    if (_dateDebut == null || _dateFin == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Veuillez sélectionner les dates.')),
+      );
+      return;
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Exportation des ventes du ${DateFormat('dd/MM/yyyy').format(_dateDebut!.value)} au ${DateFormat('dd/MM/yyyy').format(_dateFin!.value)}',
+          ),
+        ),
+      );
+      await authorController.getCommandeAuthor(
+          authorId: authorId,
+          startDate: _dateDebut!.value.toString(),
+          endDate: _dateFin!.value.toString());
+    }
+
+    // Ici, vous pouvez appeler une API ou exporter les données
   }
 
   updateStatus(BuildContext context, TopAuthors storyModel) {
@@ -301,23 +416,40 @@ class _AuthorScreenState extends State<AuthorScreen> {
           value: 'Mettre a jour',
         ),
         PopupMenuItem<String>(
-            child: Container(
-              child: MenuItem(
-                title: "Supprimer",
-                space: 0,
-                visibility: false,
-              ),
+          child: Container(
+            child: MenuItem(
+              title: "Supprimer",
+              space: 0,
+              visibility: false,
             ),
-            onTap: () {
-              getCommonDialog(
-                  context: context,
-                  title: 'Voulez-vous supprimer cet auteur?',
-                  function: () async {
-                    authorController.deleteCategory(model: authorModel);
-                  },
-                  subTitle: 'Supprimer');
-            },
-            value: 'Supprimer'),
+          ),
+          onTap: () {
+            getCommonDialog(
+                context: context,
+                title: 'Voulez-vous supprimer cet auteur?',
+                function: () async {
+                  authorController.deleteCategory(model: authorModel);
+                },
+                subTitle: 'Supprimer');
+          },
+          value: 'Supprimer',
+        ),
+        PopupMenuItem<String>(
+          child: Container(
+            child: MenuItem(
+              title: "Exporter les ventes",
+              space: 0,
+              visibility: false,
+            ),
+          ),
+          onTap: () {
+            _afficherDialogue(
+              context,
+              authorId: authorModel.sId,
+            );
+          },
+          value: 'Exporter les ventes',
+        ),
       ],
       elevation: 1,
     );

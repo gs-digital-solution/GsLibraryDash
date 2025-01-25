@@ -49,7 +49,7 @@ class HistoryController extends GetxController with StateMixin<List<History>> {
       int index =
           categoryList.indexWhere((element) => element.sId == model!.sId);
       categoryList.removeAt(index);
-
+        change(categoryList, status: RxStatus.success());
       Fluttertoast.showToast(
           msg: "categorie Supprime", backgroundColor: Colors.green);
     } on AppException catch (e) {

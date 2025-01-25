@@ -28,7 +28,7 @@ class TransfertDemandController extends GetxController
         change(null, status: RxStatus.empty());
       } else {
         change(
-          categoryList.reversed.toList(),
+          categoryList,
           status: RxStatus.success(),
         );
       }
@@ -45,7 +45,11 @@ class TransfertDemandController extends GetxController
         deviceId: transfertDevice.newDeviceId,
         userId: transfertDevice.user!.sId,
       );
-      transfertDevice.status!.value = 1;
+
+      int index = categoryList
+          .indexWhere((element) => element.sId == transfertDevice.sId);
+      categoryList[index].status!.value = 1;
+      change(categoryList, status: RxStatus.success());
       showCustomToast(
           context: context!, message: "Transfert effectué avec succès.");
     } on AppException catch (e) {
@@ -59,7 +63,11 @@ class TransfertDemandController extends GetxController
       bool value = await categoryService.cancelTransfertBook(
         id: transfertDevice!.sId,
       );
-      transfertDevice.status!.value = -1;
+   
+      int index = categoryList
+          .indexWhere((element) => element.sId == transfertDevice.sId);
+      categoryList[index].status!.value = -1;
+      change(categoryList, status: RxStatus.success());
       showCustomToast(
           context: context!, message: "Demande de transfert Rejetée");
     } on AppException catch (e) {

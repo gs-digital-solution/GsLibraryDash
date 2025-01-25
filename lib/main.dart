@@ -12,16 +12,11 @@ import 'package:gslibrarydashboard/features/author/screens/addAuthorPage.dart';
 import 'package:gslibrarydashboard/features/author/screens/authorPage.dart';
 import 'package:gslibrarydashboard/features/books/pages/addBook.dart';
 import 'package:gslibrarydashboard/features/books/pages/bookPage.dart';
-import 'package:gslibrarydashboard/features/categories/screens/addCategoryPage.dart';
 import 'package:gslibrarydashboard/features/categories/screens/categoryPage.dart';
-import 'package:gslibrarydashboard/features/commandes/pages/commandePage.dart';
-import 'package:gslibrarydashboard/features/retraits/pages/addRetrait.dart';
-import 'package:gslibrarydashboard/features/retraits/pages/retraitPage.dart';
 import 'package:gslibrarydashboard/home/pages/homePage.dart';
 import 'package:gslibrarydashboard/home/pages/privacy.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/theme_controller.dart';
-import 'package:gslibrarydashboard/utils/app_routes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

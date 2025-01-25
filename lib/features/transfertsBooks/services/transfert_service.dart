@@ -9,8 +9,10 @@ import 'package:gslibrarydashboard/home/services/baseService.dart';
 class TransfertService extends GetxService {
   Future<List<TransfertDevice>> getTransfertBookRequest(
       {String? userId}) async {
+
     try {
       final response = await BaseService.dio.get("restores/");
+      print(response.data);
       if (response.statusCode == 200) {
         List<TransfertDevice> list = (response.data['promos'] as List)
             .map((e) => TransfertDevice.fromJson(e))
@@ -98,7 +100,7 @@ class TransfertService extends GetxService {
       }
     } on DioException catch (e) {
       if (e.type == DioExceptionType.badResponse) {
-        throw AppException(message: e.response!.data['msg']);
+        throw AppException(message: e.response!.data['message']);
       } else {
         throw AppException(
             message: "une erreur est survenue. Ressayez plus tard");

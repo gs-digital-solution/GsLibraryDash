@@ -38,7 +38,6 @@ class _UserPageState extends State<UserPage> {
 
   final UserController bookController = Get.put(UserController());
 
-
   @override
   Widget build(BuildContext context) {
     final TextEditingController textEditingController = TextEditingController();
@@ -55,7 +54,6 @@ class _UserPageState extends State<UserPage> {
           getTextWidget(context, 'Utilisateurs', 75, getFontColor(context),
               fontWeight: FontWeight.w700),
           getVerticalSpace(context, 35),
-          
           Expanded(
               child: getCommonContainer(
                   context: context,
@@ -77,13 +75,23 @@ class _UserPageState extends State<UserPage> {
                             child: Expanded(child: Container()),
                             visible: isWeb(context),
                           ),
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              bookController.exportToExcelWeb();
+                            },
+                            icon: Icon(
+                              Icons.data_exploration,
+                            ),
+                            label: Text('Exporter'),
+                          ),
+                          getHorizontalSpace(context, 10),
                           ElevatedButton(
                             onPressed: () {
                               bookController.fetchCategoryData();
                             },
                             child: Text('Actualiser'),
                           ),
-                            getHorizontalSpace(context, 15),
+                          getHorizontalSpace(context, 15),
                           Expanded(
                               child: getSearchTextFiledWidget(
                                   context, 'Search..', textEditingController,
@@ -197,42 +205,47 @@ class _UserPageState extends State<UserPage> {
                                                     getHorizontalSpace(
                                                         context, 10),
                                                     Expanded(
-                                                     
                                                       child: Wrap(
-                                                      
-                                                        children:
-                                                            List.generate(
-                                                                i.toInt(),
-                                                                (index) =>
-                                                                    InkWell(
-                                                                      child:
-                                                                          Container(
-                                                                        margin:
-                                                                            EdgeInsets.symmetric(horizontal: 5.h),
-                                                                        height:
-                                                                            35.h,
-                                                                        width:
-                                                                            35.h,
-                                                                        decoration: getDefaultDecoration(
-                                                                            bgColor: position.value == index ? getPrimaryColor(context) : Colors.transparent,
-                                                                            radius: getResizeRadius(context, 15)),
-                                                                        child:
-                                                                            Center(
-                                                                          child: getTextWidget(
-                                                                              context,
-                                                                              '${index + 1}',
-                                                                              50,
-                                                                              position.value == index ? Colors.white : subPrimaryColor(context)),
-                                                                        ),
-                                                                      ),
-                                                                      onTap:
-                                                                          () {
-                                                                        position.value =
-                                                                            index;
-                                                                        _controller
-                                                                            .jumpTo(0);
-                                                                      },
-                                                                    )),
+                                                        children: List.generate(
+                                                            i.toInt(),
+                                                            (index) => InkWell(
+                                                                  child:
+                                                                      Container(
+                                                                    margin: EdgeInsets.symmetric(
+                                                                        horizontal:
+                                                                            5.h),
+                                                                    height:
+                                                                        35.h,
+                                                                    width: 35.h,
+                                                                    decoration: getDefaultDecoration(
+                                                                        bgColor: position.value ==
+                                                                                index
+                                                                            ? getPrimaryColor(
+                                                                                context)
+                                                                            : Colors
+                                                                                .transparent,
+                                                                        radius: getResizeRadius(
+                                                                            context,
+                                                                            15)),
+                                                                    child:
+                                                                        Center(
+                                                                      child: getTextWidget(
+                                                                          context,
+                                                                          '${index + 1}',
+                                                                          50,
+                                                                          position.value == index
+                                                                              ? Colors.white
+                                                                              : subPrimaryColor(context)),
+                                                                    ),
+                                                                  ),
+                                                                  onTap: () {
+                                                                    position.value =
+                                                                        index;
+                                                                    _controller
+                                                                        .jumpTo(
+                                                                            0);
+                                                                  },
+                                                                )),
                                                       ),
                                                     ),
                                                     getHorizontalSpace(
@@ -254,7 +267,6 @@ class _UserPageState extends State<UserPage> {
                                                         width: 18.h,
                                                       ),
                                                     ),
-                                                    
                                                   ],
                                                 ).marginOnly(
                                                     right: getCommonPadding(
@@ -285,9 +297,7 @@ class _UserPageState extends State<UserPage> {
         title: storyModel.status!.value
             ? 'Do you want to de-active this book?'
             : 'Do you want to active this book?',
-        function: () {
-          
-        },
+        function: () {},
         subTitle: 'Book');
   }
 
