@@ -631,7 +631,7 @@ class _CountryPageState extends State<CountryPage> {
                   context: context,
                   title: 'Voulez-vous supprimer ce Pays?',
                   function: () {
-                    //categoryController.deleteCategory(model: storyModel);
+                    countryController.deleteCountry(model: storyModel);
                   },
                   subTitle: 'Supprimer');
             },
