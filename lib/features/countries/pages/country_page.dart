@@ -298,7 +298,7 @@ class _CountryPageState extends State<CountryPage> {
                                                                 .value,
                                                                 height: 30.h,
                                                                 width: 30.h,
-                                                              shape: Circle(),
+                                                              shape: Rectangle(),
                                                           ),
                                                         ),
                                                         Expanded(
@@ -615,7 +615,7 @@ class _CountryPageState extends State<CountryPage> {
               ),
             ),
             onTap: () {
-              //categoryController.setPromo(storyModel);
+            countryController.setPromo(storyModel);
             },
             value: 'Mettre a jour'),
         PopupMenuItem<String>(
@@ -653,6 +653,8 @@ class _CountryPageState extends State<CountryPage> {
               isActive ? "#00A010".toColor() : "#FD3E3E".toColor(),
               isActive ? "#E7FFE8".toColor() : "#FFF2F2".toColor())),
       onTap: () {
+            storyModel.isActivated!.value = !storyModel.isActivated!.value;
+          countryController.updatePromoStatus(promo: storyModel);
         //updateStatus(context, storyModel);
       },
     );

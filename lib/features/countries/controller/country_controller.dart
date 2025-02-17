@@ -104,6 +104,25 @@ class CountryController extends GetxController with StateMixin<List<Country>> {
     }
   }
 
+  Future<void> updatePromoStatus({Country? promo}) async {
+    isLoading.value = true;
+    try {
+      Country mypromo = await countryService.updateCountry(
+        country: promo,
+      );
+
+      Fluttertoast.showToast(
+          msg: "Status du Pays promo mis a jour",
+          backgroundColor: Colors.green);
+      getCountries();
+      isLoading.value = false;
+      clearData();
+    } on AppException catch (e) {
+      Fluttertoast.showToast(msg: e.message!, backgroundColor: Colors.red);
+      isLoading.value = false;
+    }
+  }
+
   Future<void> deleteCountry({Country? model}) async {
     try {
       await countryService.deleteCategory(
