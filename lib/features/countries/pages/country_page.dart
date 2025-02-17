@@ -173,7 +173,7 @@ class _CountryPageState extends State<CountryPage> {
                                               textAlign: TextAlign.start),
                                         ),
                                         Expanded(
-                                          flex: 1,
+                                          flex: 2,
                                           child: getMaxLineFont(
                                               context,
                                               'Service Code',
@@ -183,6 +183,10 @@ class _CountryPageState extends State<CountryPage> {
                                               fontWeight: FontWeight.w600,
                                               textAlign: TextAlign.start),
                                         ),
+                                        getHorizontalSpace(
+                                                          context,
+                                                          30,
+                                                        ),
                                         Expanded(
                                           flex: 1,
                                           child: getMaxLineFont(
@@ -285,6 +289,7 @@ class _CountryPageState extends State<CountryPage> {
                                                         Container(
                                                           width:
                                                 isWeb(context) ? 130.h : 80.h,
+                                              padding: EdgeInsets.all(10.h),
                                                           child: CountryFlag
                                                               .fromCountryCode(
                                                             paginationList[
@@ -293,6 +298,7 @@ class _CountryPageState extends State<CountryPage> {
                                                                 .value,
                                                                 height: 30.h,
                                                                 width: 30.h,
+                                                              shape: Circle(),
                                                           ),
                                                         ),
                                                         Expanded(
@@ -331,6 +337,7 @@ class _CountryPageState extends State<CountryPage> {
                                                           ),
                                                         ),
                                                         Expanded(
+                                                          flex: 2,
                                                           child: getMaxLineFont(
                                                             context,
                                                             paginationList[
@@ -347,6 +354,10 @@ class _CountryPageState extends State<CountryPage> {
                                                             textAlign:
                                                                 TextAlign.start,
                                                           ),
+                                                        ),
+                                                        getHorizontalSpace(
+                                                          context,
+                                                          30,
                                                         ),
                                                         Expanded(
                                                           flex: 1,

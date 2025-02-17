@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -65,9 +66,11 @@ class MyApp extends GetWidget<AuthController> {
           title: 'GSLIBRARY',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.theme,
+          locale: Locale('fr', "FR"),
           //
           scrollBehavior: AppScrollBehavior(),
           localizationsDelegates: [
+            CountryLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,

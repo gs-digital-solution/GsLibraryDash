@@ -114,7 +114,7 @@ class _AddCountryPageState extends State<AddCountryPage> {
                                           showPhoneCode: true,
                                           onSelect: (value) {
                                             newCommandeController.name.text =
-                                                value.name;
+                                                value.nameLocalized!;
                                             newCommandeController.countryFlag
                                                 .value = value.countryCode;
                                             newCommandeController.countryCode
