@@ -309,7 +309,7 @@ class _HomePageState extends State<HomePage> {
               ),
                AdminMenuItem(
                 title: 'Pays',
-                icon: Icons.history,
+                icon: Icons.flag_rounded,
                 route: '/countries',
                 children: [
                   AdminMenuItem(
