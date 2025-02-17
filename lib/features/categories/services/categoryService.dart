@@ -80,7 +80,6 @@ class CategoryService extends getX.GetxService {
 
 //Definir la premiere categorie
   Future<CategoryModel> mettreEnAvantCategory({
-  
     CategoryModel? model,
   }) async {
     try {
@@ -151,7 +150,9 @@ class CategoryService extends getX.GetxService {
       }
     } on DioException catch (e) {
       print(e.message);
-      throw AppException(message: e.response!.data['msg']);
+      throw AppException(
+        message: e.response!.data['msg'],
+      );
     }
   }
 }

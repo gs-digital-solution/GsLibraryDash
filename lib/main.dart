@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/features/auth/auth/controller/authController.dart';
@@ -66,15 +67,20 @@ class MyApp extends GetWidget<AuthController> {
           theme: AppTheme.theme,
           //
           scrollBehavior: AppScrollBehavior(),
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
 
           supportedLocales: [
-            Locale("en", " "),
+            Locale("fr", "FR"),
           ],
           routes: {
             '/': (_) => Get.find<AuthController>().state is Authenticated
                 ? HomePage()
                 : LoginPage(),
-          /*   '/categories': (_) => CategoryScreen(),
+            /*   '/categories': (_) => CategoryScreen(),
             '/categories/add': (_) => AddCategoryScreen(),
             '/authors': (_) => AuthorScreen(),
             '/authors/add': (_) => AddAuthorScreen(),
@@ -85,7 +91,7 @@ class MyApp extends GetWidget<AuthController> {
             '/transactions/add': (_) => NewRetrait(), */
             '/privacy': (_) => TermsAndConditionScreen(),
           },
-           /* onGenerateRoute: (settings) {
+          /* onGenerateRoute: (settings) {
             switch (settings.name) {
               case 'privacy':
               return PageRouteBuilder(

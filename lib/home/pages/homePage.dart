@@ -15,6 +15,8 @@ import 'package:gslibrarydashboard/features/categories/screens/addCategoryPage.d
 import 'package:gslibrarydashboard/features/categories/screens/categoryPage.dart';
 import 'package:gslibrarydashboard/features/commandes/pages/commandePage.dart';
 import 'package:gslibrarydashboard/features/commandes/pages/new_commande.dart';
+import 'package:gslibrarydashboard/features/countries/pages/addCountryPage.dart';
+import 'package:gslibrarydashboard/features/countries/pages/country_page.dart';
 import 'package:gslibrarydashboard/features/dashboard/pages/dashboardPage.dart';
 import 'package:gslibrarydashboard/features/investors/controllers/investor_controller.dart';
 import 'package:gslibrarydashboard/features/investors/screens/add_investor_page.dart';
@@ -305,6 +307,24 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
+               AdminMenuItem(
+                title: 'Pays',
+                icon: Icons.history,
+                route: '/countries',
+                children: [
+                  AdminMenuItem(
+                    title: 'Pays',
+                    icon: Icons.list,
+                    route: '/countries',
+                  ),
+                  AdminMenuItem(
+                    title: 'Nouveau Pays',
+                    icon: Icons.add,
+                    route: '/countries/add',
+                  ),
+                  
+                ],
+              ),
             ],
             selectedRoute: homeController.selectedItem!.value.route!,
             onSelected: (item) {
@@ -354,6 +374,10 @@ class _HomePageState extends State<HomePage> {
                   return PromoScreen();
                    case '/promos/add':
                   return AddPromoScreen();
+                    case '/countries':
+                  return CountryPage();
+                   case '/countries/add':
+                  return AddCountryPage();
                 default:
                   return SizedBox();
               }
