@@ -1,30 +1,35 @@
-import 'package:country_picker/country_picker.dart' as picker;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'package:gslibrarydashboard/common/common.dart';
-
-import 'package:gslibrarydashboard/features/commandes/model/user.dart';
 import 'package:gslibrarydashboard/features/countries/controller/country_controller.dart';
+
+
 import 'package:gslibrarydashboard/features/countries/models/country.dart';
-import 'package:gslibrarydashboard/features/promos/controller/promocontroller.dart';
+import 'package:gslibrarydashboard/features/payment_methods/controller/payment_method_controller.dart';
 
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/utils/constants.dart';
+import 'package:searchfield/searchfield.dart';
 
-class AddCountryPage extends StatefulWidget {
+
+
+class AddPaymentMethodPage extends StatefulWidget {
   final Country? categoryModel;
 
-  AddCountryPage({this.categoryModel});
+  AddPaymentMethodPage({this.categoryModel});
 
   @override
-  State<AddCountryPage> createState() => _AddCountryPageState();
+  State<AddPaymentMethodPage> createState() => _AddPaymentMethodPageState();
 }
 
-class _AddCountryPageState extends State<AddCountryPage> {
-  final CountryController newCommandeController = Get.put(CountryController());
+class _AddPaymentMethodPageState extends State<AddPaymentMethodPage> {
+  final PaymentMethodController newCommandeController = Get.put(PaymentMethodController());
+
+   final CountryController countryController = Get.put(CountryController());
 
   final formKey = GlobalKey<FormState>();
   @override
@@ -49,7 +54,7 @@ class _AddCountryPageState extends State<AddCountryPage> {
               children: [
                 getTextWidget(
                     context,
-                    isEdit ? 'Mettre a jour le Pays' : 'Ajouter un Pays',
+                    isEdit ? 'Mettre a jour la methode de paiement' : 'Ajouter une methode de paiement',
                     75,
                     getFontColor(context),
                     fontWeight: FontWeight.w700),
@@ -88,46 +93,99 @@ class _AddCountryPageState extends State<AddCountryPage> {
                         child: ListView(
                           children: [
                             getVerticalSpace(context, 30),
-                            Column(
+                            isEdit
+                                  ? SizedBox()
+                                  : countryController.obx((state) => Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        itemSubTitle(
+                                            'Selectionner un pays ',
+                                            context),
+                                        getVerticalSpace(context, 10),
+                                        SearchField<Country>(
+                                          suggestions: countryController
+                                              .countries
+                                              .map(
+                                                (e) =>
+                                                    SearchFieldListItem<Country>(
+                                                  e.name!.value,
+                                                  item: e,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(
+                                                      e.name! +
+                                                          " (${e.countryCode})",
+                                                      style: TextStyle(
+                                                        fontFamily: Constants
+                                                            .fontsFamily,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                              .toList(),
+                                          onSuggestionTap: (college) {
+                                            newCommandeController.countryId.value =
+                                                college.item!.id!;
+                                              newCommandeController.countryName.text =
+                                                college.item!.name!.value;
+                                          },
+                                          suggestionStyle: TextStyle(
+                                            fontFamily: Constants.fontsFamily,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          searchStyle: TextStyle(
+                                            fontFamily: Constants.fontsFamily,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          validator: (value) => value!.isEmpty
+                                              ? "Pays  requis"
+                                              : null,
+                                          controller: newCommandeController
+                                              .countryName,
+                                          suggestionState: Suggestion.expand,
+                                          textInputAction: TextInputAction.next,
+                                          searchInputDecoration: InputDecoration(
+                                              labelText:
+                                                  'Rechercher un pays',
+                                              border: OutlineInputBorder()),
+                                        ),
+                                      ],
+                                    )),
+                            
+                            getVerticalSpace(context, 30),
+                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                itemSubTitle('Selectionner un pays ', context),
+
+                                itemSubTitle('Nom de la methode de paiement', context),
                                 getVerticalSpace(context, 10),
-                                TextFormField(
-                                  controller: newCommandeController.name,
-                                  decoration: InputDecoration(
-                                    prefix: Obx(
-                                      () => Text(
-                                        "+ ${newCommandeController.countryCode.value} ",
-                                      ),
-                                    ),
-                                  ),
-                                  onTap: () => picker.showCountryPicker(
-                                    context: context,
-                                    showPhoneCode: true,
-                                    onSelect: (value) {
-                                      newCommandeController.name.text =
-                                          value.nameLocalized!;
-                                      newCommandeController.countryFlag.value =
-                                          value.countryCode;
-                                      newCommandeController.countryCode.value =
-                                          value.phoneCode;
-                                    },
-                                  ),
+                                getTextFiledWidget(
+                                  context,
+                                  "Entrer le nom",
+                                  newCommandeController.name,
+                                  validator: (value) => value.isEmpty
+                                      ? "Nom obligatoire"
+                                      : null,
                                 ),
                               ],
                             ),
                             getVerticalSpace(context, 30),
-                            getVerticalSpace(context, 30),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                itemSubTitle('SERVICE CODE', context),
+
+                                itemSubTitle('USSD CODE', context),
                                 getVerticalSpace(context, 10),
                                 getTextFiledWidget(
                                   context,
-                                  "Entrer le service Code",
-                                  newCommandeController.serviceCode,
+                                  "Entrer le USSD CODE",
+                                  newCommandeController.ussCode,
                                   validator: (value) => value.isEmpty
                                       ? "service Code obligatoire"
                                       : null,
@@ -135,6 +193,25 @@ class _AddCountryPageState extends State<AddCountryPage> {
                               ],
                             ),
                             getVerticalSpace(context, 30),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+
+                                itemSubTitle('PRIORITY (Permet de classer les methodes de Paiement.Si l\'entier est plus grand alors celle ci s\'affichera en premier cote mobile)', context),
+                                getVerticalSpace(context, 10),
+                                getTextFiledWidget(
+                                  context,
+                                  "Entrer la priorite",
+                                  newCommandeController.priority,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  validator: (value) => value.isEmpty
+                                      ? "priorite obligatoire"
+                                      : null,
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),

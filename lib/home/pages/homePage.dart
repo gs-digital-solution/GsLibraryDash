@@ -21,6 +21,8 @@ import 'package:gslibrarydashboard/features/dashboard/pages/dashboardPage.dart';
 import 'package:gslibrarydashboard/features/investors/controllers/investor_controller.dart';
 import 'package:gslibrarydashboard/features/investors/screens/add_investor_page.dart';
 import 'package:gslibrarydashboard/features/investors/screens/investor_page.dart';
+import 'package:gslibrarydashboard/features/payment_methods/pages/add_payment_method_page.dart';
+import 'package:gslibrarydashboard/features/payment_methods/pages/payment_method_page.dart';
 import 'package:gslibrarydashboard/features/promos/controller/promocontroller.dart';
 import 'package:gslibrarydashboard/features/promos/screens/addpromopage.dart';
 import 'package:gslibrarydashboard/features/promos/screens/promoPage.dart';
@@ -325,6 +327,24 @@ class _HomePageState extends State<HomePage> {
                   
                 ],
               ),
+               AdminMenuItem(
+                title: 'Methode de paiements',
+                icon: Icons.flag_rounded,
+                route: '/paymentMethods',
+                children: [
+                  AdminMenuItem(
+                    title: 'Methode de paiements',
+                    icon: Icons.list,
+                    route: '/paymentMethods',
+                  ),
+                  AdminMenuItem(
+                    title: 'Nouvelle Methode de paiement',
+                    icon: Icons.add,
+                    route: '/paymentMethods/add',
+                  ),
+                  
+                ],
+              ),
             ],
             selectedRoute: homeController.selectedItem!.value.route!,
             onSelected: (item) {
@@ -378,6 +398,10 @@ class _HomePageState extends State<HomePage> {
                   return CountryPage();
                    case '/countries/add':
                   return AddCountryPage();
+                     case '/paymentMethods':
+                  return PaymentMethodPage();
+                   case '/paymentMethods/add':
+                  return AddPaymentMethodPage();
                 default:
                   return SizedBox();
               }
