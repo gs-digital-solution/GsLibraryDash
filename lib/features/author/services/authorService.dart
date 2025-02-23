@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getX;
 import 'package:gslibrarydashboard/exceptions/appException.dart';
 import 'package:gslibrarydashboard/features/author/models/author.dart';
 import 'package:gslibrarydashboard/features/commandes/model/commande.dart';
 import 'package:gslibrarydashboard/home/services/baseService.dart';
+import 'package:gslibrarydashboard/models/country_model.dart';
 
 class AuthorService extends getX.GetxService {
   Future<List<TopAuthors>> getAuthors({
@@ -44,6 +47,7 @@ class AuthorService extends getX.GetxService {
     String? designation,
     String? description,
     bool? status,
+    CountryModel? countryModel,
   }) async {
     FormData formData = FormData.fromMap({
       'avatar': await MultipartFile.fromBytes(avatar!, filename: filename),
@@ -57,6 +61,7 @@ class AuthorService extends getX.GetxService {
     formData.fields.add(MapEntry("description", description!));
     formData.fields.add(MapEntry("designation", designation!));
     formData.fields.add(MapEntry("status", '${status}'));
+    formData.fields.add(MapEntry("country", json.encode(countryModel!.toJson())));
 
     print(formData.fields);
 
@@ -96,6 +101,7 @@ class AuthorService extends getX.GetxService {
       String? designation,
       String? description,
       bool? status,
+      CountryModel? countryModel,
       TopAuthors? topAuthors}) async {
     FormData formData = FormData.fromMap({});
 
@@ -121,6 +127,7 @@ class AuthorService extends getX.GetxService {
     formData.fields.add(MapEntry("phonenumber", phonenumber!));
     formData.fields.add(MapEntry("description", description!));
     formData.fields.add(MapEntry("designation", designation!));
+    formData.fields.add(MapEntry("country", json.encode(countryModel!.toJson())));
 
     print(formData.fields);
     print(formData.files);

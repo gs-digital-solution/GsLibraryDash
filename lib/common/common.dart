@@ -332,19 +332,7 @@ Widget getTextFiledWidget(
           color: borderColor,
         ),
       ),
-      // suffixIcon: (child != null)?InkWell(
-      //   onTap: (){
-      //     if(function != null){
-      //       function();
-      //     }
-      //   },
-      //   child: Container(
-      //     height: height,
-      //     width: 112.h,
-      //     child: child,
-      //   ),
-      // ):null,
-      // suffixIcon: Container(height: height,child: child),
+
       filled: true,
       fillColor: getCardColor(context),
       // fillColor: getReportColor(context),

@@ -18,6 +18,8 @@ import 'package:gslibrarydashboard/features/commandes/pages/new_commande.dart';
 import 'package:gslibrarydashboard/features/countries/pages/addCountryPage.dart';
 import 'package:gslibrarydashboard/features/countries/pages/country_page.dart';
 import 'package:gslibrarydashboard/features/dashboard/pages/dashboardPage.dart';
+import 'package:gslibrarydashboard/features/exchanges-rates/pages/add_exchange_rate_page.dart';
+import 'package:gslibrarydashboard/features/exchanges-rates/pages/exchange_rate_page.dart';
 import 'package:gslibrarydashboard/features/investors/controllers/investor_controller.dart';
 import 'package:gslibrarydashboard/features/investors/screens/add_investor_page.dart';
 import 'package:gslibrarydashboard/features/investors/screens/investor_page.dart';
@@ -49,9 +51,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final HomeController homeController = Get.put(HomeController());
   final AuthorController authorController = Get.put(AuthorController());
-    final InvestorController investorController = Get.put(InvestorController());
+  final InvestorController investorController = Get.put(InvestorController());
   final CategoryController categoryController = Get.put(CategoryController());
-   final PromoController promoController = Get.put(PromoController());
+  final PromoController promoController = Get.put(PromoController());
 
   final ThemeController themeController = Get.find();
 
@@ -177,27 +179,26 @@ class _HomePageState extends State<HomePage> {
                 icon: Icons.dashboard,
               ),
               AdminMenuItem(
-                title: 'Code Promos',
-                icon: Icons.padding,
-                children: [
-                  AdminMenuItem(
-                    title: 'Liste des codes promos',
-                    icon: Icons.list,
-                    route: '/promos',
-                  ),
-                  AdminMenuItem(
-                    title: 'ajouter un code',
-                    icon: Icons.add,
-                    route: '/promos/add',
-                  ),
-                ]
-              ),
+                  title: 'Code Promos',
+                  icon: Icons.padding,
+                  children: [
+                    AdminMenuItem(
+                      title: 'Liste des codes promos',
+                      icon: Icons.list,
+                      route: '/promos',
+                    ),
+                    AdminMenuItem(
+                      title: 'ajouter un code',
+                      icon: Icons.add,
+                      route: '/promos/add',
+                    ),
+                  ]),
               AdminMenuItem(
                 title: 'Utilisateurs',
                 route: '/users',
                 icon: Icons.dashboard,
               ),
-                AdminMenuItem(
+              AdminMenuItem(
                 title: 'Transfert de livre',
                 route: '/transferts',
                 icon: Icons.book,
@@ -309,7 +310,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-               AdminMenuItem(
+              AdminMenuItem(
                 title: 'Pays',
                 icon: Icons.flag_rounded,
                 route: '/countries',
@@ -324,10 +325,9 @@ class _HomePageState extends State<HomePage> {
                     icon: Icons.add,
                     route: '/countries/add',
                   ),
-                  
                 ],
               ),
-               AdminMenuItem(
+              AdminMenuItem(
                 title: 'Methode de paiements',
                 icon: Icons.flag_rounded,
                 route: '/paymentMethods',
@@ -342,7 +342,23 @@ class _HomePageState extends State<HomePage> {
                     icon: Icons.add,
                     route: '/paymentMethods/add',
                   ),
-                  
+                ],
+              ),
+              AdminMenuItem(
+                title: 'Taux d\'echanges',
+                icon: Icons.currency_exchange,
+                route: '/exchanges-rates',
+                children: [
+                  AdminMenuItem(
+                    title: 'Taux d\'echanges',
+                    icon: Icons.list,
+                    route: '/exchanges-rates',
+                  ),
+                  AdminMenuItem(
+                    title: 'nouveau taux d\'echange',
+                    icon: Icons.add,
+                    route: '/exchanges-rates/add',
+                  ),
                 ],
               ),
             ],
@@ -360,7 +376,7 @@ class _HomePageState extends State<HomePage> {
                   return DashboardPage();
                 case '/users':
                   return UserPage();
-              case '/transferts':
+                case '/transferts':
                   return TransfertPage();
                 case '/categories':
                   return CategoryScreen();
@@ -392,16 +408,20 @@ class _HomePageState extends State<HomePage> {
                   return InvestorPage();
                 case '/promos':
                   return PromoScreen();
-                   case '/promos/add':
+                case '/promos/add':
                   return AddPromoScreen();
-                    case '/countries':
+                case '/countries':
                   return CountryPage();
-                   case '/countries/add':
+                case '/countries/add':
                   return AddCountryPage();
-                     case '/paymentMethods':
+                case '/paymentMethods':
                   return PaymentMethodPage();
-                   case '/paymentMethods/add':
+                case '/paymentMethods/add':
                   return AddPaymentMethodPage();
+                case '/exchanges-rates':
+                  return ExchangeRatePage();
+                case '/exchanges-rates/add':
+                  return AddExchangeRatePage();
                 default:
                   return SizedBox();
               }

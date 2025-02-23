@@ -50,6 +50,7 @@ class BookService extends getX.GetxService {
     bool? status,
     bool? popular,
     bool? featured,
+     String?currency,
   }) async {
     FormData formData = FormData.fromMap({'files': []});
 
@@ -87,6 +88,7 @@ class BookService extends getX.GetxService {
     formData.fields.add(MapEntry("description", description!));
     formData.fields.add(MapEntry("popular", '$popular'));
     formData.fields.add(MapEntry("featured", '$featured'));
+     formData.fields.add(MapEntry("currency", currency!));
     //  formData.fields.add(MapEntry("status", '${true}'));
     //print(formData.fields);
 
@@ -131,6 +133,7 @@ class BookService extends getX.GetxService {
     Book? book,
     bool? popular,
     bool? featured,
+    String?currency,
   }) async {
     FormData formData = FormData.fromMap({});
 
@@ -176,6 +179,7 @@ class BookService extends getX.GetxService {
     formData.fields.add(MapEntry("description", description!));
     formData.fields.add(MapEntry("popular", '$popular'));
     formData.fields.add(MapEntry("featured", '$featured'));
+    formData.fields.add(MapEntry("currency", currency!));
     print(formData.files);
 
     try {

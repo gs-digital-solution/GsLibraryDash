@@ -1,3 +1,4 @@
+import 'package:country_flags/country_flags.dart';
 import 'package:flutter/cupertino.dart';
 // ignore: unnecessary_import
 import 'package:flutter/material.dart';
@@ -7,9 +8,11 @@ import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/features/author/controllers/authorController.dart';
 import 'package:gslibrarydashboard/features/author/models/author.dart';
+import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/utils/constants.dart';
 import 'package:gslibrarydashboard/utils/responsive.dart';
+import 'package:country_picker/country_picker.dart' as picker;
 
 class AddAuthorScreen extends StatefulWidget {
   final TopAuthors? authorModel;
@@ -275,10 +278,151 @@ class _AddAuthorScreenState extends State<AddAuthorScreen> {
                                               itemSubTitle(
                                                   'Telephone', context),
                                               getVerticalSpace(context, 10),
-                                              getTextFiledWidget(
+                                              TextFormField(
+                                                controller: authorController
+                                                    .phonenumber,
+                                                style: TextStyle(
+                                                    fontFamily:
+                                                        Constants.fontsFamily,
+                                                    color:
+                                                        getFontColor(context),
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 16.sp),
+                                                decoration: InputDecoration(
+                                                  prefix: Obx(
+                                                    () => Text(
+                                                      "+ ${authorController.countryCode.value} ",
+                                                    ),
+                                                  ),
+                                                  prefixIcon: InkWell(
+                                                    onTap: () => picker
+                                                        .showCountryPicker(
+                                                      context: context,
+                                                      showPhoneCode: true,
+                                                      onSelect: (value) {
+                                                        authorController
+                                                                .countryName
+                                                                .value =
+                                                            value
+                                                                .nameLocalized!;
+                                                        authorController
+                                                                .countryFlag
+                                                                .value =
+                                                            value.countryCode;
+                                                        authorController
+                                                                .countryCode
+                                                                .value =
+                                                            value.phoneCode;
+                                                      },
+                                                    ),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(10.0),
+                                                      child: Obx(
+                                                        ()=> CountryFlag
+                                                            .fromCountryCode(
+                                                          authorController
+                                                              .countryFlag.value,
+                                                          height: 30.h,
+                                                          width: 60.h,
+                                                          shape: const RoundedRectangle(6),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  contentPadding:
+                                                      EdgeInsets.only(
+                                                    left: 10.h,
+                                                  ),
+                                                  border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(
+                                                        getDefaultRadius(
+                                                            context),
+                                                      ),
+                                                    ),
+                                                    borderSide: BorderSide(
+                                                      color: borderColor,
+                                                    ),
+                                                  ),
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(
+                                                        getDefaultRadius(
+                                                            context),
+                                                      ),
+                                                    ),
+                                                    borderSide: BorderSide(
+                                                      color: getPrimaryColor(
+                                                          context),
+                                                    ),
+                                                  ),
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(
+                                                        getDefaultRadius(
+                                                            context),
+                                                      ),
+                                                    ),
+                                                    borderSide: BorderSide(
+                                                      color: borderColor,
+                                                    ),
+                                                  ),
+                                                  errorBorder:
+                                                      OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(
+                                                        getDefaultRadius(
+                                                            context),
+                                                      ),
+                                                    ),
+                                                    borderSide: BorderSide(
+                                                      color: Colors.red,
+                                                    ),
+                                                  ),
+                                                  disabledBorder:
+                                                      OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(
+                                                        getDefaultRadius(
+                                                          context,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    borderSide: BorderSide(
+                                                      color: borderColor,
+                                                    ),
+                                                  ),
+
+                                                  filled: true,
+                                                  fillColor:
+                                                      getCardColor(context),
+                                                  // fillColor: getReportColor(context),
+                                                  focusColor: Colors.green,
+                                                  hintText:
+                                                      "Numero de telephone",
+                                                  isDense: false,
+                                                  hintStyle: TextStyle(
+                                                    fontFamily:
+                                                        Constants.fontsFamily,
+                                                    color: getSubFontColor(
+                                                      context,
+                                                    ),
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 16.sp,
+                                                  ),
+                                                ),
+                                              ),
+                                              /* getTextFiledWidget(
                                                   context,
                                                   "Numero de telephone",
-                                                  authorController.phonenumber),
+                                                  authorController.phonenumber), */
                                             ],
                                           )),
                                         ],

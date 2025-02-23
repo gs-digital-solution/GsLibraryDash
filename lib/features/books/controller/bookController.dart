@@ -61,6 +61,7 @@ class BookController extends GetxController with StateMixin<List<Book>> {
   RxList<Book> categoryList = <Book>[].obs;
   Book? mybook;
   final BookService homeService = Get.put(BookService());
+  RxString currency = "XAF".obs;
 
   String oldCategory = '';
 
@@ -224,6 +225,7 @@ class BookController extends GetxController with StateMixin<List<Book>> {
         categoryModel: categoryModel!,
         popular: isPopular.value,
         featured: isFeatured.value,
+        currency: currency.value,
       );
 
       categoryList.add(book);
@@ -259,6 +261,7 @@ class BookController extends GetxController with StateMixin<List<Book>> {
         book: mybook,
         popular: isPopular.value,
         featured: isFeatured.value,
+        currency: currency.value,
       );
 
       //categoryList.add(book);
@@ -321,6 +324,7 @@ class BookController extends GetxController with StateMixin<List<Book>> {
   void setBook(Book book) {
     nameController.text = book.nom!;
     price.text = book.prix.toString();
+    currency.value=book.currency!;
 
     pourcentage.text = book.pourcentage.toString();
     categoryModel = book.categories!.isNotEmpty ? book.categories![0] : null;

@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:gslibrarydashboard/models/country_model.dart';
+
 class TopAuthors {
   Avatar? avatar;
   String? sId;
@@ -15,23 +17,26 @@ class TopAuthors {
   String? createdAt;
   String? updatedAt;
   int? iV;
+  CountryModel? countryModel;
 
-  TopAuthors(
-      {this.avatar,
-      this.sId,
-      this.lastname,
-      this.firstname,
-      this.email,
-      this.phonenumber,
-      this.role,
-      this.isActivated,
-      this.status,
-      this.description,
-      this.designation,
-      this.solde,
-      this.createdAt,
-      this.updatedAt,
-      this.iV});
+  TopAuthors({
+    this.avatar,
+    this.sId,
+    this.lastname,
+    this.firstname,
+    this.email,
+    this.phonenumber,
+    this.role,
+    this.isActivated,
+    this.status,
+    this.description,
+    this.designation,
+    this.solde,
+    this.createdAt,
+    this.updatedAt,
+    this.iV,
+    this.countryModel,
+  });
 
   TopAuthors.fromJson(Map<String, dynamic> json) {
     avatar =
@@ -46,10 +51,11 @@ class TopAuthors {
     status = json['status'];
     description = json['description'];
     designation = json['designation'];
-    solde =  json['solde'];
+    solde = json['solde'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     iV = json['__v'];
+    countryModel=CountryModel.fromJson(json['country']);
   }
 
   Map<String, dynamic> toJson() {

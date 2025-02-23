@@ -14,6 +14,7 @@ import 'package:gslibrarydashboard/features/author/models/author.dart';
 import 'package:gslibrarydashboard/features/author/services/authorService.dart';
 import 'package:gslibrarydashboard/features/commandes/model/commande.dart';
 import 'package:gslibrarydashboard/home/controller/homeController.dart';
+import 'package:gslibrarydashboard/models/country_model.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/utils/responsive.dart';
 import 'package:image_picker/image_picker.dart';
@@ -34,12 +35,25 @@ class AuthorController extends GetxController
   final AuthorService homeService = Get.put(AuthorService());
   TopAuthors? authorModel;
   RxBool loading = false.obs;
+  RxString countryCode = '237'.obs;
+  RxString countryFlag = 'CM'.obs;
+  RxString countryName = 'Cameroun'.obs;
 
   QuillController controller = QuillController.basic();
 
   final document = "text";
 
   QuillController descController = QuillController.basic();
+
+  String countryCodeToEmoji(String countryCode) {
+    if (countryCode.length != 2) return '❌';
+
+    return countryCode
+        .toUpperCase()
+        .runes
+        .map((rune) => String.fromCharCode(rune + 127397))
+        .join();
+  }
 
   RxBool isLoading = false.obs;
   RxBool activeStatus = true.obs;
@@ -72,13 +86,16 @@ class AuthorController extends GetxController
   }
 
   void setAuthor(TopAuthors topAuthors) {
-    print(topAuthors);
+    print(topAuthors.countryModel.toString());
     //final json = jsonDecode(topAuthors.description!);
     lastname.text = topAuthors.lastname!;
     firstname.text = topAuthors.firstname!;
     email.text = topAuthors.email!;
     phonenumber.text = topAuthors.phonenumber!;
     designation.text = topAuthors.designation!;
+    countryCode.value = topAuthors.countryModel!.countryCode!;
+    countryFlag.value = topAuthors.countryModel!.countryFalg!;
+    countryName.value = topAuthors.countryModel!.name!;
     if (topAuthors.description != null && topAuthors.description!.isNotEmpty) {
       final doc = Document()..insert(0, decode(topAuthors.description ?? ""));
 
@@ -96,6 +113,11 @@ class AuthorController extends GetxController
   Future<void> addCategory() async {
     isLoading.value = true;
     print(controller.document.toDelta());
+    CountryModel countryModel = CountryModel(
+      name: countryName.value,
+      countryCode: countryCode.value,
+      countryFalg: countryFlag.value,
+    );
     try {
       TopAuthors categoryModel = await homeService.addAuthor(
         avatar: webImage,
@@ -108,6 +130,7 @@ class AuthorController extends GetxController
         description: controller.document.toPlainText(),
         password: password.text,
         status: activeStatus.value,
+        countryModel: countryModel,
       );
       print(categoryModel);
       authorList.add(categoryModel);
@@ -124,6 +147,10 @@ class AuthorController extends GetxController
   Future<void> updateCategory({TopAuthors? model}) async {
     isLoading.value = true;
     print(model);
+    CountryModel countryModel = CountryModel(
+        name: countryName.value,
+        countryCode: countryCode.value,
+        countryFalg: countryFlag.value);
     try {
       TopAuthors categoryModel = await homeService.updateAuthor(
         avatar: webImage,
@@ -136,6 +163,7 @@ class AuthorController extends GetxController
         description: deltaToHtml(controller.document.toDelta().toJson()),
         topAuthors: model,
         password: password.text,
+        countryModel: countryModel,
       );
       int index = authorList.indexWhere((element) => element.sId == model!.sId);
       authorList.removeAt(index);
@@ -295,7 +323,7 @@ class AuthorController extends GetxController
         });
   }
 
-  void exportToExcelWeb({List<Commande>? commandes,TopAuthors?topAuthors}) {
+  void exportToExcelWeb({List<Commande>? commandes, TopAuthors? topAuthors}) {
     // Créer une nouvelle feuille Excel
     var excel = Excel.createExcel();
 
@@ -316,7 +344,7 @@ class AuthorController extends GetxController
         [
           IntCellValue(i),
           TextCellValue("${commandes[i].montant!}"),
-          TextCellValue(commandes[i].book!.nom??""),
+          TextCellValue(commandes[i].book!.nom ?? ""),
           TextCellValue(commandes[i].createdAt!.split("T").first),
         ],
       );
@@ -340,7 +368,10 @@ class AuthorController extends GetxController
   }
 
   Future<void> getCommandeAuthor(
-      {String? authorId, String? startDate, String? endDate,TopAuthors?topAuthors}) async {
+      {String? authorId,
+      String? startDate,
+      String? endDate,
+      TopAuthors? topAuthors}) async {
     loading.value = true;
 
     try {

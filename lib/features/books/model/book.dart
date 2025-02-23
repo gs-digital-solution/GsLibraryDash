@@ -21,6 +21,7 @@ class Book {
   RxBool? featured;
   RxBool? hasPromo;
   int? pourcentageReduction;
+  String?currency;
 
   Book(
       {this.gratuite,
@@ -40,6 +41,7 @@ class Book {
       this.featured,
       this.hasPromo,
       this.pourcentageReduction,
+      this.currency,
       this.iV});
 
   Book.fromJson(Map<String, dynamic> json) {
@@ -70,6 +72,7 @@ class Book {
     hasPromo = RxBool(json['hasPromo']);
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    currency=json['currency'];
     iV = json['__v'];
   }
 
