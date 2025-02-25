@@ -117,114 +117,112 @@ class _AddCountryPageState extends State<AddCountryPage> {
                               ],
                             ),
                             getVerticalSpace(context, 30),
-                             Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              itemSubTitle('Monnaie', context),
-                                              getVerticalSpace(context, 10),
-                                              DropdownButtonFormField<String>(
-                                                isExpanded: true,
-                                                decoration: InputDecoration(
-                                                  contentPadding:
-                                                      EdgeInsets.only(
-                                                    left: 10.h,
-                                                  ),
-                                                  border: InputBorder.none,
-
-                                                  focusedBorder:
-                                                      OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          10)),
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color:
-                                                                getPrimaryColor(
-                                                                    context),
-                                                          )),
-                                                  enabledBorder:
-                                                      OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          10)),
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: borderColor,
-                                                          )),
-                                                  errorBorder: InputBorder.none,
-                                                  disabledBorder:
-                                                      OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          10)),
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: borderColor,
-                                                          )),
-
-                                                  filled: true,
-                                                  fillColor:
-                                                      getCardColor(context),
-                                                  // fillColor: getReportColor(context),
-                                                  focusColor: Colors.green,
-                                                  hintText: "Choix de monnaie",
-                                                  isDense: false,
-                                                  hintStyle: TextStyle(
-                                                      fontFamily:
-                                                          Constants.fontsFamily,
-                                                      color: getSubFontColor(
-                                                          context),
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 15),
-                                                ),
-                                                items:  [
-                                                        DropdownMenuItem(
-                                                          child: Text(
-                                                              newCommandeController
-                                                                  .currency),
-                                                          value: newCommandeController
-                                                              .currency,
-                                                        ),
-                                                        ...exchangeRateController
-                                                            .exchangeRates
-                                                            .toSet().toList()
-                                                            .where((category) =>
-                                                                category
-                                                                    .countryFrom !=
-                                                                newCommandeController
-                                                                    .currency)
-                                                            .map(
-                                                              (element) =>
-                                                                  DropdownMenuItem(
-                                                                value: element
-                                                                    .countryFrom,
-                                                                child: Text(
-                                                                  element
-                                                                      .countryFrom!,
-                                                                ),
-                                                              ),
-                                                            )
-                                                            .toList()
-                                                      ]
-                                                    ,
-                                                onChanged: (value) {
-                                                  newCommandeController.currency =
-                                                      value!;
-                                                },
-                                                value: newCommandeController.currency,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                             Column(
+                               crossAxisAlignment:
+                                   CrossAxisAlignment.start,
+                               children: [
+                                 itemSubTitle('Monnaie', context),
+                                 getVerticalSpace(context, 10),
+                                 DropdownButtonFormField<String>(
+                                   isExpanded: true,
+                                   decoration: InputDecoration(
+                                     contentPadding:
+                                         EdgeInsets.only(
+                                       left: 10.h,
+                                     ),
+                                     border: InputBorder.none,
+                             
+                                     focusedBorder:
+                                         OutlineInputBorder(
+                                             borderRadius:
+                                                 BorderRadius.all(
+                                                     Radius
+                                                         .circular(
+                                                             10)),
+                                             borderSide:
+                                                 BorderSide(
+                                               color:
+                                                   getPrimaryColor(
+                                                       context),
+                                             )),
+                                     enabledBorder:
+                                         OutlineInputBorder(
+                                             borderRadius:
+                                                 BorderRadius.all(
+                                                     Radius
+                                                         .circular(
+                                                             10)),
+                                             borderSide:
+                                                 BorderSide(
+                                               color: borderColor,
+                                             )),
+                                     errorBorder: InputBorder.none,
+                                     disabledBorder:
+                                         OutlineInputBorder(
+                                             borderRadius:
+                                                 BorderRadius.all(
+                                                     Radius
+                                                         .circular(
+                                                             10)),
+                                             borderSide:
+                                                 BorderSide(
+                                               color: borderColor,
+                                             )),
+                             
+                                     filled: true,
+                                     fillColor:
+                                         getCardColor(context),
+                                     // fillColor: getReportColor(context),
+                                     focusColor: Colors.green,
+                                     hintText: "Choix de monnaie",
+                                     isDense: false,
+                                     hintStyle: TextStyle(
+                                         fontFamily:
+                                             Constants.fontsFamily,
+                                         color: getSubFontColor(
+                                             context),
+                                         fontWeight:
+                                             FontWeight.w400,
+                                         fontSize: 15),
+                                   ),
+                                   items:  [
+                                           DropdownMenuItem(
+                                             child: Text(
+                                                 newCommandeController
+                                                     .currency),
+                                             value: newCommandeController
+                                                 .currency,
+                                           ),
+                                           ...exchangeRateController
+                                               .exchangeRates
+                                               .toSet().toList()
+                                               .where((category) =>
+                                                   category
+                                                       .countryFrom !=
+                                                   newCommandeController
+                                                       .currency)
+                                               .map(
+                                                 (element) =>
+                                                     DropdownMenuItem(
+                                                   value: element
+                                                       .countryFrom,
+                                                   child: Text(
+                                                     element
+                                                         .countryFrom!,
+                                                   ),
+                                                 ),
+                                               )
+                                               .toList()
+                                         ]
+                                       ,
+                                   onChanged: (value) {
+                                     newCommandeController.currency =
+                                         value!;
+                                   },
+                                   value: newCommandeController.currency,
+                                 ),
+                               ],
+                             ),
                            
                             getVerticalSpace(context, 30),
                             Column(
