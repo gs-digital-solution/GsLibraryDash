@@ -333,7 +333,8 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                                                             paginationList[
                                                                     index]
                                                                 .priority!
-                                                                .value.toString(),
+                                                                .value
+                                                                .toString(),
                                                             50,
                                                             getFontColor(
                                                                 context),
@@ -348,12 +349,16 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                                                           flex: 1,
                                                           child: getMaxLineFont(
                                                             context,
-                                                            paginationList[
-                                                                    index]
-                                                                .country!
-                                                                .name!
-                                                                .value
-                                                                .toString(),
+                                                            paginationList[index]
+                                                                        .country !=
+                                                                    null
+                                                                ? paginationList[
+                                                                        index]
+                                                                    .country!
+                                                                    .name!
+                                                                    .value
+                                                                    .toString()
+                                                                : "",
                                                             50,
                                                             getFontColor(
                                                                 context),
