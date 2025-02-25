@@ -186,8 +186,7 @@ class _AddCountryPageState extends State<AddCountryPage> {
                                                           FontWeight.w400,
                                                       fontSize: 15),
                                                 ),
-                                                items: isEdit
-                                                    ? [
+                                                items:  [
                                                         DropdownMenuItem(
                                                           child: Text(
                                                               newCommandeController
@@ -216,21 +215,7 @@ class _AddCountryPageState extends State<AddCountryPage> {
                                                             )
                                                             .toList()
                                                       ]
-                                                    : exchangeRateController
-                                                        .exchangeRates
-                                                        .toSet().toList()
-                                                        .map(
-                                                          (element) =>
-                                                              DropdownMenuItem(
-                                                            value: element
-                                                                .countryFrom,
-                                                            child: Text(
-                                                              element
-                                                                  .countryFrom!,
-                                                            ),
-                                                          ),
-                                                        )
-                                                        .toList(),
+                                                    ,
                                                 onChanged: (value) {
                                                   newCommandeController.currency =
                                                       value!;

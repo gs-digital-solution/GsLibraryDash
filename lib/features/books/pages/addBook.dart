@@ -663,47 +663,31 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                     fontWeight: FontWeight.w400,
                                                     fontSize: 15),
                                               ),
-                                              items: isEdit
-                                                  ? [
-                                                      DropdownMenuItem(
+                                              items: [
+                                                DropdownMenuItem(
+                                                  child: Text(bookController
+                                                      .topAuthors!.firstname!),
+                                                  value: bookController
+                                                      .topAuthors!,
+                                                ),
+                                                ...authorController.authorList
+                                                    .where(
+                                                      (element) =>
+                                                          element.sId !=
+                                                          bookController
+                                                              .topAuthors!.sId,
+                                                    )
+                                                    .map(
+                                                      (element) =>
+                                                          DropdownMenuItem(
+                                                        value: element,
                                                         child: Text(
-                                                            bookController
-                                                                .topAuthors!
-                                                                .firstname!),
-                                                        value: bookController
-                                                            .topAuthors!,
+                                                            element.firstname ??
+                                                                ""),
                                                       ),
-                                                      ...authorController
-                                                          .authorList
-                                                          .where(
-                                                            (element) =>
-                                                                element.sId !=
-                                                                bookController
-                                                                    .topAuthors!
-                                                                    .sId,
-                                                          )
-                                                          .map(
-                                                            (element) =>
-                                                                DropdownMenuItem(
-                                                              value: element,
-                                                              child: Text(element
-                                                                      .firstname ??
-                                                                  ""),
-                                                            ),
-                                                          )
-                                                          .toList()
-                                                    ]
-                                                  : authorController.authorList
-                                                      .map(
-                                                        (element) =>
-                                                            DropdownMenuItem(
-                                                          value: element,
-                                                          child: Text(element
-                                                                  .firstname ??
-                                                              ""),
-                                                        ),
-                                                      )
-                                                      .toList(),
+                                                    )
+                                                    .toList()
+                                              ],
                                               onChanged: (value) {
                                                 bookController.topAuthors =
                                                     value;
@@ -863,7 +847,8 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                         ),
                                                         ...exchangeRateController
                                                             .exchangeRates
-                                                            .toSet().toList()
+                                                            .toSet()
+                                                            .toList()
                                                             .where((category) =>
                                                                 category
                                                                     .countryFrom !=
@@ -884,7 +869,8 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                       ]
                                                     : exchangeRateController
                                                         .exchangeRates
-                                                        .toSet().toList()
+                                                        .toSet()
+                                                        .toList()
                                                         .map(
                                                           (element) =>
                                                               DropdownMenuItem(
