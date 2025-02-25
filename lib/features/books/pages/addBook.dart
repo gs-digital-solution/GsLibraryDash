@@ -852,36 +852,35 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                           FontWeight.w400,
                                                       fontSize: 15),
                                                 ),
-                                                items:[
-                                                        DropdownMenuItem(
+                                                items: [
+                                                  DropdownMenuItem(
+                                                    child: Text(bookController
+                                                        .currency),
+                                                    value:
+                                                        bookController.currency,
+                                                  ),
+                                                  ...exchangeRateController
+                                                      .exchangeRates
+                                                      .map((element) =>
+                                                          element.countryFrom)
+                                                      .toList()
+                                                      .toSet()
+                                                      .toList()
+                                                      .where((category) =>
+                                                          category !=
+                                                          bookController
+                                                              .currency)
+                                                      .map(
+                                                        (element) =>
+                                                            DropdownMenuItem(
+                                                          value: element,
                                                           child: Text(
-                                                              bookController
-                                                                  .currency),
-                                                          value: bookController
-                                                              .currency,
+                                                            element!,
+                                                          ),
                                                         ),
-                                                        ...exchangeRateController
-                                                            .exchangeRates
-                                                            .toSet().toList()
-                                                            .where((category) =>
-                                                                category
-                                                                    .countryFrom !=
-                                                                bookController
-                                                                    .currency)
-                                                            .map(
-                                                              (element) =>
-                                                                  DropdownMenuItem(
-                                                                value: element
-                                                                    .countryFrom,
-                                                                child: Text(
-                                                                  element
-                                                                      .countryFrom!,
-                                                                ),
-                                                              ),
-                                                            )
-                                                            .toList()
-                                                      ]
-                                                    ,
+                                                      )
+                                                      .toList()
+                                                ],
                                                 onChanged: (value) {
                                                   bookController.currency =
                                                       value!;
