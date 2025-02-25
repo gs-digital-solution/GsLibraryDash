@@ -18,6 +18,7 @@ import 'package:gslibrarydashboard/features/commandes/pages/new_commande.dart';
 import 'package:gslibrarydashboard/features/countries/pages/addCountryPage.dart';
 import 'package:gslibrarydashboard/features/countries/pages/country_page.dart';
 import 'package:gslibrarydashboard/features/dashboard/pages/dashboardPage.dart';
+import 'package:gslibrarydashboard/features/exchanges-rates/controllers/exchange_rate_controller.dart';
 import 'package:gslibrarydashboard/features/exchanges-rates/pages/add_exchange_rate_page.dart';
 import 'package:gslibrarydashboard/features/exchanges-rates/pages/exchange_rate_page.dart';
 import 'package:gslibrarydashboard/features/investors/controllers/investor_controller.dart';
@@ -54,6 +55,8 @@ class _HomePageState extends State<HomePage> {
   final InvestorController investorController = Get.put(InvestorController());
   final CategoryController categoryController = Get.put(CategoryController());
   final PromoController promoController = Get.put(PromoController());
+  final ExchangeRateController exchangeRateController =
+      Get.put(ExchangeRateController());
 
   final ThemeController themeController = Get.find();
 

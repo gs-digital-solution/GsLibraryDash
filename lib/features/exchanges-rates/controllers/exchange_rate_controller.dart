@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:get/get.dart';
@@ -70,7 +70,7 @@ class ExchangeRateController extends GetxController
     );
     print(exchangeRate.toJson());
     try {
-      bool value = await _exchangeRateService.createExchangeRate(
+       _exchangeRateService.createExchangeRate(
           exchangeRate: exchangeRate);
       loading.value = false;
       clearData();
@@ -98,7 +98,7 @@ class ExchangeRateController extends GetxController
       rate: double.parse(rate.text),
     );
     try {
-      bool value = await _exchangeRateService.updateExchangeRate(
+      await _exchangeRateService.updateExchangeRate(
           exchangeRate: exchangeRate);
       loading.value = false;
       clearData();
@@ -120,7 +120,7 @@ class ExchangeRateController extends GetxController
 
   Future<void> deleteExchangeRate({ExchangeRate? exchangeRate}) async {
     try {
-      bool value = await _exchangeRateService.deleteExchangeRate(
+       await _exchangeRateService.deleteExchangeRate(
           exchangeRate: exchangeRate);
       int index = exchangeRates.indexWhere(
         (element) =>

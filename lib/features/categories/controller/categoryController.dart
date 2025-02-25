@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -152,7 +151,7 @@ class CategoryController extends GetxController
     isLoading.value = true;
     try {
       print(webImage);
-      CategoryModel categoryModel = await homeService.mettreEnAvantCategory(
+       await homeService.mettreEnAvantCategory(
         model: model,
       );
 
@@ -179,7 +178,7 @@ class CategoryController extends GetxController
       Fluttertoast.showToast(
           msg: "categorie Supprime", backgroundColor: Colors.green);
       isLoading.value = false;
-    } on AppException catch (e) {
+    } on AppException catch (_) {
       isLoading.value = false;
     }
   }

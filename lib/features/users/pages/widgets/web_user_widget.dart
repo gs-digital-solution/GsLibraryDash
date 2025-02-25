@@ -10,7 +10,7 @@ import 'package:gslibrarydashboard/utils/constants.dart';
 
 // ignore: must_be_immutable
 class UserWebWidget extends StatelessWidget {
-  var _tapPosition;
+ 
   UserWebWidget(
       {required this.list,
       required this.queryText,
@@ -108,9 +108,9 @@ class UserWebWidget extends StatelessWidget {
     ));
   }
 
-  void _storePosition(TapDownDetails details) {
+/*   void _storePosition(TapDownDetails details) {
     _tapPosition = details.globalPosition;
-  }
+  } */
 
   getActiveDeActiveCell(BuildContext context, bool isActive) {
     return Container(

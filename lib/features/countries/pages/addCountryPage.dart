@@ -1,15 +1,12 @@
 import 'package:country_picker/country_picker.dart' as picker;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import 'package:gslibrarydashboard/common/common.dart';
-
-import 'package:gslibrarydashboard/features/commandes/model/user.dart';
 import 'package:gslibrarydashboard/features/countries/controller/country_controller.dart';
 import 'package:gslibrarydashboard/features/countries/models/country.dart';
-import 'package:gslibrarydashboard/features/promos/controller/promocontroller.dart';
+import 'package:gslibrarydashboard/features/exchanges-rates/controllers/exchange_rate_controller.dart';
+import 'package:gslibrarydashboard/theme/app_theme.dart';
 
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/utils/constants.dart';
@@ -25,6 +22,8 @@ class AddCountryPage extends StatefulWidget {
 
 class _AddCountryPageState extends State<AddCountryPage> {
   final CountryController newCommandeController = Get.put(CountryController());
+      final ExchangeRateController exchangeRateController =
+        Get.put(ExchangeRateController());
 
   final formKey = GlobalKey<FormState>();
   @override
@@ -118,6 +117,130 @@ class _AddCountryPageState extends State<AddCountryPage> {
                               ],
                             ),
                             getVerticalSpace(context, 30),
+                             Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              itemSubTitle('Monnaie', context),
+                                              getVerticalSpace(context, 10),
+                                              DropdownButtonFormField<String>(
+                                                isExpanded: true,
+                                                decoration: InputDecoration(
+                                                  contentPadding:
+                                                      EdgeInsets.only(
+                                                    left: 10.h,
+                                                  ),
+                                                  border: InputBorder.none,
+
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10)),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color:
+                                                                getPrimaryColor(
+                                                                    context),
+                                                          )),
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10)),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: borderColor,
+                                                          )),
+                                                  errorBorder: InputBorder.none,
+                                                  disabledBorder:
+                                                      OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10)),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: borderColor,
+                                                          )),
+
+                                                  filled: true,
+                                                  fillColor:
+                                                      getCardColor(context),
+                                                  // fillColor: getReportColor(context),
+                                                  focusColor: Colors.green,
+                                                  hintText: "Choix de monnaie",
+                                                  isDense: false,
+                                                  hintStyle: TextStyle(
+                                                      fontFamily:
+                                                          Constants.fontsFamily,
+                                                      color: getSubFontColor(
+                                                          context),
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 15),
+                                                ),
+                                                items: isEdit
+                                                    ? [
+                                                        DropdownMenuItem(
+                                                          child: Text(
+                                                              newCommandeController
+                                                                  .currency),
+                                                          value: newCommandeController
+                                                              .currency,
+                                                        ),
+                                                        ...exchangeRateController
+                                                            .exchangeRates
+                                                            .toSet().toList()
+                                                            .where((category) =>
+                                                                category
+                                                                    .countryFrom !=
+                                                                newCommandeController
+                                                                    .currency)
+                                                            .map(
+                                                              (element) =>
+                                                                  DropdownMenuItem(
+                                                                value: element
+                                                                    .countryFrom,
+                                                                child: Text(
+                                                                  element
+                                                                      .countryFrom!,
+                                                                ),
+                                                              ),
+                                                            )
+                                                            .toList()
+                                                      ]
+                                                    : exchangeRateController
+                                                        .exchangeRates
+                                                        .toSet().toList()
+                                                        .map(
+                                                          (element) =>
+                                                              DropdownMenuItem(
+                                                            value: element
+                                                                .countryFrom,
+                                                            child: Text(
+                                                              element
+                                                                  .countryFrom!,
+                                                            ),
+                                                          ),
+                                                        )
+                                                        .toList(),
+                                                onChanged: (value) {
+                                                  newCommandeController.currency =
+                                                      value!;
+                                                },
+                                                value: newCommandeController.currency,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                           
                             getVerticalSpace(context, 30),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

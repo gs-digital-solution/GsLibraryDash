@@ -3,14 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/features/books/model/book.dart';
-import 'package:gslibrarydashboard/features/commandes/model/commande.dart';
+
 import 'package:gslibrarydashboard/features/commandes/model/user.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 
 // ignore: must_be_immutable
 class UserMobileWidget extends StatelessWidget {
-  var _tapPosition;
+ 
   UserMobileWidget(
       {required this.list,
       required this.queryText,
@@ -100,9 +100,9 @@ class UserMobileWidget extends StatelessWidget {
     );
   }
 
-  void _storePosition(TapDownDetails details) {
+/*   void _storePosition(TapDownDetails details) {
     _tapPosition = details.globalPosition;
-  }
+  } */
 
   getSubCell(String title, BuildContext context, double width) {
     return Container(

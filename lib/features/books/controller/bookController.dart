@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:flutter_quill/flutter_quill.dart';
@@ -61,7 +60,7 @@ class BookController extends GetxController with StateMixin<List<Book>> {
   RxList<Book> categoryList = <Book>[].obs;
   Book? mybook;
   final BookService homeService = Get.put(BookService());
-  RxString currency = "XAF".obs;
+String currency = "XAF";
 
   String oldCategory = '';
 
@@ -225,7 +224,7 @@ class BookController extends GetxController with StateMixin<List<Book>> {
         categoryModel: categoryModel!,
         popular: isPopular.value,
         featured: isFeatured.value,
-        currency: currency.value,
+        currency: currency,
       );
 
       categoryList.add(book);
@@ -244,8 +243,9 @@ class BookController extends GetxController with StateMixin<List<Book>> {
      String descript = deltaToHtml(descController.document
             .toDelta()
             .toJson());
+    print(currency);
     try {
-      Book book = await homeService.updateBook(
+       await homeService.updateBook(
         avatar: webImage,
         filename: imageController.text,
         gratuite: gratuite,
@@ -261,7 +261,7 @@ class BookController extends GetxController with StateMixin<List<Book>> {
         book: mybook,
         popular: isPopular.value,
         featured: isFeatured.value,
-        currency: currency.value,
+        currency: currency,
       );
 
       //categoryList.add(book);
@@ -324,7 +324,7 @@ class BookController extends GetxController with StateMixin<List<Book>> {
   void setBook(Book book) {
     nameController.text = book.nom!;
     price.text = book.prix.toString();
-    currency.value=book.currency!;
+    currency=book.currency??"XAF";
 
     pourcentage.text = book.pourcentage.toString();
     categoryModel = book.categories!.isNotEmpty ? book.categories![0] : null;
@@ -359,7 +359,7 @@ class BookController extends GetxController with StateMixin<List<Book>> {
       Fluttertoast.showToast(
           msg: "Livre Supprime", backgroundColor: Colors.green);
       isLoading.value = false;
-    } on AppException catch (e) {
+    } on AppException catch (_) {
       isLoading.value = false;
     }
   }

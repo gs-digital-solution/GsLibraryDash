@@ -64,7 +64,7 @@ class CommandeController extends GetxController
 
   Future<bool> confirmOrder({Commande? commande, BuildContext? context}) async {
     try {
-      bool value = await homeService.confirmOrder(
+      await homeService.confirmOrder(
         commande: commande,
       );
       showCustomToast(

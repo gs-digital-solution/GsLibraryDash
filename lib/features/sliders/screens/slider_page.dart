@@ -3,11 +3,7 @@ import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
-import 'package:gslibrarydashboard/features/categories/controller/categoryController.dart';
-import 'package:gslibrarydashboard/features/categories/models/categoryModel.dart';
-import 'package:gslibrarydashboard/features/categories/screens/entries_drop_down.dart';
 import 'package:gslibrarydashboard/features/sliders/controller/slider_controller.dart';
-import 'package:gslibrarydashboard/features/sliders/models/slider.dart';
 import 'package:gslibrarydashboard/home/controller/homeController.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/theme/theme_controller.dart';
@@ -40,9 +36,7 @@ class _SliderScreenState extends State<SliderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController textEditingController = TextEditingController();
-
-    RxString queryText = ''.obs;
+    
 
     return SafeArea(
       child: Container(

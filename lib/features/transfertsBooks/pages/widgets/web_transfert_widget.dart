@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
 
-import 'package:gslibrarydashboard/features/commandes/model/user.dart';
+
 import 'package:gslibrarydashboard/features/history/controller/history_controller.dart';
 import 'package:gslibrarydashboard/features/transfertsBooks/controllers/transfert_demand_controller.dart';
 import 'package:gslibrarydashboard/features/transfertsBooks/models/transfert.dart';
@@ -13,7 +13,7 @@ import 'package:gslibrarydashboard/utils/constants.dart';
 
 // ignore: must_be_immutable
 class TransfertWidgetWeb extends StatelessWidget {
-  var _tapPosition;
+  
   TransfertWidgetWeb(
       {required this.list,
       required this.queryText,
@@ -492,9 +492,9 @@ class TransfertWidgetWeb extends StatelessWidget {
     ));
   }
 
-  void _storePosition(TapDownDetails details) {
+/*   void _storePosition(TapDownDetails details) {
     _tapPosition = details.globalPosition;
-  }
+  } */
 
   getActiveDeActiveCell(BuildContext context, bool isActive) {
     return Container(

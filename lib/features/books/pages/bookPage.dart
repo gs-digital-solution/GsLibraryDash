@@ -47,7 +47,7 @@ class _StoryScreenState extends State<StoryScreen> {
         children: [
           getTextWidget(context, 'Livres', 75, getFontColor(context),
               fontWeight: FontWeight.w700),
-          getVerticalSpace(context, 35),
+          getVerticalSpace(context, 20),
           Expanded(
               child: getCommonContainer(
                   context: context,
@@ -176,8 +176,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                                   children: [
                                                     InkWell(
                                                       onTap: () {
-                                                        print(
-                                                            "posi===${position.value}===${i - 1}");
+                                                       
                                                         if (position.value >
                                                             0) {
                                                           position.value =

@@ -137,16 +137,33 @@ class _CountryPageState extends State<CountryPage> {
                                       children: [
                                         Container(
                                             width:
-                                                isWeb(context) ? 130.h : 80.h,
+                                                isWeb(context) ? 80.h : 80.h,
                                             child: getMaxLineFont(context, 'ID',
                                                 50, getFontColor(context), 1,
                                                 fontWeight: FontWeight.w600,
                                                 textAlign: TextAlign.start)),
+                                          getHorSpace(30.w),
                                         Container(
-                                          width:
-                                                isWeb(context) ? 130.h : 80.h,
-                                          child: getMaxLineFont(context, 'Flag',
-                                              50, getFontColor(context), 1,
+                                          width: isWeb(context) ? 80.h : 80.h,
+                                          child: getMaxLineFont(
+                                            context,
+                                            'Flag',
+                                            50,
+                                            getFontColor(context),
+                                            1,
+                                            fontWeight: FontWeight.w600,
+                                            textAlign: TextAlign.start,
+                                          ),
+                                        ),
+                                        getHorSpace(30.w),
+                                        Expanded(
+                                          flex: 1,
+                                          child: getMaxLineFont(
+                                              context,
+                                              'Nom du pays',
+                                              50,
+                                              getFontColor(context),
+                                              1,
                                               fontWeight: FontWeight.w600,
                                               textAlign: TextAlign.start),
                                         ),
@@ -154,7 +171,7 @@ class _CountryPageState extends State<CountryPage> {
                                           flex: 1,
                                           child: getMaxLineFont(
                                               context,
-                                              'Nom du pays',
+                                              'Monnaie',
                                               50,
                                               getFontColor(context),
                                               1,
@@ -184,9 +201,9 @@ class _CountryPageState extends State<CountryPage> {
                                               textAlign: TextAlign.start),
                                         ),
                                         getHorizontalSpace(
-                                                          context,
-                                                          30,
-                                                        ),
+                                          context,
+                                          30,
+                                        ),
                                         Expanded(
                                           flex: 1,
                                           child: getMaxLineFont(
@@ -265,7 +282,7 @@ class _CountryPageState extends State<CountryPage> {
                                                         Container(
                                                             width:
                                                                 isWeb(context)
-                                                                    ? 130.h
+                                                                    ? 80.h
                                                                     : 80.h,
                                                             child:
                                                                 getMaxLineFont(
@@ -281,25 +298,34 @@ class _CountryPageState extends State<CountryPage> {
                                                                             .w600,
                                                                     textAlign:
                                                                         TextAlign
-                                                                            .start)),
+                                                                            .center)),
+                                                                      
                                                         getHorizontalSpace(
                                                           context,
-                                                          10,
+                                                          30,
                                                         ),
                                                         Container(
-                                                          width:
-                                                isWeb(context) ? 130.h : 80.h,
-                                              padding: EdgeInsets.all(10.h),
+                                                          width: isWeb(context)
+                                                              ? 80.h
+                                                              : 80.h,
+                                                          alignment: Alignment.centerLeft,
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  10.h),
                                                           child: CountryFlag
                                                               .fromCountryCode(
                                                             paginationList[
                                                                     index]
                                                                 .countryFlag!
                                                                 .value,
-                                                                height: 30.h,
-                                                                width: 30.h,
-                                                              shape: Rectangle(),
+                                                            height: 30.h,
+                                                            width: 60.h,
+                                                            shape: Rectangle(),
                                                           ),
+                                                        ),
+                                                        getHorizontalSpace(
+                                                          context,
+                                                          30,
                                                         ),
                                                         Expanded(
                                                           child: getMaxLineFont(
@@ -309,6 +335,23 @@ class _CountryPageState extends State<CountryPage> {
                                                                 .name!
                                                                 .value
                                                                 .toString(),
+                                                            50,
+                                                            getFontColor(
+                                                                context),
+                                                            1,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            textAlign:
+                                                                TextAlign.left,
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                          child: getMaxLineFont(
+                                                            context,
+                                                            paginationList[
+                                                                    index]
+                                                                .currency!
+                                                                .toUpperCase(),
                                                             50,
                                                             getFontColor(
                                                                 context),
@@ -615,7 +658,7 @@ class _CountryPageState extends State<CountryPage> {
               ),
             ),
             onTap: () {
-            countryController.setPromo(storyModel);
+              countryController.setPromo(storyModel);
             },
             value: 'Mettre a jour'),
         PopupMenuItem<String>(
@@ -653,8 +696,8 @@ class _CountryPageState extends State<CountryPage> {
               isActive ? "#00A010".toColor() : "#FD3E3E".toColor(),
               isActive ? "#E7FFE8".toColor() : "#FFF2F2".toColor())),
       onTap: () {
-            storyModel.isActivated!.value = !storyModel.isActivated!.value;
-          countryController.updatePromoStatus(promo: storyModel);
+        storyModel.isActivated!.value = !storyModel.isActivated!.value;
+        countryController.updatePromoStatus(promo: storyModel);
         //updateStatus(context, storyModel);
       },
     );

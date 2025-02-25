@@ -104,8 +104,7 @@ class InvestorWebWidget extends StatelessWidget {
                                               .investor!
                                               .investDate!
                                               .split("T")
-                                              .first ??
-                                          ""),
+                                              .first),
                                       50,
                                       getFontColor(context),
                                       3,

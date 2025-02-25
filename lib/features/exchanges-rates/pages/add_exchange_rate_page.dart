@@ -1,18 +1,9 @@
-import 'package:country_picker/country_picker.dart' as picker;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import 'package:gslibrarydashboard/common/common.dart';
-
-import 'package:gslibrarydashboard/features/commandes/model/user.dart';
-import 'package:gslibrarydashboard/features/countries/controller/country_controller.dart';
-import 'package:gslibrarydashboard/features/countries/models/country.dart';
 import 'package:gslibrarydashboard/features/exchanges-rates/controllers/exchange_rate_controller.dart';
 import 'package:gslibrarydashboard/features/exchanges-rates/models/exchange_rate.dart';
-import 'package:gslibrarydashboard/features/promos/controller/promocontroller.dart';
-
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/utils/constants.dart';
 

@@ -102,7 +102,7 @@ Widget imageAsset(String icon,
 
 getDefaultHorSpace(BuildContext context) {
   if (Responsive.isDesktop(context)) {
-    return 55.w;
+    return 10.w;
   } else if (Responsive.isTablet(context)) {
     return 12.w;
   } else if (Responsive.isMobile(context)) {

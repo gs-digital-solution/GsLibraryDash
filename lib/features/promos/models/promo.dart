@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:gslibrarydashboard/features/author/models/author.dart';
 import 'package:gslibrarydashboard/features/commandes/model/commande.dart';
 
 class Promo {

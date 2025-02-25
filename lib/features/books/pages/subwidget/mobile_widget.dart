@@ -11,7 +11,7 @@ import 'package:gslibrarydashboard/theme/color_scheme.dart';
 // ignore: must_be_immutable
 class MobileWidget extends StatelessWidget{
 
-  var _tapPosition;
+  
   MobileWidget({required this.list,required this.queryText,required this.function,required this.onTapStatus,required this.mainList});
   final List<Book> list;
   final List<Book> mainList;
@@ -110,7 +110,7 @@ class MobileWidget extends StatelessWidget{
                                                       width: 80.h,
                                                       alignment: Alignment.centerLeft,
                                                       child: GestureDetector(
-                                                          onTapDown: _storePosition,
+                                                         
                                                           onTap: () {
 
                                                            
@@ -141,9 +141,7 @@ class MobileWidget extends StatelessWidget{
       ),
     );
   }
-  void _storePosition(TapDownDetails details) {
-    _tapPosition = details.globalPosition;
-  }
+ 
 
 
   getSubCell(String title, BuildContext context, double width) {

@@ -40,7 +40,7 @@ class TransfertDemandController extends GetxController
   Future<void> validateTransfert(
       {TransfertDevice? transfertDevice, BuildContext? context}) async {
     try {
-      bool value = await categoryService.validateTransfert(
+       await categoryService.validateTransfert(
         id: transfertDevice!.sId,
         deviceId: transfertDevice.newDeviceId,
         userId: transfertDevice.user!.sId,
@@ -60,7 +60,7 @@ class TransfertDemandController extends GetxController
   Future<void> cancelTransfert(
       {TransfertDevice? transfertDevice, BuildContext? context}) async {
     try {
-      bool value = await categoryService.cancelTransfertBook(
+      await categoryService.cancelTransfertBook(
         id: transfertDevice!.sId,
       );
    

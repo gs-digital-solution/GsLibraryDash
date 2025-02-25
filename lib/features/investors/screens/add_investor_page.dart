@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
-// ignore: unnecessary_import
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
-import 'package:gslibrarydashboard/features/author/controllers/authorController.dart';
+
 import 'package:gslibrarydashboard/features/author/models/author.dart';
 import 'package:gslibrarydashboard/features/investors/controllers/investor_controller.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';

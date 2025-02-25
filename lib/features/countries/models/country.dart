@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 class Country {
   String? id;
+  String? currency;
   RxString? name;
   RxString? countryCode;
   RxString? countryFlag;
@@ -16,6 +17,7 @@ class Country {
   Country({
     this.id,
     this.name,
+    this.currency,
     this.countryCode,
     this.countryFlag,
     this.isActivated,
@@ -49,6 +51,7 @@ class Country {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name?.value,
+      'currency': currency,
       'countryCode': countryCode?.value,
       'countryFlag': countryFlag?.value,
       'IsActivated': isActivated?.value,
@@ -60,6 +63,7 @@ class Country {
     return Country(
       id: map['_id'] != null ? map['_id'] as String : null,
       name: map['name'] != null ? RxString(map['name']) : null,
+      currency: map['currency'] ?? "",
       countryCode:
           map['countryCode'] != null ? RxString(map['countryCode']) : null,
       countryFlag:

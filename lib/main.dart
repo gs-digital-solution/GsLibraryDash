@@ -27,7 +27,7 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-Widget? _getPageWidget(RouteSettings settings) {
+Widget? getPageWidget(RouteSettings settings) {
   if (settings.name == null) {
     return null;
   }

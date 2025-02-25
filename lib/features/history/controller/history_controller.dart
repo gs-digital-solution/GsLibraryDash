@@ -1,14 +1,10 @@
-import 'dart:typed_data';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/exceptions/appException.dart';
-import 'package:gslibrarydashboard/features/categories/models/categoryModel.dart';
-import 'package:gslibrarydashboard/features/categories/services/categoryService.dart';
 import 'package:gslibrarydashboard/features/history/models/history.dart';
 import 'package:gslibrarydashboard/features/history/services/history_service.dart';
-import 'package:image_picker/image_picker.dart';
+
 
 class HistoryController extends GetxController with StateMixin<List<History>> {
 
@@ -52,7 +48,7 @@ class HistoryController extends GetxController with StateMixin<List<History>> {
         change(categoryList, status: RxStatus.success());
       Fluttertoast.showToast(
           msg: "categorie Supprime", backgroundColor: Colors.green);
-    } on AppException catch (e) {
+    } on AppException catch (_) {
     } finally {}
   }
 }

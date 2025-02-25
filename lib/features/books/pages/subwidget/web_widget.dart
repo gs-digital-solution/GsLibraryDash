@@ -34,6 +34,7 @@ class WebWidget extends StatelessWidget {
         children: [
           getHeaderWidget(context),
           Expanded(
+            flex: 2,
               child: ListView.builder(
             itemCount: list.length,
             itemBuilder: (context, index) {
@@ -62,12 +63,11 @@ class WebWidget extends StatelessWidget {
                                     context,
                                     130),
                                 getHorSpace(5.h),
-                                Expanded(
-                                    child: SizedBox(
-                                  width: 100.h,
+                                SizedBox(
+                                  width: 80.h,
                                   child: Container(
-                                    height: 50.h,
-                                    width: 75.h,
+                                    height: 80.h,
+                                    width: 80.h,
                                     alignment: Alignment.centerLeft,
                                     child: ClipRRect(
                                       // borderRadius: BorderRadius
@@ -78,7 +78,8 @@ class WebWidget extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                )),
+                                ),
+                                getHorSpace(30.h),
                                 Expanded(
                                     flex: 2,
                                     child: getHeaderTitle(
@@ -92,7 +93,7 @@ class WebWidget extends StatelessWidget {
                                         130)),
                                 Expanded(
                                     child: getHeaderCell(
-                                        '${list[index].prix} FCFA',
+                                        '${list[index].prix} ${list[index].currency}',
                                         context,
                                         130)),
                                 Expanded(
@@ -207,8 +208,9 @@ class WebWidget extends StatelessWidget {
         children: [
           getHeaderCell('ID', context, 80),
           getHeaderCell('Categorie', context, 130),
-          getHorSpace(5.h),
-          Expanded(child: getHeaderCell('Image', context, 100)),
+          getHorSpace(10.h),
+          getHeaderCell('Image', context, 80.h),
+           getHorSpace(30.h),
           Expanded(flex: 2, child: getHeaderTitle(context, 'Titre')),
           getHorSpace(5.h),
           Expanded(
@@ -247,7 +249,7 @@ class WebWidget extends StatelessWidget {
   }
 
   getHeaderTitle(BuildContext context, String title) {
-    return getMaxLineFont(context, title, 45, getFontColor(context), 1,
+    return getMaxLineFont(context, title, 45, getFontColor(context), 2,
         fontWeight: FontWeight.w600, textAlign: TextAlign.start);
   }
 }

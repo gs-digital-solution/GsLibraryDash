@@ -1,13 +1,9 @@
 import 'dart:math';
-import 'dart:typed_data';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/exceptions/appException.dart';
-import 'package:gslibrarydashboard/features/author/models/author.dart';
-import 'package:gslibrarydashboard/features/categories/models/categoryModel.dart';
 import 'package:gslibrarydashboard/features/commandes/model/commande.dart';
 import 'package:gslibrarydashboard/features/commandes/model/user.dart';
 import 'package:gslibrarydashboard/features/promos/models/promo.dart';
@@ -99,7 +95,7 @@ class PromoController extends GetxController with StateMixin<List<Promo>> {
   Future<void> addCategory({User? user}) async {
     isLoading.value = true;
     try {
-      Promo promo = await homeService.addPromo(
+       await homeService.addPromo(
         code: code.text,
         discount: int.parse(discount.text),
         gain: int.parse(gain.text),
@@ -120,7 +116,7 @@ class PromoController extends GetxController with StateMixin<List<Promo>> {
   Future<void> updatePromo({Author? user, Promo? promo}) async {
     isLoading.value = true;
     try {
-      Promo mypromo = await homeService.updatePromo(
+       await homeService.updatePromo(
           code: code.text,
           discount: int.parse(discount.text),
           promo: promo,
@@ -152,7 +148,7 @@ class PromoController extends GetxController with StateMixin<List<Promo>> {
   Future<void> updatePromoStatus({Author? user, Promo? promo}) async {
     isLoading.value = true;
     try {
-      Promo mypromo = await homeService.updatePromo(
+       await homeService.updatePromo(
           code: promo!.code,
           discount: promo.discount,
           promo: promo,
@@ -186,7 +182,7 @@ class PromoController extends GetxController with StateMixin<List<Promo>> {
       Fluttertoast.showToast(
           msg: "Code promo supprime", backgroundColor: Colors.green);
       isLoading.value = false;
-    } on AppException catch (e) {
+    } on AppException catch (_) {
       isLoading.value = false;
     }
   }

@@ -10,6 +10,7 @@ import 'package:gslibrarydashboard/features/books/model/book.dart';
 import 'package:gslibrarydashboard/features/books/pages/category_dropdown.dart';
 import 'package:gslibrarydashboard/features/books/pages/subwidget/status_drop_down.dart';
 import 'package:gslibrarydashboard/features/categories/controller/categoryController.dart';
+import 'package:gslibrarydashboard/features/exchanges-rates/controllers/exchange_rate_controller.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/utils/constants.dart';
@@ -35,6 +36,8 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
   @override
   Widget build(BuildContext context) {
     final BookController bookController = Get.put(BookController());
+    final ExchangeRateController exchangeRateController =
+        Get.put(ExchangeRateController());
     final CategoryController categoryController = Get.put(CategoryController());
     final AuthorController authorController = Get.put(AuthorController());
 
@@ -455,13 +458,12 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                 'Select Category', context),
                                             getVerticalSpace(context, 10),
                                             DropdownButtonFormField(
-                                              
                                               decoration: InputDecoration(
                                                 contentPadding: EdgeInsets.only(
                                                   left: 10.h,
                                                 ),
                                                 border: InputBorder.none,
-                                                
+
                                                 focusedBorder:
                                                     OutlineInputBorder(
                                                         borderRadius:
@@ -492,7 +494,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                         borderSide: BorderSide(
                                                           color: borderColor,
                                                         )),
-                                            
+
                                                 filled: true,
                                                 fillColor:
                                                     getCardColor(context),
@@ -782,6 +784,130 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                         )),
                                         getHorizontalSpace(context, 10),
                                         Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              itemSubTitle('Monnaie', context),
+                                              getVerticalSpace(context, 10),
+                                              DropdownButtonFormField<String>(
+                                                isExpanded: true,
+                                                decoration: InputDecoration(
+                                                  contentPadding:
+                                                      EdgeInsets.only(
+                                                    left: 10.h,
+                                                  ),
+                                                  border: InputBorder.none,
+
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10)),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color:
+                                                                getPrimaryColor(
+                                                                    context),
+                                                          )),
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10)),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: borderColor,
+                                                          )),
+                                                  errorBorder: InputBorder.none,
+                                                  disabledBorder:
+                                                      OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10)),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: borderColor,
+                                                          )),
+
+                                                  filled: true,
+                                                  fillColor:
+                                                      getCardColor(context),
+                                                  // fillColor: getReportColor(context),
+                                                  focusColor: Colors.green,
+                                                  hintText: "Choix de monnaie",
+                                                  isDense: false,
+                                                  hintStyle: TextStyle(
+                                                      fontFamily:
+                                                          Constants.fontsFamily,
+                                                      color: getSubFontColor(
+                                                          context),
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 15),
+                                                ),
+                                                items: isEdit
+                                                    ? [
+                                                        DropdownMenuItem(
+                                                          child: Text(
+                                                              bookController
+                                                                  .currency),
+                                                          value: bookController
+                                                              .currency,
+                                                        ),
+                                                        ...exchangeRateController
+                                                            .exchangeRates
+                                                            .toSet().toList()
+                                                            .where((category) =>
+                                                                category
+                                                                    .countryFrom !=
+                                                                bookController
+                                                                    .currency)
+                                                            .map(
+                                                              (element) =>
+                                                                  DropdownMenuItem(
+                                                                value: element
+                                                                    .countryFrom,
+                                                                child: Text(
+                                                                  element
+                                                                      .countryFrom!,
+                                                                ),
+                                                              ),
+                                                            )
+                                                            .toList()
+                                                      ]
+                                                    : exchangeRateController
+                                                        .exchangeRates
+                                                        .toSet().toList()
+                                                        .map(
+                                                          (element) =>
+                                                              DropdownMenuItem(
+                                                            value: element
+                                                                .countryFrom,
+                                                            child: Text(
+                                                              element
+                                                                  .countryFrom!,
+                                                            ),
+                                                          ),
+                                                        )
+                                                        .toList(),
+                                                onChanged: (value) {
+                                                  bookController.currency =
+                                                      value!;
+                                                },
+                                                value: bookController.currency,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        getHorizontalSpace(context, 10),
+                                        Expanded(
                                             child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -790,9 +916,10 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                 context),
                                             getVerticalSpace(context, 10),
                                             getTextFiledWidget(
-                                                context,
-                                                "pourcentage",
-                                                bookController.pourcentage),
+                                              context,
+                                              "pourcentage",
+                                              bookController.pourcentage,
+                                            ),
                                           ],
                                         )),
                                       ],
@@ -1431,14 +1558,13 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                               context,
                               isEdit ? 'Mettre a jour' : 'Enregistrer',
                               isProgress: bookController.isLoading.value,
-                              () async{
+                              () async {
                                 if (isEdit) {
                                   Future.delayed(Duration(seconds: 2));
                                   await bookController.updateBook();
-                                
                                 } else {
-                                   Future.delayed(Duration(seconds: 2));
-                                   await  bookController.addBook();
+                                  Future.delayed(Duration(seconds: 2));
+                                  await bookController.addBook();
                                   bookController.addBook().then((value) {
                                     setState(() {
                                       bookController.clearData();
@@ -1454,21 +1580,20 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                           ),
                         ),
                         getHorSpace(10.h),
-                         Expanded(
-                            child: getButtonWidget(
-                              context,
-                              'Annuler',
-                              isProgress: false,
-                              () {
-                                bookController.isLoading.value = false;
-                              },
-                              horPadding: 25.h,
-                              bgColor: Colors.red,
-                              horizontalSpace: 0,
-                              verticalSpace: 0,
-                              btnHeight: 60.h,
-                            ),
-                          
+                        Expanded(
+                          child: getButtonWidget(
+                            context,
+                            'Annuler',
+                            isProgress: false,
+                            () {
+                              bookController.isLoading.value = false;
+                            },
+                            horPadding: 25.h,
+                            bgColor: Colors.red,
+                            horizontalSpace: 0,
+                            verticalSpace: 0,
+                            btnHeight: 60.h,
+                          ),
                         ),
                       ],
                     ),

@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getX;
 import 'package:gslibrarydashboard/exceptions/appException.dart';
-import 'package:gslibrarydashboard/features/categories/models/categoryModel.dart';
 import 'package:gslibrarydashboard/features/history/models/history.dart';
 import 'package:gslibrarydashboard/home/services/baseService.dart';
 

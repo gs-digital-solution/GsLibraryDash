@@ -9,7 +9,6 @@ import 'package:gslibrarydashboard/theme/color_scheme.dart';
 
 // ignore: must_be_immutable
 class CommandeMobileWidget extends StatelessWidget {
-  var _tapPosition;
   CommandeMobileWidget(
       {required this.list,
       required this.queryText,
@@ -104,7 +103,6 @@ class CommandeMobileWidget extends StatelessWidget {
                                           width: 80.h,
                                           alignment: Alignment.centerLeft,
                                           child: GestureDetector(
-                                              onTapDown: _storePosition,
                                               onTap: () {},
                                               child: Icon(
                                                 Icons.more_vert,
@@ -138,9 +136,9 @@ class CommandeMobileWidget extends StatelessWidget {
     );
   }
 
-  void _storePosition(TapDownDetails details) {
+/*   void _storePosition(TapDownDetails details) {
     _tapPosition = details.globalPosition;
-  }
+  } */
 
   getSubCell(String title, BuildContext context, double width) {
     return Container(

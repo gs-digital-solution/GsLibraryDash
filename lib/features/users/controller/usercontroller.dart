@@ -70,7 +70,7 @@ class UserController extends GetxController with StateMixin<List<User>> {
     final url = Url.createObjectUrlFromBlob(blob);
 
     // Télécharger le fichier
-    final anchor = AnchorElement(href: url)
+    AnchorElement(href: url)
       ..target = 'blank'
       ..download = 'users.xlsx'
       ..click();

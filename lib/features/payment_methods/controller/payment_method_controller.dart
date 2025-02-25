@@ -84,7 +84,7 @@ class PaymentMethodController extends GetxController
     );
     print(country.toMap());
     try {
-      PaymentMethod myCountry =
+      
           await countryService.createCountry(country: country);
 
       Fluttertoast.showToast(
@@ -109,7 +109,7 @@ class PaymentMethodController extends GetxController
         country: Country(id: countryId.value),
         isActivated: promo.isActivated,
       );
-      PaymentMethod mypromo = await countryService.updateCountry(
+       await countryService.updateCountry(
         country: myCountry,
       );
 
@@ -128,7 +128,7 @@ class PaymentMethodController extends GetxController
   Future<void> updatePromoStatus({PaymentMethod? promo}) async {
     isLoading.value = true;
     try {
-      PaymentMethod mypromo = await countryService.updateCountry(
+       await countryService.updateCountry(
         country: promo,
       );
 
@@ -154,7 +154,7 @@ class PaymentMethodController extends GetxController
       Fluttertoast.showToast(
           msg: "Methode de paiement supprimee", backgroundColor: Colors.green);
       isLoading.value = false;
-    } on AppException catch (e) {
+    } on AppException catch (_) {
       isLoading.value = false;
     }
   }

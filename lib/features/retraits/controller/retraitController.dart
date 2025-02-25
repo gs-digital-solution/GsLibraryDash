@@ -44,7 +44,7 @@ class RetraitController extends GetxController with StateMixin<List<Retrait>> {
         "author": topAuthors!.sId,
         "montant": amount.text,
       };
-      bool val = await homeService.createRetrait(data: retraitData);
+       await homeService.createRetrait(data: retraitData);
       showCustomToast(context: context!, message: "paiement enregistre");
       loading.value = false;
       topAuthors = null;

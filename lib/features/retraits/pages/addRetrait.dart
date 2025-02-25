@@ -1,12 +1,10 @@
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/features/author/controllers/authorController.dart';
-import 'package:gslibrarydashboard/features/dashboard/controllers/dashboardController.dart';
 import 'package:gslibrarydashboard/features/retraits/controller/retraitController.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
@@ -32,7 +30,6 @@ class _NewRetraitState extends State<NewRetrait> {
   Widget build(BuildContext context) {
     final AuthorController authorController = Get.put(AuthorController());
     final RetraitController retraitController = Get.put(RetraitController());
-    final DashboardController dashboardController = Get.find();
     final formKey = GlobalKey<FormState>();
 
     return SafeArea(

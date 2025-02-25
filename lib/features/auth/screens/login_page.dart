@@ -4,11 +4,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/features/auth/auth/controller/loginController.dart';
-import 'package:gslibrarydashboard/home/pages/privacy.dart';
 import 'package:gslibrarydashboard/main.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
-import 'package:gslibrarydashboard/utils/app_routes.dart';
 import 'package:gslibrarydashboard/utils/constants.dart';
 import 'package:gslibrarydashboard/utils/responsive.dart';
 

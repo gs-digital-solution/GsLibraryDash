@@ -1,11 +1,8 @@
 import 'dart:typed_data';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/exceptions/appException.dart';
-import 'package:gslibrarydashboard/features/categories/models/categoryModel.dart';
-import 'package:gslibrarydashboard/features/categories/services/categoryService.dart';
 import 'package:gslibrarydashboard/features/sliders/models/slider.dart';
 import 'package:gslibrarydashboard/features/sliders/services/slider_service.dart';
 import 'package:image_picker/image_picker.dart';
@@ -160,7 +157,7 @@ class SliderController extends GetxController
       Fluttertoast.showToast(
           msg: "categorie Supprime", backgroundColor: Colors.green);
       isLoading.value = false;
-    } on AppException catch (e) {
+    } on AppException catch (_) {
       isLoading.value = false;
     }
   }

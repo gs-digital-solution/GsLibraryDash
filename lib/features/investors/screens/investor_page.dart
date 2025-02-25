@@ -3,13 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'package:gslibrarydashboard/common/common.dart';
-import 'package:gslibrarydashboard/features/author/controllers/authorController.dart';
 import 'package:gslibrarydashboard/features/author/models/author.dart';
-import 'package:gslibrarydashboard/features/author/widgets/author_mobile_widget.dart';
-import 'package:gslibrarydashboard/features/author/widgets/author_web_widget.dart';
 import 'package:gslibrarydashboard/features/categories/screens/entries_drop_down.dart';
 import 'package:gslibrarydashboard/features/investors/controllers/investor_controller.dart';
-import 'package:gslibrarydashboard/features/investors/models/investor.dart';
 import 'package:gslibrarydashboard/features/investors/models/investorwithsolde.dart';
 import 'package:gslibrarydashboard/features/investors/widgets/investor_mobile_widget.dart';
 import 'package:gslibrarydashboard/features/investors/widgets/investor_web_widget.dart';

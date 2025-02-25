@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -20,9 +19,12 @@ class CountryController extends GetxController with StateMixin<List<Country>> {
   final HomeController homeController = Get.find();
 
   TextEditingController name = TextEditingController();
+
   TextEditingController serviceCode = TextEditingController();
   RxString countryFlag = ''.obs;
   RxString countryCode = ''.obs;
+
+  String currency = "XAF";
 
   RxBool isLoading = false.obs;
 
@@ -30,6 +32,7 @@ class CountryController extends GetxController with StateMixin<List<Country>> {
 
   void setPromo(Country mypromo) {
     name.text = mypromo.name!.value;
+    currency = mypromo.currency!;
     countryCode.value = mypromo.countryCode!.value;
     countryFlag.value = mypromo.countryFlag!.value;
     serviceCode.text = mypromo.serviceCode!.value;
@@ -67,13 +70,15 @@ class CountryController extends GetxController with StateMixin<List<Country>> {
     isLoading.value = true;
 
     Country country = Country(
-        name: RxString(name.text),
-        countryCode: countryCode,
-        countryFlag: countryFlag,
-        isActivated: RxBool(true),
-        serviceCode: RxString(serviceCode.text));
+      name: RxString(name.text),
+      currency: currency,
+      countryCode: countryCode,
+      countryFlag: countryFlag,
+      isActivated: RxBool(true),
+      serviceCode: RxString(serviceCode.text),
+    );
     try {
-      Country myCountry = await countryService.createCountry(country: country);
+       await countryService.createCountry(country: country);
 
       Fluttertoast.showToast(
           msg: "Pays Ajouter", backgroundColor: Colors.green);
@@ -88,9 +93,18 @@ class CountryController extends GetxController with StateMixin<List<Country>> {
 
   Future<void> updatePromo({Country? promo}) async {
     isLoading.value = true;
+    Country country = Country(
+      id: promo!.id,
+      name: RxString(name.text),
+      currency: currency,
+      countryCode: countryCode,
+      countryFlag: countryFlag,
+      isActivated: RxBool(true),
+      serviceCode: RxString(serviceCode.text),
+    );
     try {
-      Country mypromo = await countryService.updateCountry(
-        country: promo,
+      await countryService.updateCountry(
+        country: country,
       );
 
       Fluttertoast.showToast(
@@ -107,7 +121,7 @@ class CountryController extends GetxController with StateMixin<List<Country>> {
   Future<void> updatePromoStatus({Country? promo}) async {
     isLoading.value = true;
     try {
-      Country mypromo = await countryService.updateCountry(
+       await countryService.updateCountry(
         country: promo,
       );
 
@@ -134,7 +148,7 @@ class CountryController extends GetxController with StateMixin<List<Country>> {
       Fluttertoast.showToast(
           msg: "Pays supprimee", backgroundColor: Colors.green);
       isLoading.value = false;
-    } on AppException catch (e) {
+    } on AppException catch (_) {
       isLoading.value = false;
     }
   }

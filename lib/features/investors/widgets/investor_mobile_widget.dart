@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/features/author/models/author.dart';
-import 'package:gslibrarydashboard/features/investors/models/investor.dart';
 import 'package:gslibrarydashboard/features/investors/models/investorwithsolde.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';

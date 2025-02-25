@@ -189,7 +189,7 @@ class AuthorController extends GetxController
       Fluttertoast.showToast(
           msg: "categorie Supprimer", backgroundColor: Colors.green);
       isLoading.value = false;
-    } on AppException catch (e) {
+    } on AppException catch (_) {
       isLoading.value = false;
     }
   }
@@ -359,7 +359,7 @@ class AuthorController extends GetxController
     final url = Url.createObjectUrlFromBlob(blob);
 
     // Télécharger le fichier
-    final anchor = AnchorElement(href: url)
+     AnchorElement(href: url)
       ..target = 'blank'
       ..download = 'commandes-authorId.xlsx'
       ..click();
@@ -388,7 +388,7 @@ class AuthorController extends GetxController
         exportToExcelWeb(commandes: commandes);
         loading.value = false;
       }
-    } on AppException catch (e) {
+    } on AppException catch (_) {
       loading.value = false;
       Fluttertoast.showToast(msg: "Une erreur est survenue.");
     }

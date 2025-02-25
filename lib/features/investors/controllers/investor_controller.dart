@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/exceptions/appException.dart';
 import 'package:gslibrarydashboard/features/author/models/author.dart';
-import 'package:gslibrarydashboard/features/author/services/authorService.dart';
 import 'package:gslibrarydashboard/features/investors/models/investor.dart';
 import 'package:gslibrarydashboard/features/investors/models/investorwithsolde.dart';
 import 'package:gslibrarydashboard/features/investors/services/investor_service.dart';
@@ -128,7 +127,7 @@ class InvestorController extends GetxController
     isLoading.value = true;
     print(model);
     try {
-      Investor categoryModel = await homeService.updateAuthor(
+       await homeService.updateAuthor(
         avatar: webImage,
         filename: imageController.text,
         firstname: firstname.text,
@@ -170,7 +169,7 @@ class InvestorController extends GetxController
       Fluttertoast.showToast(
           msg: "categorie Supprimer", backgroundColor: Colors.green);
       isLoading.value = false;
-    } on AppException catch (e) {
+    } on AppException catch (_) {
       isLoading.value = false;
     }
   }
