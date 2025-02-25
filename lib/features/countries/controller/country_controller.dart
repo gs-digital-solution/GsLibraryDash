@@ -32,7 +32,7 @@ class CountryController extends GetxController with StateMixin<List<Country>> {
 
   void setPromo(Country mypromo) {
     name.text = mypromo.name!.value;
-    currency = mypromo.currency!;
+    currency = mypromo.currency??"XAF";
     countryCode.value = mypromo.countryCode!.value;
     countryFlag.value = mypromo.countryFlag!.value;
     serviceCode.text = mypromo.serviceCode!.value;
