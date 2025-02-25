@@ -46,6 +46,7 @@ class CountryController extends GetxController with StateMixin<List<Country>> {
   }
 
   void clearData() {
+    country=null;
     name.clear();
     serviceCode.clear();
     countryCode.value = '';

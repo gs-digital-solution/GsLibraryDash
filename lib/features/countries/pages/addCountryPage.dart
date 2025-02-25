@@ -269,7 +269,9 @@ class _AddCountryPageState extends State<AddCountryPage> {
                                           promo: newCommandeController.country,
                                         )
                                             .then((value) {
-                                          setState(() {});
+                                          setState(() {
+                                          newCommandeController.clearData();
+                                          });
                                         });
                                       }
                                     }
