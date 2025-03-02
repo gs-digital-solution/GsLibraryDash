@@ -53,6 +53,7 @@ class PaymentMethodController extends GetxController
   void clearData() {
     name.clear();
     countryName.clear();
+    serviceCode.clear();
     ussCode.clear();
     priority.clear();
     countryCode.value = '';

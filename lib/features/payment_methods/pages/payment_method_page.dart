@@ -166,7 +166,7 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                                           ),
                                         ),
                                         Expanded(
-                                          flex: 1,
+                                          flex: 2,
                                           child: getMaxLineFont(
                                             context,
                                             'SERVICE CODE',
@@ -340,6 +340,7 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                                                           ),
                                                         ),
                                                         Expanded(
+                                                          flex: 2,
                                                           child: getMaxLineFont(
                                                             context,
                                                             paginationList[
