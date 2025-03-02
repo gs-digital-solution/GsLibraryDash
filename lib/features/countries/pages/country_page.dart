@@ -189,7 +189,7 @@ class _CountryPageState extends State<CountryPage> {
                                               fontWeight: FontWeight.w600,
                                               textAlign: TextAlign.start),
                                         ),
-                                        Expanded(
+                                       /*  Expanded(
                                           flex: 2,
                                           child: getMaxLineFont(
                                               context,
@@ -199,7 +199,7 @@ class _CountryPageState extends State<CountryPage> {
                                               1,
                                               fontWeight: FontWeight.w600,
                                               textAlign: TextAlign.start),
-                                        ),
+                                        ), */
                                         getHorizontalSpace(
                                           context,
                                           30,
@@ -379,7 +379,7 @@ class _CountryPageState extends State<CountryPage> {
                                                                 TextAlign.start,
                                                           ),
                                                         ),
-                                                        Expanded(
+                                                        /* Expanded(
                                                           flex: 2,
                                                           child: getMaxLineFont(
                                                             context,
@@ -397,7 +397,7 @@ class _CountryPageState extends State<CountryPage> {
                                                             textAlign:
                                                                 TextAlign.start,
                                                           ),
-                                                        ),
+                                                        ), */
                                                         getHorizontalSpace(
                                                           context,
                                                           30,

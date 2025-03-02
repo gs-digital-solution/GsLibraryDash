@@ -187,6 +187,23 @@ class _AddPaymentMethodPageState extends State<AddPaymentMethodPage> {
                                   "Entrer le USSD CODE",
                                   newCommandeController.ussCode,
                                   validator: (value) => value.isEmpty
+                                      ? "ussdCode obligatoire"
+                                      : null,
+                                ),
+                              ],
+                            ),
+                            getVerticalSpace(context, 30),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+
+                                itemSubTitle('SERVICE CODE', context),
+                                getVerticalSpace(context, 10),
+                                getTextFiledWidget(
+                                  context,
+                                  "Entrer le SERVICE CODE",
+                                  newCommandeController.serviceCode,
+                                  validator: (value) => value.isEmpty
                                       ? "service Code obligatoire"
                                       : null,
                                 ),

@@ -8,6 +8,7 @@ class PaymentMethod {
   String? id;
   RxString? name;
   RxString? ussdCode;
+  String?serviceCode;
   Country? country;
   RxBool? isActivated;
 
@@ -19,6 +20,7 @@ class PaymentMethod {
     this.id,
     this.name,
     this.ussdCode,
+    this.serviceCode,
     this.country,
     this.isActivated,
     this.priority,
@@ -47,6 +49,7 @@ class PaymentMethod {
       'name': name?.value,
       'country': country!.id,
       'ussdCode': ussdCode?.value.toString(),
+      'serviceCode':serviceCode,
       'IsActivated': isActivated?.value,
       'priority': priority?.value,
       
@@ -58,6 +61,7 @@ class PaymentMethod {
       id: map['_id'] != null ? map['_id'] as String : null,
       name: map['name'] != null ? RxString(map['name']) : null,
       ussdCode: map['ussdCode'] != null ? RxString(map['ussdCode']) : null,
+      serviceCode: map['serviceCode'] != null ? map['serviceCode'] : null,
      country: map['country'] != null ? Country.fromMap(map['country']) : null,
       isActivated:
           map['IsActivated'] != null ? RxBool(map['IsActivated']) : null,

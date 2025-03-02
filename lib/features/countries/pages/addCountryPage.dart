@@ -187,14 +187,13 @@ class _AddCountryPageState extends State<AddCountryPage> {
                                         .toList()
                                   ],
                                   onChanged: (value) {
-                                   
                                     newCommandeController.currency = value!;
                                   },
                                   value: newCommandeController.currency,
                                 ),
                               ],
                             ),
-                            getVerticalSpace(context, 30),
+                          /*   getVerticalSpace(context, 30),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -209,7 +208,7 @@ class _AddCountryPageState extends State<AddCountryPage> {
                                       : null,
                                 ),
                               ],
-                            ),
+                            ), */
                             getVerticalSpace(context, 30),
                           ],
                         ),

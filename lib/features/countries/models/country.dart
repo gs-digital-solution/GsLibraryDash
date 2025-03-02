@@ -55,7 +55,6 @@ class Country {
       'countryCode': countryCode?.value,
       'countryFlag': countryFlag?.value,
       'IsActivated': isActivated?.value,
-      'serviceCode': serviceCode?.value,
     };
   }
 
