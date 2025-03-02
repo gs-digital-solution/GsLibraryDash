@@ -165,17 +165,14 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                                             textAlign: TextAlign.start,
                                           ),
                                         ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: getMaxLineFont(
-                                            context,
-                                            'SERVICE CODE',
-                                            50,
-                                            getFontColor(context),
-                                            1,
-                                            fontWeight: FontWeight.w600,
-                                            textAlign: TextAlign.start,
-                                          ),
+                                        getMaxLineFont(
+                                          context,
+                                          'SERVICE CODE',
+                                          50,
+                                          getFontColor(context),
+                                          1,
+                                          fontWeight: FontWeight.w600,
+                                          textAlign: TextAlign.start,
                                         ),
                                         Expanded(
                                           flex: 1,
@@ -339,23 +336,20 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                                                                 TextAlign.start,
                                                           ),
                                                         ),
-                                                        Expanded(
-                                                          flex: 2,
-                                                          child: getMaxLineFont(
-                                                            context,
-                                                            paginationList[
-                                                                        index]
-                                                                    .serviceCode ??
-                                                                "",
-                                                            50,
-                                                            getFontColor(
-                                                                context),
-                                                            1,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            textAlign:
-                                                                TextAlign.start,
-                                                          ),
+                                                        getMaxLineFont(
+                                                          context,
+                                                          paginationList[
+                                                                      index]
+                                                                  .serviceCode ??
+                                                              "",
+                                                          50,
+                                                          getFontColor(
+                                                              context),
+                                                          1,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          textAlign:
+                                                              TextAlign.start,
                                                         ),
                                                         Expanded(
                                                           child: getMaxLineFont(
