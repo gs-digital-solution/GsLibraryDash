@@ -23,6 +23,7 @@ class PaymentMethodController extends GetxController
   TextEditingController name = TextEditingController();
   TextEditingController ussCode = TextEditingController();
   TextEditingController serviceCode = TextEditingController();
+  TextEditingController cashIn = TextEditingController();
   TextEditingController priority = TextEditingController();
 
   TextEditingController countryName = TextEditingController();
@@ -38,6 +39,7 @@ class PaymentMethodController extends GetxController
     name.text = mypromo.name!.value;
     ussCode.text = mypromo.ussdCode!.value;
     serviceCode.text=mypromo.serviceCode??"";
+    cashIn.text=mypromo.cashIn??"";
     priority.text =
         mypromo.priority != null ? mypromo.priority!.value.toString() : "";
     countryName.text = mypromo.country!.name!.value;
@@ -54,6 +56,7 @@ class PaymentMethodController extends GetxController
     name.clear();
     countryName.clear();
     serviceCode.clear();
+    cashIn.clear();
     ussCode.clear();
     priority.clear();
     countryCode.value = '';
@@ -82,6 +85,7 @@ class PaymentMethodController extends GetxController
       name: RxString(name.text),
       ussdCode: RxString(ussCode.text.toString()),
       serviceCode: serviceCode.text,
+      cashIn: cashIn.text,
       priority: RxInt(int.parse(priority.text)),
       country: Country(id: countryId.value),
       isActivated: RxBool(true),
@@ -110,6 +114,7 @@ class PaymentMethodController extends GetxController
         name: RxString(name.text),
         ussdCode: RxString(ussCode.text.toString()),
         serviceCode: serviceCode.text,
+        cashIn: cashIn.text,
         priority: RxInt(int.parse(priority.text)),
         country: Country(id: countryId.value),
         isActivated: promo.isActivated,

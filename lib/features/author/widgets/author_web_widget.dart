@@ -108,6 +108,16 @@ class AuthorWebWidget extends StatelessWidget{
                                             textAlign: TextAlign
                                                 .start,txtHeight: 1.5.h),
                                       ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: getMaxLineFont(
+                                            context, removeAllHtmlTags(list[index].countryModel!.name ?? ""),
+                                            50, getFontColor(context),
+                                            3,
+                                            fontWeight: FontWeight.w500,
+                                            textAlign: TextAlign
+                                                .start,txtHeight: 1.5.h),
+                                      ),
                                       getHorizontalSpace(context, 10),
 
                                      /*  SizedBox(
@@ -221,6 +231,8 @@ class AuthorWebWidget extends StatelessWidget{
               150),
           getHorSpace(10.h),
           Expanded(child: getHeaderTitle(context, 'Description')),
+
+           Expanded(child: getHeaderTitle(context, 'Pays')),
           /* getHeaderCell(
               'Status',
               context,

@@ -143,6 +143,7 @@ class AuthorService extends getX.GetxService {
       );
       print(response.data);
       if (response.statusCode == 200) {
+        print(response.data);
         return TopAuthors.fromJson(response.data['user']);
       } else {
         throw AppException(message: "Une erreur est survenue");

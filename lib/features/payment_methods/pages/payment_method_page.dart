@@ -137,7 +137,7 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                                       children: [
                                         Container(
                                             width:
-                                                isWeb(context) ? 130.h : 80.h,
+                                                isWeb(context) ? 100.h : 80.h,
                                             child: getMaxLineFont(context, 'ID',
                                                 50, getFontColor(context), 1,
                                                 fontWeight: FontWeight.w600,
@@ -178,13 +178,25 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                                           ),
                                         ),
                                         Expanded(
+                                          flex: 2,
+                                          child: getMaxLineFont(
+                                            context,
+                                            'CODE CASHIN',
+                                            50,
+                                            getFontColor(context),
+                                            1,
+                                            fontWeight: FontWeight.w600,
+                                            textAlign: TextAlign.start,
+                                          ),
+                                        ),
+                                        Expanded(
                                           flex: 1,
                                           child: getMaxLineFont(
                                             context,
                                             'Priorite(Ordre affichage)',
                                             50,
                                             getFontColor(context),
-                                            1,
+                                            2,
                                             fontWeight: FontWeight.w600,
                                             textAlign: TextAlign.start,
                                           ),
@@ -283,7 +295,7 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                                                         Container(
                                                             width:
                                                                 isWeb(context)
-                                                                    ? 130.h
+                                                                    ? 100.h
                                                                     : 80.h,
                                                             child:
                                                                 getMaxLineFont(
@@ -300,10 +312,7 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                                                                     textAlign:
                                                                         TextAlign
                                                                             .start)),
-                                                        getHorizontalSpace(
-                                                          context,
-                                                          10,
-                                                        ),
+                                                        
                                                         Expanded(
                                                           child: getMaxLineFont(
                                                             context,
@@ -332,7 +341,7 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                                                             50,
                                                             getFontColor(
                                                                 context),
-                                                            1,
+                                                            2,
                                                             fontWeight:
                                                                 FontWeight.w600,
                                                             textAlign:
@@ -350,7 +359,25 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                                                             50,
                                                             getFontColor(
                                                                 context),
-                                                            1,
+                                                            2,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            textAlign:
+                                                                TextAlign.start,
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                          flex: 2,
+                                                          child: getMaxLineFont(
+                                                            context,
+                                                            paginationList[
+                                                                        index]
+                                                                    .cashIn ??
+                                                                "",
+                                                            50,
+                                                            getFontColor(
+                                                                context),
+                                                            2,
                                                             fontWeight:
                                                                 FontWeight.w600,
                                                             textAlign:
@@ -368,7 +395,7 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                                                             50,
                                                             getFontColor(
                                                                 context),
-                                                            1,
+                                                            2,
                                                             fontWeight:
                                                                 FontWeight.w600,
                                                             textAlign:

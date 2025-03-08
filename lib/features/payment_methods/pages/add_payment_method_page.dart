@@ -209,6 +209,22 @@ class _AddPaymentMethodPageState extends State<AddPaymentMethodPage> {
                                 ),
                               ],
                             ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+
+                                itemSubTitle('CODE CASHIN', context),
+                                getVerticalSpace(context, 10),
+                                getTextFiledWidget(
+                                  context,
+                                  "Entrer le  CODE",
+                                  newCommandeController.cashIn,
+                                  validator: (value) => value.isEmpty
+                                      ? "Code obligatoire"
+                                      : null,
+                                ),
+                              ],
+                            ),
                             getVerticalSpace(context, 30),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

@@ -55,7 +55,13 @@ class TopAuthors {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     iV = json['__v'];
-    countryModel=CountryModel.fromJson(json['country']);
+    countryModel = json['country'] is String
+        ? CountryModel(
+          name: "Cameroun",
+          countryCode: "237",
+          countryFalg: "CM"
+        )
+        : CountryModel.fromJson(json['country']);
   }
 
   Map<String, dynamic> toJson() {
