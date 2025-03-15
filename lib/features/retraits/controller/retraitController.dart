@@ -42,7 +42,7 @@ class RetraitController extends GetxController with StateMixin<List<Retrait>> {
     try {
       Map<String, dynamic> retraitData = {
         "author": topAuthors!.sId,
-        "montant": amount.text,
+        "montant": int.parse(amount.text),
       };
        await homeService.createRetrait(data: retraitData);
       showCustomToast(context: context!, message: "paiement enregistre");

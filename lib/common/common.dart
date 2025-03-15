@@ -268,6 +268,7 @@ Widget getMultilineCustomFont(String text, double fontSize, Color fontColor,
 Widget getTextFiledWidget(
     BuildContext context, String s, TextEditingController textEditingController,
     {bool? isEnabled,
+    bool?isObscure = false,
     var inputType,
     var inputFormatters,
     var onChanged,
@@ -289,6 +290,7 @@ Widget getTextFiledWidget(
     maxLines: 1,
     onTap: () {},
     enabled: (isEnabled != null) ? isEnabled : true,
+  
     controller: textEditingController,
     textAlign: TextAlign.start,
     textAlignVertical: TextAlignVertical.center,
@@ -895,6 +897,7 @@ Widget getPasswordTextFiledWidget(
   String s,
   TextEditingController textEditingController, {
   bool? isEnabled,
+    dynamic validator,
   var inputType,
   var inputFormatters,
   var onChanged,
@@ -927,6 +930,7 @@ Widget getPasswordTextFiledWidget(
           controller: textEditingController,
           obscureText: isSecure.value,
           textAlign: TextAlign.start,
+          validator: validator,
           textAlignVertical: TextAlignVertical.center,
           keyboardType: (inputType != null) ? inputType : null,
           inputFormatters: (inputFormatters != null) ? inputFormatters : null,

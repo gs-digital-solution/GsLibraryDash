@@ -61,6 +61,10 @@ class RetraitWebWidget extends StatelessWidget {
                                     flex: 1,
                                     child: getHeaderTitle(context,
                                         '${list[index].author!.lastname} ${list[index].author!.firstname ?? ""}')),
+                                  Expanded(
+                                    flex: 1,
+                                    child: getHeaderTitle(context,
+                                        '${list[index].author!.role!.toUpperCase()}')),
                                 Expanded(
                                     child: getHeaderCell(
                                         '${list[index].montant} FCFA',
@@ -163,6 +167,7 @@ class RetraitWebWidget extends StatelessWidget {
         children: [
           Expanded(child: getHeaderCell('ID', context, 80)),
           Expanded(child: getHeaderCell('Auteur', context, 130)),
+          Expanded(child: getHeaderCell('Role', context, 130)),
           Expanded(
             flex: 1,
             child: getHeaderCell('Price', context, 100),
