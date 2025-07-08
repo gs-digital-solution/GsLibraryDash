@@ -10,7 +10,6 @@ import 'package:gslibrarydashboard/utils/constants.dart';
 
 // ignore: must_be_immutable
 class UserWebWidget extends StatelessWidget {
- 
   UserWebWidget(
       {required this.list,
       required this.queryText,
@@ -72,7 +71,18 @@ class UserWebWidget extends StatelessWidget {
                                     child: SizedBox(
                                   width: 130,
                                   child: SelectableText(
-                                    '${list[index].phonenumber}',
+                                    '${list[index].country!['countryCode']} ${list[index].phonenumber}',
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        fontFamily: Constants.fontsFamily,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                )),
+                                Expanded(
+                                    child: SizedBox(
+                                  width: 130,
+                                  child: SelectableText(
+                                    '${list[index].country!['name']}',
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                         fontFamily: Constants.fontsFamily,
@@ -129,8 +139,15 @@ class UserWebWidget extends StatelessWidget {
       decoration: BoxDecoration(
           color: bgColor,
           borderRadius: BorderRadius.circular(getResizeRadius(context, 45))),
-      child: getMaxLineFont(context, string, 45, color, 1,
-          fontWeight: FontWeight.w400, textAlign: TextAlign.start),
+      child: getMaxLineFont(
+        context,
+        string,
+        45,
+        color,
+        1,
+        fontWeight: FontWeight.w400,
+        textAlign: TextAlign.start,
+      ),
     );
   }
 
@@ -147,6 +164,7 @@ class UserWebWidget extends StatelessWidget {
           Expanded(child: getHeaderCell('Nom', context, 80)),
           Expanded(child: getHeaderCell('Prenom', context, 130)),
           Expanded(child: getHeaderCell('Telephone', context, 100)),
+          Expanded(child: getHeaderCell('Pays', context, 130)),
           Expanded(
             flex: 1,
             child: getHeaderCell('Device Id', context, 100),

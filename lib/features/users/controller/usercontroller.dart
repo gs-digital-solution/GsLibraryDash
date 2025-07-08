@@ -44,6 +44,7 @@ class UserController extends GetxController with StateMixin<List<User>> {
         TextCellValue("ID"),
         TextCellValue("Prenom"),
         TextCellValue("Nom"),
+        TextCellValue("Pays"),
         TextCellValue("Telephone"),
         TextCellValue("Date incription"),
       ],
@@ -55,7 +56,8 @@ class UserController extends GetxController with StateMixin<List<User>> {
           IntCellValue(i),
           TextCellValue(categoryList[i].firstname!),
           TextCellValue(categoryList[i].lastname!),
-          TextCellValue(categoryList[i].phonenumber!),
+          TextCellValue("${categoryList[i].country!['name']}"),
+          TextCellValue("(${categoryList[i].country!['countryCode']}) ${categoryList[i].phonenumber!}"),
           TextCellValue(categoryList[i].createdAt!.split("T").first),
         ],
       );

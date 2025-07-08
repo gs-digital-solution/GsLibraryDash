@@ -11,6 +11,7 @@ class User {
   String? createdAt;
   String? updatedAt;
   int? iV;
+  Map<String,dynamic>?country;
 
   User(
       {this.sId,
@@ -24,6 +25,7 @@ class User {
       this.solde,
       this.createdAt,
       this.updatedAt,
+      this.country,
       this.iV});
 
   User.fromJson(Map<String, dynamic> json) {
@@ -39,6 +41,7 @@ class User {
    createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     iV = json['__v'];
+    country=json['country'];
   }
 
   Map<String, dynamic> toJson() {
