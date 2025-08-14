@@ -61,13 +61,13 @@ class Partner {
     if (json['allowedCategories'] != null) {
       allowedCategories = <String>[];
       json['allowedCategories'].forEach((v) {
-        allowedCategories!.add(v.toString());
+        allowedCategories!.add(v['_id'].toString());
       });
     }
     if (json['allowedBooks'] != null) {
       allowedBooks = <String>[];
       json['allowedBooks'].forEach((v) {
-        allowedBooks!.add(v.toString());
+        allowedBooks!.add(v['_id'].toString());
       });
     }
     commission = json['commission']?.toDouble();

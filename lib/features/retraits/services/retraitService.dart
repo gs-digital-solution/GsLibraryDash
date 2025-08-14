@@ -4,26 +4,40 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getX;
 import 'package:gslibrarydashboard/exceptions/appException.dart';
 import 'package:gslibrarydashboard/features/retraits/model/retrait.dart';
+import 'package:gslibrarydashboard/features/partners/models/pagination_info.dart';
 import 'package:gslibrarydashboard/home/services/baseService.dart';
 
 class RetraitService extends getX.GetxService {
-  Future<List<Retrait>> getCommandes({
+  Future<Map<String, dynamic>> getCommandes({
     int? page,
     int? pageSize,
   }) async {
     try {
-      final response = await BaseService.dio.get('retraits', queryParameters: {
-        "page": page,
-        "pageSize": pageSize,
-      });
+      Map<String, dynamic> queryParams = {};
+      if (page != null) queryParams['page'] = page;
+      if (pageSize != null) queryParams['pageSize'] = pageSize;
+
+      final response = await BaseService.dio.get('retraits', queryParameters: queryParams);
 
       print(response.data);
 
       if (response.statusCode == 200) {
-        List<Retrait> list = (response.data['commandes'] as List)
+        List<Retrait> list = (response.data['retraits'] as List)
             .map((e) => Retrait.fromJson(e))
             .toList();
-        return list;
+            
+        // Extraire les informations de pagination
+        PaginationInfo paginationInfo = PaginationInfo.fromJson(response.data);
+
+        print("numOfPages: ${paginationInfo.numOfPages}");
+        print("total: ${paginationInfo.total}");
+        print("currentPage: ${paginationInfo.currentPage}");
+        print("pageSize: ${paginationInfo.pageSize}");
+        
+        return {
+          'retraits': list,
+          'pagination': paginationInfo,
+        };
       } else {
         throw AppException(message: response.data['msg']);
       }

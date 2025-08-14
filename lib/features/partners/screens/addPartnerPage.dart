@@ -5,6 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/features/partners/controllers/partnerController.dart';
+import 'package:gslibrarydashboard/features/partners/widgets/category_selection_widget.dart';
+import 'package:gslibrarydashboard/features/partners/widgets/book_selection_widget.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/utils/constants.dart';
 import 'package:gslibrarydashboard/utils/responsive.dart';
@@ -18,6 +20,8 @@ class AddPartnerPage extends StatefulWidget {
 
 class _AddPartnerPageState extends State<AddPartnerPage> {
    final PartnerController partnerController = Get.put(PartnerController());
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -189,6 +193,22 @@ class _AddPartnerPageState extends State<AddPartnerPage> {
                                     getVerticalSpace(context, 10),
                                     getTextFiledWidget(context, "Téléphone du contact",
                                         partnerController.contactPhoneController),
+                                    getVerticalSpace(context, 30),
+                                    
+                                    // Catégories autorisées
+                                    itemSubTitle('Catégories autorisées', context),
+                                    getVerticalSpace(context, 10),
+                                    CategorySelectionWidget(
+                                      
+                                    ),
+                                    getVerticalSpace(context, 30),
+                                    
+                                    // Livres autorisés
+                                    itemSubTitle('Livres autorisés', context),
+                                    getVerticalSpace(context, 10),
+                                    BookSelectionWidget(
+                                      
+                                    ),
                                     getVerticalSpace(context, 30),
                                     
                                     // Paramètres
@@ -490,6 +510,22 @@ class _AddPartnerPageState extends State<AddPartnerPage> {
                                     ),
                                     getVerticalSpace(context, 30),
                                     
+                                    // Catégories autorisées
+                                    itemSubTitle('Catégories autorisées', context),
+                                    getVerticalSpace(context, 10),
+                                    CategorySelectionWidget(
+                                     
+                                    ),
+                                    getVerticalSpace(context, 30),
+                                    
+                                    // Livres autorisés
+                                    itemSubTitle('Livres autorisés', context),
+                                    getVerticalSpace(context, 10),
+                                    BookSelectionWidget(
+                                    
+                                    ),
+                                    getVerticalSpace(context, 30),
+                                    
                                     // Paramètres
                                     itemSubTitle('Paramètres', context),
                                     getVerticalSpace(context, 10),
@@ -623,10 +659,7 @@ class _AddPartnerPageState extends State<AddPartnerPage> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
+
 }
 
 itemSubTitle(String s, BuildContext context, {Color? color}) {

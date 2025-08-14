@@ -38,11 +38,9 @@ class CommandeWebWidget extends StatelessWidget {
                 bool cell = true;
 
                 if (queryText.value.isNotEmpty &&
-                    !list[index]
-                        .user!
-                        .phonenumber!
-                        .toLowerCase()
-                        .contains(queryText.value)) {
+                    list[index].user != null &&
+                    list[index].user!.phonenumber != null &&
+                    !list[index].user!.phonenumber!.toLowerCase().contains(queryText.value)) {
                   cell = false;
                 }
                 return cell
@@ -69,15 +67,19 @@ class CommandeWebWidget extends StatelessWidget {
                                       child: ClipRRect(
                                         // borderRadius: BorderRadius
                                         //     .circular(10.r),
-                                        child: Image(
-                                          image: NetworkImage(
-                                              list[index].book != null
-                                                  ? list[index]
-                                                      .book!
-                                                      .avatar!
-                                                      .url!
-                                                  : ""),
-                                        ),
+                                        child: list[index].book != null && 
+                                               list[index].book!.avatar != null &&
+                                               list[index].book!.avatar!.url != null
+                                            ? Image(
+                                                image: NetworkImage(
+                                                    list[index].book!.avatar!.url!),
+                                              )
+                                            : Container(
+                                                width: 75.h,
+                                                height: 50.h,
+                                                color: Colors.grey[300],
+                                                child: Icon(Icons.image, color: Colors.grey[600]),
+                                              ),
                                       ),
                                     ),
                                   ),
@@ -86,52 +88,68 @@ class CommandeWebWidget extends StatelessWidget {
                                     flex: 1,
                                     child: getHeaderTitle(
                                         context,
-                                        list[index].book != null
+                                        list[index].book != null && list[index].book!.nom != null
                                             ? '${list[index].book!.nom}'
-                                            : '')),
+                                            : 'Livre non disponible')),
                                 Expanded(
                                     child: getHeaderCell(
-                                        '${list[index].author!.firstname ?? ""} ',
+                                        list[index].author != null && list[index].author!.firstname != null
+                                            ? '${list[index].author!.firstname}'
+                                            : 'Auteur non disponible',
                                         context,
                                         130)),
                                 Expanded(
                                     child: getHeaderCell(
-                                        '${list[index].user!.phonenumber} ',
+                                        list[index].user != null && list[index].user!.phonenumber != null
+                                            ? '${list[index].user!.phonenumber}'
+                                            : 'Téléphone non disponible',
                                         context,
                                         130)),
                                 Expanded(
                                     flex: 1,
                                     child: getHeaderCell(
-                                        '${list[index].montant} FCFA',
+                                        list[index].montant != null
+                                            ? '${list[index].montant} FCFA'
+                                            : '0 FCFA',
                                         context,
                                         150)),
                                 Expanded(
                                     flex: 1,
-                                    child: list[index].book == null
-                                        ? SizedBox()
+                                    child: list[index].book != null && list[index].book!.prix != null
+                                        ? getHeaderCell(
+                                            '${list[index].book!.prix}',
+                                            context,
+                                            150)
                                         : getHeaderCell(
-                                            '${list[index].book!.prix ?? 0} ',
+                                            '0',
                                             context,
                                             150)),
                                 Expanded(
                                     flex: 1,
-                                    child: list[index].book == null
-                                        ? SizedBox()
+                                    child: list[index].book != null && list[index].book!.pourcentage != null
+                                        ? getHeaderCell(
+                                            '${list[index].book!.pourcentage}',
+                                            context,
+                                            150)
                                         : getHeaderCell(
-                                            '${list[index].book!.pourcentage ?? 0} ',
+                                            '0',
                                             context,
                                             150)),
                                 Expanded(
                                     child: getHeaderCell(
-                                        '${list[index].createdAt!.split('T').first}',
+                                        list[index].createdAt != null
+                                            ? '${list[index].createdAt!.split('T').first}'
+                                            : 'Date non disponible',
                                         context,
                                         130)),
                                 Expanded(
                                     child: getActiveDeActiveCell(
-                                        context, list[index].status!.value,list[index])),
+                                        context, list[index].status?.value ?? false, list[index])),
                                 Expanded(
                                     child: getHeaderCell(
-                                        '${list[index].createdAt!.split('T').last.split('.').first}',
+                                        list[index].createdAt != null
+                                            ? '${list[index].createdAt!.split('T').last.split('.').first}'
+                                            : 'Heure non disponible',
                                         context,
                                         130)),
                                 /* Stack(

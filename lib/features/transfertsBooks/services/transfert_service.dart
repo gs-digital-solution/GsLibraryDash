@@ -4,20 +4,34 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/exceptions/appException.dart';
 import 'package:gslibrarydashboard/features/transfertsBooks/models/transfert.dart';
+import 'package:gslibrarydashboard/features/partners/models/pagination_info.dart';
 import 'package:gslibrarydashboard/home/services/baseService.dart';
 
 class TransfertService extends GetxService {
-  Future<List<TransfertDevice>> getTransfertBookRequest(
-      {String? userId}) async {
-
+  Future<Map<String, dynamic>> getTransfertBookRequest({
+    String? userId,
+    int? page,
+    int? pageSize,
+  }) async {
     try {
-      final response = await BaseService.dio.get("restores/");
-      print(response.data);
+      Map<String, dynamic> queryParams = {};
+      if (page != null) queryParams['page'] = page;
+      if (pageSize != null) queryParams['pageSize'] = pageSize;
+
+      final response = await BaseService.dio.get("restores/", queryParameters: queryParams);
+      print(response.data['promos']);
       if (response.statusCode == 200) {
         List<TransfertDevice> list = (response.data['promos'] as List)
             .map((e) => TransfertDevice.fromJson(e))
             .toList();
-        return list;
+            
+        // Extraire les informations de pagination
+        PaginationInfo paginationInfo = PaginationInfo.fromJson(response.data);
+        
+        return {
+          'transferts': list,
+          'pagination': paginationInfo,
+        };
       } else {
         throw AppException(
             message: "une erreur est survenue. Ressayez plus tard");

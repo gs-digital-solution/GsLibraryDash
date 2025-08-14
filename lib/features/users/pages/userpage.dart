@@ -9,6 +9,7 @@ import 'package:gslibrarydashboard/features/commandes/model/user.dart';
 import 'package:gslibrarydashboard/features/users/controller/usercontroller.dart';
 import 'package:gslibrarydashboard/features/users/pages/widgets/mobile_user_widget.dart';
 import 'package:gslibrarydashboard/features/users/pages/widgets/web_user_widget.dart';
+import 'package:gslibrarydashboard/common/custom_pagination_widget.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/theme/theme_controller.dart';
 
@@ -24,12 +25,6 @@ class _UserPageState extends State<UserPage> {
   void initState() {
     super.initState();
   }
-
-  RxInt position = 0.obs;
-
-  RxInt totalItem = 10.obs;
-
-  final ScrollController _controller = ScrollController();
 
   final UserController bookController = Get.put(UserController());
 
@@ -59,12 +54,6 @@ class _UserPageState extends State<UserPage> {
                       getVerticalSpace(context, getCommonPadding(context)),
                       Row(
                         children: [
-                          isWeb(context)
-                              ? Expanded(
-                                  child: Container(
-                                  child: getEntryWidget(context),
-                                ))
-                              : Container(),
                           getHorizontalSpace(context, isWeb(context) ? 0 : 0),
                           Visibility(
                             child: Expanded(child: Container()),
@@ -108,34 +97,11 @@ class _UserPageState extends State<UserPage> {
                             ) */
                         ],
                       ),
-                      isWeb(context)
-                          ? Container()
-                          : Container(
-                              child: getEntryWidget(context),
-                              margin: EdgeInsets.only(top: 15.h),
-                            ),
+
                       getVerticalSpace(context, 25),
                       bookController.obx(
                           (state) => Obx(() {
-                                double i = state!.length / 10;
-
-                                int d = state.length -
-                                    (totalItem.value * i.toInt()).toInt();
-
-                                if (d > 0) {
-                                  i = i + 1;
-                                }
-                                List<User> paginationList = [];
-
-                                paginationList = state
-                                    .skip(position.value * totalItem.value)
-                                    .take(totalItem.value)
-                                    .toList();
-
-                                print(
-                                    "pos==${position.value}==${paginationList.length}");
-
-                                return paginationList.length > 0
+                                return state != null && state.isNotEmpty
                                     ? Expanded(
                                         flex: 1,
                                         child: Column(
@@ -143,7 +109,7 @@ class _UserPageState extends State<UserPage> {
                                             isWeb(context)
                                                 ? UserWebWidget(
                                                     mainList: state,
-                                                    list: paginationList,
+                                                    list: state,
                                                     queryText: queryText,
                                                     function: (detail, model) {
                                                       _showPopupMenu(context,
@@ -155,7 +121,7 @@ class _UserPageState extends State<UserPage> {
                                                     })
                                                 : UserMobileWidget(
                                                     mainList: state,
-                                                    list: paginationList,
+                                                    list: state,
                                                     queryText: queryText,
                                                     function: (detail, model) {
                                                       _showPopupMenu(context,
@@ -165,113 +131,21 @@ class _UserPageState extends State<UserPage> {
                                                       updateStatus(
                                                           context, model);
                                                     }),
-                                            getVerticalSpace(
-                                                context,
-                                                (getCommonPadding(context) /
-                                                    2)),
-                                            Container(
-                                              width: Get.width,
-                                              child: Center(
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  children: [
-                                                    InkWell(
-                                                      onTap: () {
-                                                        print(
-                                                            "posi===${position.value}===${i - 1}");
-                                                        if (position.value >
-                                                            0) {
-                                                          position.value =
-                                                              position.value -
-                                                                  1;
-                                                        }
-                                                      },
-                                                      child: getSvgImage1(
-                                                        'left.svg',
-                                                        height: 20.h,
-                                                        width: 20.h,
-                                                      ),
-                                                    ),
-                                                    getHorizontalSpace(
-                                                        context, 10),
-                                                    Expanded(
-                                                      child: Wrap(
-                                                        children: List.generate(
-                                                            i.toInt(),
-                                                            (index) => InkWell(
-                                                                  child:
-                                                                      Container(
-                                                                    margin: EdgeInsets.symmetric(
-                                                                        horizontal:
-                                                                            5.h),
-                                                                    height:
-                                                                        35.h,
-                                                                    width: 35.h,
-                                                                    decoration: getDefaultDecoration(
-                                                                        bgColor: position.value ==
-                                                                                index
-                                                                            ? getPrimaryColor(
-                                                                                context)
-                                                                            : Colors
-                                                                                .transparent,
-                                                                        radius: getResizeRadius(
-                                                                            context,
-                                                                            15)),
-                                                                    child:
-                                                                        Center(
-                                                                      child: getTextWidget(
-                                                                          context,
-                                                                          '${index + 1}',
-                                                                          50,
-                                                                          position.value == index
-                                                                              ? Colors.white
-                                                                              : subPrimaryColor(context)),
-                                                                    ),
-                                                                  ),
-                                                                  onTap: () {
-                                                                    position.value =
-                                                                        index;
-                                                                    _controller
-                                                                        .jumpTo(
-                                                                            0);
-                                                                  },
-                                                                )),
-                                                      ),
-                                                    ),
-                                                    getHorizontalSpace(
-                                                        context, 10),
-                                                    InkWell(
-                                                      onTap: () {
-                                                        print(
-                                                            "posi===${position.value}===${i - 1}");
-                                                        if (position.value <
-                                                            (i.toInt() - 1)) {
-                                                          position.value =
-                                                              position.value +
-                                                                  1;
-                                                        }
-                                                      },
-                                                      child: getSvgImage1(
-                                                        'right.svg',
-                                                        height: 18.h,
-                                                        width: 18.h,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ).marginOnly(
-                                                    right: getCommonPadding(
-                                                        context)),
-                                              ),
+                                            getVerticalSpace(context, 20),
+                                            
+                                            // Widget de pagination personnalisé
+                                            CustomPaginationWidget(
+                                              currentPage: bookController.currentPage.value,
+                                              totalPages: bookController.totalPages.value,
+                                              totalItems: bookController.totalItems.value,
+                                              itemsPerPage: bookController.pageSize.value,
+                                              onPageChanged: (page) {
+                                                bookController.changePage(page);
+                                              },
+                                              onItemsPerPageChanged: (size) {
+                                                bookController.changePageSize(size);
+                                              },
                                             ),
-                                            getVerticalSpace(
-                                                context,
-                                                (getCommonPadding(context) /
-                                                    2)),
                                           ],
                                         ),
                                       )
@@ -341,21 +215,7 @@ class _UserPageState extends State<UserPage> {
     );
   }
 
-  getEntryWidget(BuildContext context) {
-    return Obx(() => Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            getTextWidget(context, 'Show entries', 50, getFontColor(context),
-                fontWeight: FontWeight.w500),
-            getHorizontalSpace(context, 15),
-            EntriesDropDown(
-                onChanged: (value) {
-                  totalItem(value);
-                },
-                value: totalItem.value),
-          ],
-        ));
-  }
+
 }
 
 class MenuItem extends StatelessWidget {

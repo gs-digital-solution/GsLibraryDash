@@ -4,12 +4,13 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getX;
 import 'package:gslibrarydashboard/exceptions/appException.dart';
 import 'package:gslibrarydashboard/features/partners/models/partner.dart';
+import 'package:gslibrarydashboard/features/partners/models/pagination_info.dart';
 import 'package:gslibrarydashboard/home/services/baseService.dart';
 
 class PartnerService extends getX.GetxService {
   
-  // Récupérer la liste des partenaires
-  Future<List<Partner>> getPartners({
+  // Récupérer la liste des partenaires avec pagination
+  Future<Map<String, dynamic>> getPartners({
     int? page,
     int? pageSize,
     String? status,
@@ -30,7 +31,14 @@ class PartnerService extends getX.GetxService {
         List<Partner> list = (response.data['data']['partners'] as List)
             .map((e) => Partner.fromJson(e))
             .toList();
-        return list;
+            
+        // Extraire les informations de pagination
+        PaginationInfo paginationInfo = PaginationInfo.fromJson(response.data['data']);
+        
+        return {
+          'partners': list,
+          'pagination': paginationInfo,
+        };
       } else {
         throw AppException(message: response.data['msg'] ?? "Une erreur est survenue");
       }

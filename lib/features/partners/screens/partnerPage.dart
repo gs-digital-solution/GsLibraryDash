@@ -6,6 +6,7 @@ import 'package:gslibrarydashboard/features/partners/controllers/partnerControll
 import 'package:gslibrarydashboard/features/partners/models/partner.dart';
 import 'package:gslibrarydashboard/features/partners/widgets/partner_mobile_widget.dart';
 import 'package:gslibrarydashboard/features/partners/widgets/partner_web_widget.dart';
+import 'package:gslibrarydashboard/common/custom_pagination_widget.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/theme/theme_controller.dart';
 
@@ -17,9 +18,6 @@ class PartnerPage extends StatefulWidget {
 }
 
 class _PartnerPageState extends State<PartnerPage> {
-  RxInt position = 0.obs;
-  RxInt totalItem = 10.obs;
-  final ScrollController _controller = ScrollController();
   final PartnerController partnerController = Get.put(PartnerController());
 
   @override
@@ -61,12 +59,6 @@ class _PartnerPageState extends State<PartnerPage> {
                       getVerticalSpace(context, getCommonPadding(context)),
                       Row(
                         children: [
-                          isWeb(context)
-                              ? Expanded(
-                                  child: Container(
-                                  child: getEntryWidget(context),
-                                ))
-                              : Container(),
                           getHorizontalSpace(context, isWeb(context) ? 0 : 0),
                           Visibility(
                             child: Expanded(child: Container()),
@@ -129,39 +121,19 @@ class _PartnerPageState extends State<PartnerPage> {
                           ),
                         ],
                       ),
-                      isWeb(context)
-                          ? Container()
-                          : Container(
-                              child: getEntryWidget(context),
-                              margin: EdgeInsets.only(top: 15.h),
-                            ),
+
                       getVerticalSpace(context, 25),
                        partnerController.obx(
                         (state) => Obx(
                           () {
-                            double i = state!.length / 10;
-                            int d = state.length -
-                                (totalItem.value * i.toInt()).toInt();
-
-                            if (d > 0) {
-                              i = i + 1;
-                            }
-
-                            List<Partner> paginationList = [];
-
-                            paginationList = state
-                                .skip(position.value * totalItem.value)
-                                .take(totalItem.value)
-                                .toList();
-
-                            return paginationList.length > 0
+                            return state != null && state.isNotEmpty
                                 ? Expanded(
                                     flex: 1,
                                     child: Column(
                                       children: [
                                         isWeb(context)
                                             ? PartnerWebWidget(
-                                                list: paginationList,
+                                                list: state,
                                                 queryText: queryText,
                                                 function: (detail, model) {
                                                   _showPopupMenu(
@@ -171,12 +143,11 @@ class _PartnerPageState extends State<PartnerPage> {
                                                   updateStatus(context, model);
                                                 },
                                                 onRegenerateApiKey: (model) {
-                                                  partnerController
-                                                      .regenerateApiKey(model);
+                                                  _showRegenerateApiKeyDialog(context, model);
                                                 },
                                               )
-                                            : PartnerMobileWidget(
-                                                list: paginationList,
+                                            : Expanded(child: PartnerMobileWidget(
+                                                list: state,
                                                 queryText: queryText,
                                                 function: (detail, model) {
                                                   _showPopupMenu(
@@ -186,115 +157,24 @@ class _PartnerPageState extends State<PartnerPage> {
                                                   updateStatus(context, model);
                                                 },
                                                 onRegenerateApiKey: (model) {
-                                                  partnerController
-                                                      .regenerateApiKey(model);
+                                                  _showRegenerateApiKeyDialog(context, model);
                                                 },
-                                              ),
-                                        getVerticalSpace(context,
-                                            (getCommonPadding(context) / 2)),
-                                        Container(
-                                          width: double.infinity,
-                                          child: Center(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                InkWell(
-                                                  onTap: () {
-                                                    if (position.value > 0) {
-                                                      position.value =
-                                                          position.value - 1;
-                                                    }
-                                                  },
-                                                  child: getSvgImage1(
-                                                    'left.svg',
-                                                    height: 20.h,
-                                                    width: 20.h,
-                                                  ),
-                                                ),
-                                                getHorizontalSpace(context, 10),
-                                                Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: SingleChildScrollView(
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      children: List.generate(
-                                                          i.toInt(),
-                                                          (index) => InkWell(
-                                                                child:
-                                                                    Container(
-                                                                  margin: EdgeInsets
-                                                                      .symmetric(
-                                                                          horizontal:
-                                                                              5.h),
-                                                                  height: 35.h,
-                                                                  width: 35.h,
-                                                                  decoration: getDefaultDecoration(
-                                                                      bgColor: position.value ==
-                                                                              index
-                                                                          ? getPrimaryColor(
-                                                                              context)
-                                                                          : Colors
-                                                                              .transparent,
-                                                                      radius: getResizeRadius(
-                                                                          context,
-                                                                          15)),
-                                                                  child: Center(
-                                                                    child: getTextWidget(
-                                                                        context,
-                                                                        '${index + 1}',
-                                                                        50,
-                                                                        position.value ==
-                                                                                index
-                                                                            ? Colors.white
-                                                                            : subPrimaryColor(context)),
-                                                                  ),
-                                                                ),
-                                                                onTap: () {
-                                                                  position.value =
-                                                                      index;
-                                                                  _controller
-                                                                      .jumpTo(
-                                                                          0);
-                                                                },
-                                                              )),
-                                                    ),
-                                                  ),
-                                                ),
-                                                getHorizontalSpace(context, 10),
-                                                InkWell(
-                                                  onTap: () {
-                                                    if (position.value <
-                                                        (i.toInt() - 1)) {
-                                                      position.value =
-                                                          position.value + 1;
-                                                    }
-                                                  },
-                                                  child: getSvgImage1(
-                                                    'right.svg',
-                                                    height: 18.h,
-                                                    width: 18.h,
-                                                  ),
-                                                ),
-                                                getHorizontalSpace(context, 25),
-                                                Expanded(child: Container())
-                                              ],
-                                            ).marginOnly(
-                                                right:
-                                                    getCommonPadding(context)),
-                                          ),
+                                              )),
+                                        getVerticalSpace(context, 20),
+                                        
+                                        // Widget de pagination personnalisé
+                                        CustomPaginationWidget(
+                                          currentPage: partnerController.currentPage.value,
+                                          totalPages: partnerController.totalPages.value,
+                                          totalItems: partnerController.totalItems.value,
+                                          itemsPerPage: partnerController.pageSize.value,
+                                          onPageChanged: (page) {
+                                            partnerController.changePage(page);
+                                          },
+                                          onItemsPerPageChanged: (size) {
+                                            partnerController.changePageSize(size);
+                                          },
                                         ),
-                                        getVerticalSpace(context,
-                                            (getCommonPadding(context) / 2)),
                                       ],
                                     ),
                                   )
@@ -337,6 +217,16 @@ class _PartnerPageState extends State<PartnerPage> {
           }
         },
         subTitle: 'Partenaire');
+  }
+
+  _showRegenerateApiKeyDialog(BuildContext context, Partner partner) {
+    getCommonDialog(
+        context: context,
+        title: 'Régénérer l\'API Key',
+        function: () {
+          partnerController.regenerateApiKey(partner);
+        },
+        subTitle: 'Êtes-vous sûr de vouloir régénérer l\'API Key de ce partenaire ?\n\nCette action est irréversible et l\'ancienne clé ne fonctionnera plus.');
   }
 
   _showPopupMenu(BuildContext context, Offset detail, Partner partner) async {
@@ -403,41 +293,7 @@ class _PartnerPageState extends State<PartnerPage> {
     );
   }
 
-  getEntryWidget(BuildContext context) {
-    return Obx(() => Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            getTextWidget(context, 'Afficher', 50, getFontColor(context),
-                fontWeight: FontWeight.w500),
-            getHorizontalSpace(context, 15),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              decoration: getDefaultDecoration(
-                bgColor: getCardColor(context),
-                borderColor: getBorderColor(context),
-                borderWidth: 1,
-                radius: getDefaultRadius(context),
-              ),
-              child: DropdownButton<int>(
-                value: totalItem.value,
-                underline: Container(),
-                items: [5, 10, 25, 50].map((int value) {
-                  return DropdownMenuItem<int>(
-                    value: value,
-                    child: Text('$value'),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  totalItem(value!);
-                },
-              ),
-            ),
-            getHorizontalSpace(context, 15),
-            getTextWidget(context, 'entrées', 50, getFontColor(context),
-                fontWeight: FontWeight.w500),
-          ],
-        ));
-  }
+
 }
 
 class MenuItem extends StatelessWidget {

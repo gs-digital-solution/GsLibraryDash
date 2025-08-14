@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/exceptions/appException.dart';
 import 'package:gslibrarydashboard/features/partners/models/partner.dart';
+import 'package:gslibrarydashboard/features/partners/models/pagination_info.dart';
 import 'package:gslibrarydashboard/features/partners/services/partnerService.dart';
 import 'package:gslibrarydashboard/home/controller/homeController.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
@@ -34,12 +35,16 @@ class PartnerController extends GetxController with StateMixin<List<Partner>> {
   // Paramètres de pagination
   RxInt currentPage = 1.obs;
   RxInt pageSize = 10.obs;
-  RxBool hasMoreData = true.obs;
+  RxInt totalItems = 0.obs;
+  RxInt totalPages = 0.obs;
+  
+  // Cache pour stocker les données de chaque page
+  Map<int, List<Partner>> pageCache = <int, List<Partner>>{};
 
   // Paramètres du partenaire
   Partner? selectedPartner;
-  List<String> allowedCategories = [];
-  List<String> allowedBooks = [];
+  RxList<String> allowedCategories = <String>[].obs;
+  RxList<String> allowedBooks = <String>[].obs;
 
   // Paramètres par défaut
   PartnerSettings defaultSettings = PartnerSettings(
@@ -60,13 +65,20 @@ class PartnerController extends GetxController with StateMixin<List<Partner>> {
   // Récupérer la liste des partenaires
   Future<void> fetchPartners({bool refresh = false}) async {
     if (refresh) {
-      currentPage.value = 1;
       partnerList.clear();
+      pageCache.clear(); // Vider le cache lors d'un refresh
+    }
+
+    // Vérifier si les données de la page actuelle sont déjà en cache
+    if (pageCache.containsKey(currentPage.value)) {
+      partnerList.value = pageCache[currentPage.value]!;
+      change(partnerList, status: RxStatus.success());
+      return;
     }
 
     change(null, status: RxStatus.loading());
     try {
-      List<Partner> partners = await partnerService.getPartners(
+      Map<String, dynamic> result = await partnerService.getPartners(
         page: currentPage.value,
         pageSize: pageSize.value,
         status: selectedFilterStatus.value.isEmpty
@@ -74,13 +86,18 @@ class PartnerController extends GetxController with StateMixin<List<Partner>> {
             : selectedFilterStatus.value,
       );
 
-      if (refresh) {
-        partnerList.value = partners;
-      } else {
-        partnerList.addAll(partners);
-      }
+      List<Partner> partners = result['partners'];
+      PaginationInfo pagination = result['pagination'];
 
-      hasMoreData.value = partners.length == pageSize.value;
+      // Mettre à jour les informations de pagination
+      totalItems.value = pagination.total;
+      totalPages.value = pagination.numOfPages;
+
+      // Stocker les données dans le cache
+      pageCache[currentPage.value] = partners;
+      
+      // Afficher les données de la page actuelle
+      partnerList.value = partners;
 
       if (partnerList.isEmpty) {
         change(null, status: RxStatus.empty());
@@ -92,17 +109,26 @@ class PartnerController extends GetxController with StateMixin<List<Partner>> {
     }
   }
 
-  // Charger plus de données (pagination)
-  Future<void> loadMorePartners() async {
-    if (!hasMoreData.value || isLoading.value) return;
+  // Changer de page
+  Future<void> changePage(int page) async {
+    if (page < 1 || page > totalPages.value) return;
+    
+    currentPage.value = page;
+    await fetchPartners(refresh: false);
+  }
 
-    currentPage.value++;
-    await fetchPartners();
+  // Changer le nombre d'éléments par page
+  Future<void> changePageSize(int size) async {
+    pageSize.value = size;
+    currentPage.value = 1; // Retour à la première page
+    pageCache.clear(); // Vider le cache car la taille de page a changé
+    await fetchPartners(refresh: false);
   }
 
   // Filtrer par statut
   void filterByStatus(String status) {
     selectedFilterStatus.value = status;
+    pageCache.clear(); // Vider le cache car le filtre a changé
     fetchPartners(refresh: true);
   }
 
@@ -370,8 +396,8 @@ class PartnerController extends GetxController with StateMixin<List<Partner>> {
     }
 
     // Listes autorisées
-    allowedCategories = partner.allowedCategories ?? [];
-    allowedBooks = partner.allowedBooks ?? [];
+    allowedCategories.assignAll(partner.allowedCategories ?? []);
+    allowedBooks.assignAll(partner.allowedBooks ?? []);
 
     homeController.selectedItem!.value = AdminMenuItem(
       title: 'ajouter un partenaire',

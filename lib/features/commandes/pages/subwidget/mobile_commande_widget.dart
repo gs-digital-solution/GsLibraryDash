@@ -39,11 +39,9 @@ class CommandeMobileWidget extends StatelessWidget {
                         bool cell = false;
 
                         if (queryText.value.isNotEmpty &&
-                            !list[index]
-                                .book!
-                                .nom!
-                                .toLowerCase()
-                                .contains(queryText.value)) {
+                            list[index].book != null &&
+                            list[index].book!.nom != null &&
+                            !list[index].book!.nom!.toLowerCase().contains(queryText.value)) {
                           cell = false;
                         }
 
@@ -69,31 +67,41 @@ class CommandeMobileWidget extends StatelessWidget {
                                                   width: 75.h,
                                                   alignment:
                                                       Alignment.centerLeft,
-                                                  child: ClipRRect(
-                                                    // borderRadius: BorderRadius
-                                                    //     .circular(10.r),
-                                                    child: Image(
-                                                      image: NetworkImage(
-                                                          list[index]
-                                                              .author!
-                                                              .avatar!
-                                                              .url!),
-                                                    ),
-                                                  ),
+                                                                                                child: ClipRRect(
+                                                // borderRadius: BorderRadius
+                                                //     .circular(10.r),
+                                                child: list[index].author != null &&
+                                                       list[index].author!.avatar != null &&
+                                                       list[index].author!.avatar!.url != null
+                                                    ? Image(
+                                                        image: NetworkImage(
+                                                            list[index].author!.avatar!.url!),
+                                                      )
+                                                    : Container(
+                                                        width: 75.h,
+                                                        height: 50.h,
+                                                        color: Colors.grey[300],
+                                                        child: Icon(Icons.image, color: Colors.grey[600]),
+                                                      ),
+                                              ),
                                                 ),
                                               ),
                                             ],
                                           ),
                                         ),
                                         getSubCell(
-                                            '${list[index].author!.lastname!}',
+                                            list[index].author != null && list[index].author!.lastname != null
+                                                ? '${list[index].author!.lastname}'
+                                                : 'Nom non disponible',
                                             context,
                                             200),
                                         Container(
                                           child: Row(
                                             children: [
                                               getHeaderCell(
-                                                  '${list[index].author!.firstname.toString().replaceAll('[', '').replaceAll(']', '')}',
+                                                  list[index].author != null && list[index].author!.firstname != null
+                                                      ? '${list[index].author!.firstname.toString().replaceAll('[', '').replaceAll(']', '')}'
+                                                      : 'Prénom non disponible',
                                                   context,
                                                   200),
                                             ],

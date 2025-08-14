@@ -6,18 +6,24 @@ import 'package:gslibrarydashboard/exceptions/appException.dart';
 import 'package:gslibrarydashboard/features/books/model/book.dart';
 import 'package:gslibrarydashboard/features/commandes/model/commande.dart';
 import 'package:gslibrarydashboard/features/commandes/model/user.dart';
+import 'package:gslibrarydashboard/features/partners/models/pagination_info.dart';
 import 'package:gslibrarydashboard/home/services/baseService.dart';
 
 class CommandeService extends getX.GetxService {
-  Future<List<Commande>> getCommandes({
+  Future<Map<String, dynamic>> getCommandes({
     int? page,
     int? pageSize,
+    String? status,
+    String? search,
   }) async {
     try {
-      final response = await BaseService.dio.get('commandes', queryParameters: {
-        "page": page,
-        "pageSize": pageSize,
-      });
+      Map<String, dynamic> queryParams = {};
+      if (page != null) queryParams['page'] = page;
+      if (pageSize != null) queryParams['pageSize'] = pageSize;
+      if (status != null && status != 'all') queryParams['status'] = status;
+      if (search != null && search.isNotEmpty) queryParams['search'] = search;
+
+      final response = await BaseService.dio.get('commandes', queryParameters: queryParams);
 
       print(response.data);
 
@@ -25,7 +31,14 @@ class CommandeService extends getX.GetxService {
         List<Commande> list = (response.data['commandes'] as List)
             .map((e) => Commande.fromJson(e))
             .toList();
-        return list;
+            
+        // Extraire les informations de pagination
+        PaginationInfo paginationInfo = PaginationInfo.fromJson(response.data);
+        
+        return {
+          'commandes': list,
+          'pagination': paginationInfo,
+        };
       } else {
         throw AppException(message: response.data['msg']);
       }
