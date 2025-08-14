@@ -19,6 +19,8 @@ import 'package:gslibrarydashboard/home/pages/homePage.dart';
 import 'package:gslibrarydashboard/home/pages/privacy.dart';
 import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/theme_controller.dart';
+import 'package:gslibrarydashboard/features/partners/screens/partnerPage.dart';
+import 'package:gslibrarydashboard/features/partners/screens/addPartnerPage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,6 +51,10 @@ Widget? getPageWidget(RouteSettings settings) {
       return StoryScreen();
     case '/books/add':
       return AddStoryScreen();
+    case '/partners':
+      return PartnerPage();
+    case '/partners/add':
+      return AddPartnerPage();
   }
   return null;
 }

@@ -41,6 +41,9 @@ import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/theme/theme_controller.dart';
 import 'package:gslibrarydashboard/utils/constants.dart';
+import 'package:gslibrarydashboard/features/partners/screens/addPartnerPage.dart';
+import 'package:gslibrarydashboard/features/partners/screens/partnerPage.dart';
+import 'package:gslibrarydashboard/features/partners/controllers/partnerController.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -55,6 +58,7 @@ class _HomePageState extends State<HomePage> {
   final InvestorController investorController = Get.put(InvestorController());
   final CategoryController categoryController = Get.put(CategoryController());
   final PromoController promoController = Get.put(PromoController());
+  final PartnerController partnerController = Get.put(PartnerController());
   final ExchangeRateController exchangeRateController =
       Get.put(ExchangeRateController());
 
@@ -364,6 +368,23 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
+              AdminMenuItem(
+                title: 'Partenaires',
+                icon: Icons.person,
+                route: '/partners',
+                children: [
+                  AdminMenuItem(
+                    title: 'Partenaires',
+                    icon: Icons.list,
+                    route: '/partners',
+                  ),
+                  AdminMenuItem(
+                    title: 'nouveau partenaire',
+                    icon: Icons.add,
+                    route: '/partners/add',
+                  ),
+                ],
+              ),
             ],
             selectedRoute: homeController.selectedItem!.value.route!,
             onSelected: (item) {
@@ -425,6 +446,11 @@ class _HomePageState extends State<HomePage> {
                   return ExchangeRatePage();
                 case '/exchanges-rates/add':
                   return AddExchangeRatePage();
+                case '/partners':
+                  return PartnerPage();
+                case '/partners/add':
+                  return AddPartnerPage();
+
                 default:
                   return SizedBox();
               }
