@@ -14,15 +14,25 @@ class PromoService extends getX.GetxService {
     int? discount,
     int? gain,
     String? userId,
+    String? partnerId,
+    String? type,
     Promo? promo,
   }) async {
     Map<String, dynamic> postData = {
       "code": code,
       "discount": discount,
       "gain": gain,
-      "userId": userId,
-      "active":active,
+      "active": active,
     };
+    
+    // Ajouter userId ou partnerId selon le type
+    if (type == 'partner') {
+      postData['partnerId'] = partnerId;
+      postData['type'] = 'partner';
+    } else {
+      postData['userId'] = userId;
+      postData['type'] = 'user';
+    }
   print(postData);
     try {
       final response = await BaseService.dio.post(
@@ -57,13 +67,23 @@ class PromoService extends getX.GetxService {
     int? discount,
     int? gain,
     String? userId,
+    String? partnerId,
+    String? type,
   }) async {
     Map<String, dynamic> postData = {
       "code": code,
       "discount": discount,
       "gain": gain,
-      "userId": userId
     };
+    
+    // Ajouter userId ou partnerId selon le type
+    if (type == 'partner') {
+      postData['partnerId'] = partnerId;
+      postData['type'] = 'partner';
+    } else {
+      postData['userId'] = userId;
+      postData['type'] = 'user';
+    }
 
     print(postData);
 

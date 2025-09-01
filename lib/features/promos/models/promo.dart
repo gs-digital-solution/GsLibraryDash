@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:gslibrarydashboard/features/commandes/model/commande.dart';
+import 'package:gslibrarydashboard/features/partners/models/partner.dart';
 
 class Promo {
   String? sId;
@@ -10,7 +11,10 @@ class Promo {
   int? timesUsed;
   RxBool? active;
   String? userId;
+  String? partnerId;
   Author?user;
+  Partner? partner;
+  String? type = 'user';
   int? iV;
 
   Promo(
@@ -23,6 +27,9 @@ class Promo {
       this.active,
       this.userId,
       this.user,
+      this.partner,
+      this.partnerId,
+      this.type,
       this.iV});
 
   Promo.fromJson(Map<String, dynamic> json) {
@@ -34,6 +41,8 @@ class Promo {
     timesUsed = json['timesUsed'];
     active = RxBool(json['active']);
     userId = json['userId'];
+    partnerId = json['partnerId'];
+    type = json['type'] ?? 'user'; // Par défaut 'user'
     iV = json['__v'];
   }
 
@@ -45,7 +54,10 @@ class Promo {
     usageLimit = json['usageLimit'];
     timesUsed = json['timesUsed'];
      active = RxBool(json['active']);
-    user = Author.fromJson(json['userId']);
+    //userId = json['userId'];
+    partner = json['partnerId'] != null ? Partner.fromJson(json['partnerId']) : null;
+    type = json['type'] ?? 'user'; // Par défaut 'user'
+    user =json['userId']!=null ? Author.fromJson(json['userId']) : null;
     iV = json['__v'];
   }
 
@@ -59,6 +71,8 @@ class Promo {
     data['timesUsed'] = this.timesUsed;
     data['active'] = this.active;
     data['userId'] = this.userId;
+    data['partnerId'] = this.partnerId;
+    data['type'] = this.type;
     data['__v'] = this.iV;
     return data;
   }

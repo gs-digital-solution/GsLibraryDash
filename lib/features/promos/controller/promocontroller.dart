@@ -25,6 +25,10 @@ class PromoController extends GetxController with StateMixin<List<Promo>> {
   RxString category = 'text'.obs;
   RxString slider = ''.obs;
   RxString author = ''.obs;
+  
+  // Nouveaux champs pour le type et l'ID sélectionné
+  RxString selectedType = 'user'.obs; // Par défaut 'user'
+  RxString selectedId = ''.obs; // userId ou partnerId selon le type
 
   PromoController({this.promo});
 
@@ -65,6 +69,8 @@ class PromoController extends GetxController with StateMixin<List<Promo>> {
 
     promo = null;
     isLoading = false.obs;
+    selectedType.value = 'user';
+    selectedId.value = '';
 
     oldCategory = '';
   }
@@ -83,6 +89,15 @@ class PromoController extends GetxController with StateMixin<List<Promo>> {
     code.text = mypromo.code!.toUpperCase();
     discount.text = mypromo.discount.toString();
     gain.text = mypromo.gain.toString();
+    
+    // Définir le type et l'ID selon les données existantes
+    if (mypromo.type == 'partner') {
+      selectedType.value = 'partner';
+      selectedId.value = mypromo.partner!.sId ?? '';
+    } else {
+      selectedType.value = 'user';
+      selectedId.value = mypromo.user!.sId ?? '';
+    }
 
     homeController.selectedItem!.value = AdminMenuItem(
       title: 'ajouter un code promo',
@@ -99,7 +114,9 @@ class PromoController extends GetxController with StateMixin<List<Promo>> {
         code: code.text,
         discount: int.parse(discount.text),
         gain: int.parse(gain.text),
-        userId: user!.sId,
+        userId: selectedType.value == 'user' ? selectedId.value : null,
+        partnerId: selectedType.value == 'partner' ? selectedId.value : null,
+        type: selectedType.value,
       );
 
       Fluttertoast.showToast(
@@ -113,7 +130,7 @@ class PromoController extends GetxController with StateMixin<List<Promo>> {
     }
   }
 
-  Future<void> updatePromo({Author? user, Promo? promo}) async {
+    Future<void> updatePromo({Author? user, Promo? promo}) async {
     isLoading.value = true;
     try {
        await homeService.updatePromo(
@@ -121,8 +138,10 @@ class PromoController extends GetxController with StateMixin<List<Promo>> {
           discount: int.parse(discount.text),
           promo: promo,
           gain: int.parse(gain.text),
-          userId: promo!.userId,
-          active: promo.active!.value);
+          userId: selectedType.value == 'user' ? selectedId.value : null,
+          partnerId: selectedType.value == 'partner' ? selectedId.value : null,
+          type: selectedType.value,
+          active: promo?.active?.value ?? false);
 
       Fluttertoast.showToast(
           msg: "Code Promo Mis a jour", backgroundColor: Colors.green);
@@ -153,8 +172,10 @@ class PromoController extends GetxController with StateMixin<List<Promo>> {
           discount: promo.discount,
           promo: promo,
           gain: promo.gain,
-          userId: promo.user!.sId,
-          active: promo.active!.value);
+          userId: promo.user?.sId,
+          partnerId: promo.partner?.sId,
+          type: promo.type,
+          active: promo.active?.value ?? false);
 
       Fluttertoast.showToast(
           msg: "Status du Code promo mis a jour",

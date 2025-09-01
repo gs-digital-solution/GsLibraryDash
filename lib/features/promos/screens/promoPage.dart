@@ -188,7 +188,18 @@ class _PromoScreenState extends State<PromoScreen> {
                                           flex: 1,
                                           child: getMaxLineFont(
                                               context,
-                                              'Utilisateur',
+                                              'Type',
+                                              50,
+                                              getFontColor(context),
+                                              1,
+                                              fontWeight: FontWeight.w600,
+                                              textAlign: TextAlign.start),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: getMaxLineFont(
+                                              context,
+                                              'Utilisateur/Partenaire',
                                               50,
                                               getFontColor(context),
                                               1,
@@ -222,14 +233,18 @@ class _PromoScreenState extends State<PromoScreen> {
                                       return Obx(() {
                                         bool cell = true;
 
-                                        if (queryText.value.isNotEmpty &&
-                                            paginationList[index]
-                                                .user!
-                                                .firstname!
-                                                .toLowerCase()
-                                                .contains(queryText.value
-                                                    .toLowerCase())) {
-                                          cell = false;
+                                        if (queryText.value.isNotEmpty) {
+                                          bool matchesSearch = false;
+                                          if (paginationList[index].type == 'partner') {
+                                            matchesSearch = paginationList[index].partner?.name?.toLowerCase().contains(queryText.value.toLowerCase()) == true ||
+                                                           paginationList[index].partner?.email?.toLowerCase().contains(queryText.value.toLowerCase()) == true;
+                                          } else {
+                                            matchesSearch = paginationList[index].user?.firstname?.toLowerCase().contains(queryText.value.toLowerCase()) == true ||
+                                                           paginationList[index].user?.phonenumber?.toLowerCase().contains(queryText.value.toLowerCase()) == true;
+                                          }
+                                          if (matchesSearch) {
+                                            cell = false;
+                                          }
                                         }
 
                                         return cell
@@ -244,14 +259,18 @@ class _PromoScreenState extends State<PromoScreen> {
                                       return Obx(() {
                                         bool cell = true;
 
-                                        if (queryText.value.isNotEmpty &&
-                                            !paginationList[index]
-                                                .user!
-                                                .firstname!
-                                                .toLowerCase()
-                                                .contains(queryText.value
-                                                    .toLowerCase())) {
-                                          cell = false;
+                                        if (queryText.value.isNotEmpty) {
+                                          bool matchesSearch = false;
+                                          if (paginationList[index].type == 'partner') {
+                                            matchesSearch = paginationList[index].partner?.name?.toLowerCase().contains(queryText.value.toLowerCase()) == true ||
+                                                           paginationList[index].partner?.email?.toLowerCase().contains(queryText.value.toLowerCase()) == true;
+                                          } else {
+                                            matchesSearch = paginationList[index].user?.firstname?.toLowerCase().contains(queryText.value.toLowerCase()) == true ||
+                                                           paginationList[index].user?.phonenumber?.toLowerCase().contains(queryText.value.toLowerCase()) == true;
+                                          }
+                                          if (!matchesSearch) {
+                                            cell = false;
+                                          }
                                         }
                                         return cell
                                             ? Stack(
@@ -263,9 +282,9 @@ class _PromoScreenState extends State<PromoScreen> {
                                                             vertical: 15.h),
                                                     decoration:
                                                         getDefaultDecoration(
-                                                            bgColor:
-                                                                getCardColor(
-                                                                    context),
+                                                            bgColor: index % 2 == 0 
+                                                                ? getCardColor(context)
+                                                                : getCardColor(context).withOpacity(0.7),
                                                             radius: 0),
                                                     child: Row(
                                                       children: [
@@ -350,22 +369,61 @@ class _PromoScreenState extends State<PromoScreen> {
                                                           ),
                                                         ),
                                                         Expanded(
-                                                          child: getMaxLineFont(
-                                                            context,
-                                                            paginationList[
-                                                                        index]
-                                                                    .user!
-                                                                    .firstname
-                                                                    .toString() +
-                                                                "(${paginationList[index].user!.phonenumber.toString()})",
-                                                            50,
-                                                            getFontColor(
-                                                                context),
-                                                            1,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            textAlign:
-                                                                TextAlign.start,
+                                                          child: Container(
+                                                            padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
+                                                            decoration: BoxDecoration(
+                                                              color: paginationList[index].type == 'partner' 
+                                                                  ? Colors.blue.withOpacity(0.1) 
+                                                                  : Colors.green.withOpacity(0.1),
+                                                              borderRadius: BorderRadius.circular(8.r),
+                                                              border: Border.all(
+                                                                color: paginationList[index].type == 'partner' 
+                                                                    ? Colors.blue 
+                                                                    : Colors.green,
+                                                                width: 1,
+                                                              ),
+                                                            ),
+                                                            child: getMaxLineFont(
+                                                              context,
+                                                              paginationList[index].type == 'partner' ? 'Partenaire' : 'Utilisateur',
+                                                              35,
+                                                              paginationList[index].type == 'partner' 
+                                                                  ? Colors.blue 
+                                                                  : Colors.green,
+                                                              1,
+                                                              fontWeight: FontWeight.w600,
+                                                              textAlign: TextAlign.center,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        getHorizontalSpace(context, 8),
+                                                        Expanded(
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              getMaxLineFont(
+                                                                context,
+                                                                paginationList[index].type == 'partner'
+                                                                    ? '${paginationList[index].partner?.name ?? 'N/A'}'
+                                                                    : '${paginationList[index].user?.firstname ?? 'N/A'}',
+                                                                50,
+                                                                getFontColor(context),
+                                                                1,
+                                                                fontWeight: FontWeight.w600,
+                                                                textAlign: TextAlign.start,
+                                                              ),
+                                                              getMaxLineFont(
+                                                                context,
+                                                                paginationList[index].type == 'partner'
+                                                                    ? '${paginationList[index].partner?.email ?? 'N/A'}'
+                                                                    : '${paginationList[index].user?.phonenumber ?? 'N/A'}',
+                                                                40,
+                                                                getSubFontColor(context),
+                                                                1,
+                                                                fontWeight: FontWeight.w400,
+                                                                textAlign: TextAlign.start,
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
                                                         Expanded(

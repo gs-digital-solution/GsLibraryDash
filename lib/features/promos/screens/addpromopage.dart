@@ -14,6 +14,8 @@ import 'package:gslibrarydashboard/theme/app_theme.dart';
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/utils/constants.dart';
 import 'package:searchfield/searchfield.dart';
+import 'package:gslibrarydashboard/features/partners/models/partner.dart';
+import 'package:gslibrarydashboard/features/partners/controllers/partnerController.dart';
 
 class AddPromoScreen extends StatefulWidget {
   final Promo? categoryModel;
@@ -29,6 +31,7 @@ class _AddPromoScreenState extends State<AddPromoScreen> {
 
   final NewCommandeController newCommandeController =
       Get.put(NewCommandeController());
+  final PartnerController partnerController = Get.put(PartnerController());
 
   final formKey = GlobalKey<FormState>();
   @override
@@ -48,13 +51,14 @@ class _AddPromoScreenState extends State<AddPromoScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 getTextWidget(
                     context,
-                    isEdit ? 'Mettre a jour le code promo' : 'Ajouter un code promo',
+                    isEdit
+                        ? 'Mettre a jour le code promo'
+                        : 'Ajouter un code promo',
                     75,
                     getFontColor(context),
                     fontWeight: FontWeight.w700),
@@ -100,60 +104,197 @@ class _AddPromoScreenState extends State<AddPromoScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
+                                        // Sélection du type de code promo
                                         itemSubTitle(
-                                            'Selectionner un utilisateur ',
-                                            context),
+                                            'Type de code promo', context),
                                         getVerticalSpace(context, 10),
-                                        SearchField<User>(
-                                          suggestions: newCommandeController
-                                              .categoryList
-                                              .map(
-                                                (e) =>
-                                                    SearchFieldListItem<User>(
-                                                  e.phonenumber!,
-                                                  item: e,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Text(
-                                                      e.phonenumber! +
-                                                          " (${e.firstname} ${e.lastname})",
-                                                      style: TextStyle(
+                                        Obx(() => Row(
+                                              children: [
+                                                Expanded(
+                                                  child: RadioListTile<String>(
+                                                    title: Text('Utilisateur'),
+                                                    value: 'user',
+                                                    groupValue:
+                                                        categoryController
+                                                            .selectedType.value,
+                                                    onChanged: (value) {
+                                                      categoryController
+                                                          .selectedType
+                                                          .value = value!;
+                                                      categoryController
+                                                          .selectedId
+                                                          .value = '';
+                                                    },
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: RadioListTile<String>(
+                                                    title: Text('Partenaire'),
+                                                    value: 'partner',
+                                                    groupValue:
+                                                        categoryController
+                                                            .selectedType.value,
+                                                    onChanged: (value) {
+                                                      categoryController
+                                                          .selectedType
+                                                          .value = value!;
+                                                      categoryController
+                                                          .selectedId
+                                                          .value = '';
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
+                                            )),
+                                        getVerticalSpace(context, 20),
+
+                                        // Recherche d'utilisateur ou partenaire selon le type
+                                        Obx(() => categoryController
+                                                    .selectedType.value ==
+                                                'user'
+                                            ? Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  itemSubTitle(
+                                                      'Sélectionner un utilisateur',
+                                                      context),
+                                                  getVerticalSpace(context, 10),
+                                                  SearchField<User>(
+                                                    suggestions:
+                                                        newCommandeController
+                                                            .categoryList
+                                                            .map((e) =>
+                                                                SearchFieldListItem<
+                                                                    User>(
+                                                                  e.phonenumber!,
+                                                                  item: e,
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        const EdgeInsets
+                                                                            .all(
+                                                                            8.0),
+                                                                    child: Text(
+                                                                      e.phonenumber! +
+                                                                          " (${e.firstname} ${e.lastname})",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontFamily:
+                                                                            Constants.fontsFamily,
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ))
+                                                            .toList(),
+                                                    onSuggestionTap: (college) {
+                                                      categoryController
+                                                              .selectedId
+                                                              .value =
+                                                          college.item!.sId!;
+                                                    },
+                                                    suggestionStyle: TextStyle(
+                                                      fontFamily:
+                                                          Constants.fontsFamily,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                    searchStyle: TextStyle(
+                                                      fontFamily:
+                                                          Constants.fontsFamily,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                    validator: (value) =>
+                                                        categoryController
+                                                                .selectedId
+                                                                .value
+                                                                .isEmpty
+                                                            ? "Utilisateur requis"
+                                                            : null,
+                                                    controller:
+                                                        newCommandeController
+                                                            .searchUserController,
+                                                    suggestionState:
+                                                        Suggestion.expand,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    searchInputDecoration:
+                                                        InputDecoration(
+                                                            labelText:
+                                                                'Rechercher un utilisateur',
+                                                            border:
+                                                                OutlineInputBorder()),
+                                                  ),
+                                                ],
+                                              )
+                                            : Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  itemSubTitle(
+                                                      'Sélectionner un partenaire',
+                                                      context),
+                                                  getVerticalSpace(context, 10),
+                                                  partnerController.obx(
+                                                    (state) =>
+                                                        SearchField<Partner>(
+                                                      suggestions: state!
+                                                          .map((e) =>
+                                                              SearchFieldListItem<
+                                                                  Partner>(
+                                                                e.name!,
+                                                                item: e,
+                                                                child: Text(
+                                                                    e.name!),
+                                                              ))
+                                                          .toList(),
+                                                      onSuggestionTap:
+                                                          (college) {
+                                                        categoryController
+                                                                .selectedId
+                                                                .value =
+                                                            college.item!.sId!;
+                                                      },
+                                                      suggestionStyle:
+                                                          TextStyle(
                                                         fontFamily: Constants
                                                             .fontsFamily,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                       ),
+                                                      searchStyle: TextStyle(
+                                                        fontFamily: Constants
+                                                            .fontsFamily,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                      validator: (value) =>
+                                                          categoryController
+                                                                  .selectedId
+                                                                  .value
+                                                                  .isEmpty
+                                                              ? "Partenaire requis"
+                                                              : null,
+                                                      controller:
+                                                          newCommandeController
+                                                              .searchUserController,
+                                                      suggestionState:
+                                                          Suggestion.expand,
+                                                      textInputAction:
+                                                          TextInputAction.next,
+                                                      searchInputDecoration:
+                                                          InputDecoration(
+                                                              labelText:
+                                                                  'Rechercher un partenaire',
+                                                              border:
+                                                                  OutlineInputBorder()),
                                                     ),
                                                   ),
-                                                ),
-                                              )
-                                              .toList(),
-                                          onSuggestionTap: (college) {
-                                            categoryController.author.value =
-                                                college.item!.sId!;
-                                          },
-                                          suggestionStyle: TextStyle(
-                                            fontFamily: Constants.fontsFamily,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          searchStyle: TextStyle(
-                                            fontFamily: Constants.fontsFamily,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          validator: (value) => value!.isEmpty
-                                              ? "Utilisateur requis"
-                                              : null,
-                                          controller: newCommandeController
-                                              .searchUserController,
-                                          suggestionState: Suggestion.expand,
-                                          textInputAction: TextInputAction.next,
-                                          searchInputDecoration: InputDecoration(
-                                              labelText:
-                                                  'Rechercher un utilisateur',
-                                              border: OutlineInputBorder()),
-                                        ),
+                                                ],
+                                              )),
                                       ],
                                     ),
                               getVerticalSpace(context, 30),
