@@ -25,10 +25,11 @@ class PaymentMethodController extends GetxController
   TextEditingController serviceCode = TextEditingController();
   TextEditingController cashIn = TextEditingController();
   TextEditingController priority = TextEditingController();
-
   TextEditingController countryName = TextEditingController();
+
   RxString countryId = ''.obs;
   RxString countryCode = ''.obs;
+  RxString provider = 'touchpay'.obs;
 
   RxBool isLoading = false.obs;
 
@@ -37,13 +38,15 @@ class PaymentMethodController extends GetxController
   void setPromo(PaymentMethod mypromo) {
     print(mypromo.priority!);
     name.text = mypromo.name!.value;
-    ussCode.text = mypromo.ussdCode!.value;
-    serviceCode.text=mypromo.serviceCode??"";
-    cashIn.text=mypromo.cashIn??"";
-    priority.text =
-        mypromo.priority != null ? mypromo.priority!.value.toString() : "";
+    ussCode.text = mypromo.ussdCode?.value ?? "";
+    serviceCode.text = mypromo.serviceCode ?? "";
+    cashIn.text = mypromo.cashIn ?? "";
+    priority.text = mypromo.priority != null
+        ? mypromo.priority!.value.toString()
+        : "";
     countryName.text = mypromo.country!.name!.value;
     countryId.value = mypromo.country!.id!;
+    provider.value = mypromo.provider ?? "touchpay";
     homeController.selectedItem!.value = AdminMenuItem(
       title: 'Nouvelle Methode de paiement',
       icon: Icons.add,
@@ -61,6 +64,7 @@ class PaymentMethodController extends GetxController
     priority.clear();
     countryCode.value = '';
     countryId.value = '';
+    provider.value = 'touchpay';
     country = null;
   }
 
@@ -81,22 +85,23 @@ class PaymentMethodController extends GetxController
   Future<void> addCategory() async {
     isLoading.value = true;
 
-    PaymentMethod country = PaymentMethod(
+    PaymentMethod newPaymentMethod = PaymentMethod(
       name: RxString(name.text),
-      ussdCode: RxString(ussCode.text.toString()),
+      ussdCode: RxString(ussCode.text),
       serviceCode: serviceCode.text,
       cashIn: cashIn.text,
       priority: RxInt(int.parse(priority.text)),
       country: Country(id: countryId.value),
       isActivated: RxBool(true),
+      provider: provider.value,
     );
-    print(country.toMap());
+    print(newPaymentMethod.toMap());
     try {
-      
-          await countryService.createCountry(country: country);
-
+      await countryService.createCountry(country: newPaymentMethod);
       Fluttertoast.showToast(
-          msg: "Methode de paiement Ajoutee", backgroundColor: Colors.green);
+        msg: "Methode de paiement Ajoutee",
+        backgroundColor: Colors.green,
+      );
       getCountries();
       isLoading.value = false;
       clearData();
@@ -112,20 +117,19 @@ class PaymentMethodController extends GetxController
       PaymentMethod myCountry = PaymentMethod(
         id: promo!.id,
         name: RxString(name.text),
-        ussdCode: RxString(ussCode.text.toString()),
+        ussdCode: RxString(ussCode.text),
         serviceCode: serviceCode.text,
         cashIn: cashIn.text,
         priority: RxInt(int.parse(priority.text)),
         country: Country(id: countryId.value),
         isActivated: promo.isActivated,
+        provider: provider.value,
       );
-       await countryService.updateCountry(
-        country: myCountry,
-      );
-
+      await countryService.updateCountry(country: myCountry);
       Fluttertoast.showToast(
-          msg: "Methode de paiement mise a jour",
-          backgroundColor: Colors.green);
+        msg: "Methode de paiement mise a jour",
+        backgroundColor: Colors.green,
+      );
       getCountries();
       isLoading.value = false;
       clearData();
@@ -138,12 +142,11 @@ class PaymentMethodController extends GetxController
   Future<void> updatePromoStatus({PaymentMethod? promo}) async {
     isLoading.value = true;
     try {
-       await countryService.updateCountry(
-        country: promo,
-      );
-
+      await countryService.updateCountry(country: promo);
       Fluttertoast.showToast(
-          msg: "Status mis a jour", backgroundColor: Colors.green);
+        msg: "Status mis a jour",
+        backgroundColor: Colors.green,
+      );
       getCountries();
       isLoading.value = false;
       clearData();
@@ -155,14 +158,13 @@ class PaymentMethodController extends GetxController
 
   Future<void> deleteCountry({PaymentMethod? model}) async {
     try {
-      await countryService.deleteCategory(
-        model: model,
-      );
+      await countryService.deleteCategory(model: model);
       int index = countries.indexWhere((element) => element.id == model!.id);
       countries.removeAt(index);
-
       Fluttertoast.showToast(
-          msg: "Methode de paiement supprimee", backgroundColor: Colors.green);
+        msg: "Methode de paiement supprimee",
+        backgroundColor: Colors.green,
+      );
       isLoading.value = false;
     } on AppException catch (_) {
       isLoading.value = false;

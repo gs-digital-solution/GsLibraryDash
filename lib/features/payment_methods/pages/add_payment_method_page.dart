@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,20 +5,14 @@ import 'package:get/get.dart';
 
 import 'package:gslibrarydashboard/common/common.dart';
 import 'package:gslibrarydashboard/features/countries/controller/country_controller.dart';
-
-
 import 'package:gslibrarydashboard/features/countries/models/country.dart';
 import 'package:gslibrarydashboard/features/payment_methods/controller/payment_method_controller.dart';
-
 import 'package:gslibrarydashboard/theme/color_scheme.dart';
 import 'package:gslibrarydashboard/utils/constants.dart';
 import 'package:searchfield/searchfield.dart';
 
-
-
 class AddPaymentMethodPage extends StatefulWidget {
   final Country? categoryModel;
-
   AddPaymentMethodPage({this.categoryModel});
 
   @override
@@ -27,14 +20,32 @@ class AddPaymentMethodPage extends StatefulWidget {
 }
 
 class _AddPaymentMethodPageState extends State<AddPaymentMethodPage> {
-  final PaymentMethodController newCommandeController = Get.put(PaymentMethodController());
-
-   final CountryController countryController = Get.put(CountryController());
-
+  final PaymentMethodController newCommandeController = Get.put(
+    PaymentMethodController(),
+  );
+  final CountryController countryController = Get.put(CountryController());
   final formKey = GlobalKey<FormState>();
+
+  String selectedProvider = 'touchpay';
+
+  final List<Map<String, String>> providers = [
+    {'value': 'touchpay', 'label': 'TouchPay'},
+    {'value': 'campay', 'label': 'CamPay'},
+    {'value': 'ikeepay', 'label': 'IkeePay'},
+    {'value': 'leekpay', 'label': 'LeekPay'},
+  ];
+
+  bool get needsUssdCode =>
+      selectedProvider == 'touchpay' || selectedProvider == 'campay';
+  bool get needsServiceCode => selectedProvider == 'touchpay';
+  bool get needsCashIn => selectedProvider == 'touchpay';
+
   @override
   void initState() {
     super.initState();
+    selectedProvider = newCommandeController.provider.value.isEmpty
+        ? 'touchpay'
+        : newCommandeController.provider.value;
   }
 
   @override
@@ -44,8 +55,9 @@ class _AddPaymentMethodPageState extends State<AddPaymentMethodPage> {
     return SafeArea(
       child: Container(
         margin: EdgeInsets.symmetric(
-            horizontal: getDefaultHorSpace(context),
-            vertical: getDefaultHorSpace(context)),
+          horizontal: getDefaultHorSpace(context),
+          vertical: getDefaultHorSpace(context),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -53,18 +65,20 @@ class _AddPaymentMethodPageState extends State<AddPaymentMethodPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 getTextWidget(
-                    context,
-                    isEdit ? 'Mettre a jour la methode de paiement' : 'Ajouter une methode de paiement',
-                    75,
-                    getFontColor(context),
-                    fontWeight: FontWeight.w700),
+                  context,
+                  isEdit
+                      ? 'Mettre a jour la methode de paiement'
+                      : 'Ajouter une methode de paiement',
+                  75,
+                  getFontColor(context),
+                  fontWeight: FontWeight.w700,
+                ),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                  ),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                   onPressed: () {
                     setState(() {
                       newCommandeController.clearData();
+                      selectedProvider = 'touchpay';
                     });
                   },
                   child: Text(
@@ -93,28 +107,34 @@ class _AddPaymentMethodPageState extends State<AddPaymentMethodPage> {
                         child: ListView(
                           children: [
                             getVerticalSpace(context, 30),
+
+                            // Sélection du pays
                             isEdit
-                                  ? SizedBox()
-                                  : countryController.obx((state) => Column(
+                                ? SizedBox()
+                                : countryController.obx(
+                                    (state) => Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
                                         itemSubTitle(
-                                            'Selectionner un pays ',
-                                            context),
+                                          'Selectionner un pays',
+                                          context,
+                                        ),
                                         getVerticalSpace(context, 10),
                                         SearchField<Country>(
                                           suggestions: countryController
                                               .countries
                                               .map(
-                                                (e) =>
-                                                    SearchFieldListItem<Country>(
+                                                (
+                                                  e,
+                                                ) => SearchFieldListItem<Country>(
                                                   e.name!.value,
                                                   item: e,
                                                   child: Padding(
                                                     padding:
                                                         const EdgeInsets.all(
-                                                            8.0),
+                                                          8.0,
+                                                        ),
                                                     child: Text(
                                                       e.name! +
                                                           " (${e.countryCode})",
@@ -130,9 +150,13 @@ class _AddPaymentMethodPageState extends State<AddPaymentMethodPage> {
                                               )
                                               .toList(),
                                           onSuggestionTap: (college) {
-                                            newCommandeController.countryId.value =
+                                            newCommandeController
+                                                    .countryId
+                                                    .value =
                                                 college.item!.id!;
-                                              newCommandeController.countryName.text =
+                                            newCommandeController
+                                                    .countryName
+                                                    .text =
                                                 college.item!.name!.value;
                                           },
                                           suggestionStyle: TextStyle(
@@ -144,100 +168,170 @@ class _AddPaymentMethodPageState extends State<AddPaymentMethodPage> {
                                             fontWeight: FontWeight.bold,
                                           ),
                                           validator: (value) => value!.isEmpty
-                                              ? "Pays  requis"
+                                              ? "Pays requis"
                                               : null,
-                                          controller: newCommandeController
-                                              .countryName,
+                                          controller:
+                                              newCommandeController.countryName,
                                           suggestionState: Suggestion.expand,
                                           textInputAction: TextInputAction.next,
-                                          searchInputDecoration: InputDecoration(
-                                              labelText:
-                                                  'Rechercher un pays',
-                                              border: OutlineInputBorder()),
+                                          searchInputDecoration:
+                                              InputDecoration(
+                                                labelText: 'Rechercher un pays',
+                                                border: OutlineInputBorder(),
+                                              ),
                                         ),
                                       ],
-                                    )),
-                            
+                                    ),
+                                  ),
+
                             getVerticalSpace(context, 30),
-                             Column(
+
+                            // Nom de la méthode
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-
-                                itemSubTitle('Nom de la methode de paiement', context),
+                                itemSubTitle(
+                                  'Nom de la methode de paiement',
+                                  context,
+                                ),
                                 getVerticalSpace(context, 10),
                                 getTextFiledWidget(
                                   context,
                                   "Entrer le nom",
                                   newCommandeController.name,
-                                  validator: (value) => value.isEmpty
-                                      ? "Nom obligatoire"
-                                      : null,
+                                  validator: (value) =>
+                                      value.isEmpty ? "Nom obligatoire" : null,
                                 ),
                               ],
                             ),
+
                             getVerticalSpace(context, 30),
+
+                            // Dropdown Provider
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-
-                                itemSubTitle('USSD CODE', context),
+                                itemSubTitle('Provider de paiement', context),
                                 getVerticalSpace(context, 10),
-                                getTextFiledWidget(
-                                  context,
-                                  "Entrer le USSD CODE",
-                                  newCommandeController.ussCode,
-                                  validator: (value) => value.isEmpty
-                                      ? "ussdCode obligatoire"
+                                DropdownButtonFormField<String>(
+                                  value: selectedProvider,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 16,
+                                    ),
+                                  ),
+                                  items: providers
+                                      .map(
+                                        (p) => DropdownMenuItem<String>(
+                                          value: p['value'],
+                                          child: Text(
+                                            p['label']!,
+                                            style: TextStyle(
+                                              fontFamily: Constants.fontsFamily,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedProvider = value!;
+                                      newCommandeController.provider.value =
+                                          value;
+                                      // Vider les champs non nécessaires
+                                      if (!needsUssdCode)
+                                        newCommandeController.ussCode.clear();
+                                      if (!needsServiceCode)
+                                        newCommandeController.serviceCode
+                                            .clear();
+                                      if (!needsCashIn)
+                                        newCommandeController.cashIn.clear();
+                                    });
+                                  },
+                                  validator: (value) => value == null
+                                      ? "Provider obligatoire"
                                       : null,
                                 ),
                               ],
                             ),
+
                             getVerticalSpace(context, 30),
+
+                            // USSD CODE — uniquement pour TouchPay et CamPay
+                            if (needsUssdCode)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  itemSubTitle('USSD CODE', context),
+                                  getVerticalSpace(context, 10),
+                                  getTextFiledWidget(
+                                    context,
+                                    "Entrer le USSD CODE",
+                                    newCommandeController.ussCode,
+                                    validator: (value) => value.isEmpty
+                                        ? "ussdCode obligatoire"
+                                        : null,
+                                  ),
+                                  getVerticalSpace(context, 30),
+                                ],
+                              ),
+
+                            // SERVICE CODE — uniquement pour TouchPay
+                            if (needsServiceCode)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  itemSubTitle('SERVICE CODE', context),
+                                  getVerticalSpace(context, 10),
+                                  getTextFiledWidget(
+                                    context,
+                                    "Entrer le SERVICE CODE",
+                                    newCommandeController.serviceCode,
+                                    validator: (value) => value.isEmpty
+                                        ? "service Code obligatoire"
+                                        : null,
+                                  ),
+                                  getVerticalSpace(context, 30),
+                                ],
+                              ),
+
+                            // CODE CASHIN — uniquement pour TouchPay
+                            if (needsCashIn)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  itemSubTitle('CODE CASHIN', context),
+                                  getVerticalSpace(context, 10),
+                                  getTextFiledWidget(
+                                    context,
+                                    "Entrer le CODE CASHIN",
+                                    newCommandeController.cashIn,
+                                    validator: (value) => value.isEmpty
+                                        ? "Code obligatoire"
+                                        : null,
+                                  ),
+                                  getVerticalSpace(context, 30),
+                                ],
+                              ),
+
+                            // PRIORITY
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-
-                                itemSubTitle('SERVICE CODE', context),
-                                getVerticalSpace(context, 10),
-                                getTextFiledWidget(
+                                itemSubTitle(
+                                  'PRIORITY (Permet de classer les methodes de paiement. Si l\'entier est plus grand alors celle-ci s\'affichera en premier cote mobile)',
                                   context,
-                                  "Entrer le SERVICE CODE",
-                                  newCommandeController.serviceCode,
-                                  validator: (value) => value.isEmpty
-                                      ? "service Code obligatoire"
-                                      : null,
                                 ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-
-                                itemSubTitle('CODE CASHIN', context),
-                                getVerticalSpace(context, 10),
-                                getTextFiledWidget(
-                                  context,
-                                  "Entrer le  CODE",
-                                  newCommandeController.cashIn,
-                                  validator: (value) => value.isEmpty
-                                      ? "Code obligatoire"
-                                      : null,
-                                ),
-                              ],
-                            ),
-                            getVerticalSpace(context, 30),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-
-                                itemSubTitle('PRIORITY (Permet de classer les methodes de Paiement.Si l\'entier est plus grand alors celle ci s\'affichera en premier cote mobile)', context),
                                 getVerticalSpace(context, 10),
                                 getTextFiledWidget(
                                   context,
                                   "Entrer la priorite",
                                   newCommandeController.priority,
                                   inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly
+                                    FilteringTextInputFormatter.digitsOnly,
                                   ],
                                   validator: (value) => value.isEmpty
                                       ? "priorite obligatoire"
@@ -251,39 +345,42 @@ class _AddPaymentMethodPageState extends State<AddPaymentMethodPage> {
                       getVerticalSpace(context, 20),
                       Row(
                         children: [
-                          Obx(() => Expanded(
-                                child: getButtonWidget(
-                                  context,
-                                  isEdit ? 'Mettre a jour' : 'Enregistrer',
-                                  isProgress:
-                                      newCommandeController.isLoading.value,
-                                  () {
-                                    if (!isEdit) {
-                                      if (formKey.currentState!.validate()) {
-                                        newCommandeController
-                                            .addCategory()
-                                            .then((value) {
-                                          setState(() {});
-                                        });
-                                      }
-                                    } else {
-                                      if (formKey.currentState!.validate()) {
-                                        newCommandeController
-                                            .updatePromo(
-                                          promo: newCommandeController.country,
-                                        )
-                                            .then((value) {
-                                          setState(() {});
-                                        });
-                                      }
+                          Obx(
+                            () => Expanded(
+                              child: getButtonWidget(
+                                context,
+                                isEdit ? 'Mettre a jour' : 'Enregistrer',
+                                isProgress:
+                                    newCommandeController.isLoading.value,
+                                () {
+                                  if (!isEdit) {
+                                    if (formKey.currentState!.validate()) {
+                                      newCommandeController.addCategory().then((
+                                        value,
+                                      ) {
+                                        setState(() {});
+                                      });
                                     }
-                                  },
-                                  horPadding: 25.h,
-                                  horizontalSpace: 0,
-                                  verticalSpace: 0,
-                                  btnHeight: 60.h,
-                                ),
-                              )),
+                                  } else {
+                                    if (formKey.currentState!.validate()) {
+                                      newCommandeController
+                                          .updatePromo(
+                                            promo:
+                                                newCommandeController.country,
+                                          )
+                                          .then((value) {
+                                            setState(() {});
+                                          });
+                                    }
+                                  }
+                                },
+                                horPadding: 25.h,
+                                horizontalSpace: 0,
+                                verticalSpace: 0,
+                                btnHeight: 60.h,
+                              ),
+                            ),
+                          ),
                           getHorSpace(10.h),
                           Expanded(
                             child: getButtonWidget(
