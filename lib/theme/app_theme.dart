@@ -3,10 +3,8 @@ import 'package:flutter/services.dart';
 
 Color primaryColor = "#02b2e4".toColor();
 Color backgroundColor = "#F8F8F8".toColor();
-// Color backgroundColor = "#F4F4F4".toColor();
 Color cardColor = "#FFFFFF".toColor();
 Color borderColor = "#DBDBDB".toColor();
-// Color borderColor = "#E9E9E9".toColor();
 Color textColor = "#000000".toColor();
 Color primaryFontColor = "#4B4B4B".toColor();
 Color subTextColor = "#7A7A7A".toColor();
@@ -16,10 +14,6 @@ Color darkSubCardColor = "#1D2123".toColor();
 Color darkBackgroundColor = "#080A0B".toColor();
 Color darkBorderColor = "#9A9A9A".toColor();
 Color subPrimaryTextColor = "#727787".toColor();
-
-
-
-
 
 extension ColorExtension on String {
   toColor() {
@@ -32,17 +26,19 @@ extension ColorExtension on String {
     }
   }
 }
+
 class AppTheme {
   static ThemeData get theme {
     ThemeData base = ThemeData.light();
 
     return base.copyWith(
-      // ignore: deprecated_member_use
-      backgroundColor: backgroundColor,
-      
       scaffoldBackgroundColor: backgroundColor,
       cardColor: cardColor,
       primaryColor: primaryColor,
+      colorScheme: ColorScheme.light(
+        primary: primaryColor,
+        surface: backgroundColor,
+      ),
       brightness: Brightness.light,
       hoverColor: Colors.transparent,
       splashColor: Colors.transparent,
@@ -61,13 +57,15 @@ class AppTheme {
       splashColor: Colors.transparent,
       primaryColor: primaryColor,
       highlightColor: Colors.transparent,
-      // ignore: deprecated_member_use
-      backgroundColor: darkBackgroundColor,
       scaffoldBackgroundColor: darkBackgroundColor,
       cardColor: darkCardColor,
+      colorScheme: ColorScheme.dark(
+        primary: primaryColor,
+        surface: darkBackgroundColor,
+      ),
       brightness: Brightness.dark,
       appBarTheme: const AppBarTheme(
-        systemOverlayStyle: SystemUiOverlayStyle.dark
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
     );
   }
